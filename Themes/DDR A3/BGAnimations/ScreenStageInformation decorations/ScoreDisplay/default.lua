@@ -3,8 +3,13 @@ local SleepOffset = 0.3;
 local cx = 640
 local ox = 450
 
-local font = Language()
-font = font:sub(1, -2)
+local regionFont = "region 20px"
+
+if Language() == "jp_" then
+	regionFont = "_ibm plex sans semibold/jp/20px"
+elseif Language() == "kor_" then
+	regionFont = "_ibm plex sans semibold/kr/20px"
+end
 
 function StageTopRecord(pn) --�^�ǳ̰��������Ӭ���
 	local SongOrCourse, StepsOrTrail;
@@ -166,7 +171,7 @@ t[#t+1]=Def.ActorFrame{
 							local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
 							local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
 							local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
-							if (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
+							if topscore:GetGrade() ~= "Grade_Failed" and (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
 								if (greats+perfects) == 0 then
 									self:Load(THEME:GetPathG("","ScreenSelectMusic/MarvelousFullcombo_ring"))
 								elseif greats == 0 then
@@ -339,10 +344,10 @@ t[#t+1]=Def.ActorFrame{
 		end;
 	};
 
-	LoadFont("_noto sans "..font) .. {
-		InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.95)
+	LoadFont(regionFont) .. {
+		InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.8)
 			s:x(pn == PLAYER_1 and cx-307-ox or cx+562+ox)
-			s:y(SCREEN_BOTTOM+110):strokecolor(Color("Outline")):maxwidth(120) end,
+			s:y(SCREEN_BOTTOM+112):strokecolor(Color("Outline")):maxwidth(120) end,
 		OnCommand=function(self)
 			self:sleep(SleepOffset+0.2):linear(0.05);
 			self:x(pn == PLAYER_1 and cx-307 or cx+562);

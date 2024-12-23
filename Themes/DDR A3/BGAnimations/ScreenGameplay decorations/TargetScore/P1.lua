@@ -5,7 +5,6 @@
 -- Player variables
 local player = PLAYER_1;
 
-
 -- Target score
 local ts = 0;
 
@@ -76,7 +75,7 @@ if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTAT
 		LoadFont("TargetScore numbers") .. {
 			-- Position the score correctly
 			InitCommand=function(self)
-				self:xy((player == PLAYER_1) and SCREEN_CENTER_X-190 or SCREEN_CENTER_X+290, SCREEN_CENTER_Y-60);
+				self:xy(SCREEN_CENTER_X-190, SCREEN_CENTER_Y-60);
 				self:zoom(0.5);
 				-- Align the score based on its length
 				(cmd(horizalign,right;strokecolor,color("#000000")))(self)

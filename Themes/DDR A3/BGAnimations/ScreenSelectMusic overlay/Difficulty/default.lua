@@ -1,38 +1,23 @@
 local pn = ...
 local difficulties = {}
-if GAMESTATE:GetCurrentStyle():GetName() == "single" then
-  difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
-elseif GAMESTATE:GetCurrentStyle():GetName() == "double" then
-  difficulties = {"Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
-end
 
-local DiffList = Def.ActorFrame{
-    OnCommand=function(s)
-      if GAMESTATE:GetCurrentStyle():GetName() == "single" then
-        difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
-      elseif GAMESTATE:GetCurrentStyle():GetName() == "double" then
-        difficulties = {"Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
-      end
-    end,
-    CurrentStyleChangedMessageCommand=function(s)
-      if GAMESTATE:GetCurrentStyle():GetName() == "single" then
-        difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
-      elseif GAMESTATE:GetCurrentStyle():GetName() == "double" then
-        difficulties = {"Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
-      end
-    end
-}
+initial_style = GAMESTATE:GetCurrentStyle():GetName() 
+
+difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
+
+local DiffList = Def.ActorFrame{}
 
 for i, difficulty in ipairs(difficulties) do
   DiffList[#DiffList+1] = Def.ActorFrame{
     InitCommand=function(s)
       local steps = GAMESTATE:GetCurrentSteps(pn)
+      local song = GAMESTATE:GetCurrentSong()
 
+      if not song then return end
       local total_diffs = song:GetStepsByStepsType(GAMESTATE:GetCurrentStyle():GetStepsType())
 
       local current_diff = difficulty
       local current_diff_index = nil
-
 
       -- Single loop to find the current difficulty index
       for i, diff in ipairs(total_diffs) do
@@ -49,27 +34,15 @@ for i, difficulty in ipairs(difficulties) do
         s:diffusealpha(1)
       end
 
-      if GAMESTATE:GetCurrentStyle() == "double" then
-        s:y(((current_diff_index - 1) * 38) - 80)
-      else
-        s:y(((current_diff_index - 1) * 38) - 80)
-      end
+      s:y(((current_diff_index - 1) * 38) - 80)
     end,
     SetCommand=function(self)
       diff = difficulty;
       local st=GAMESTATE:GetCurrentStyle():GetStepsType()
       local song=GAMESTATE:GetCurrentSong()
-      if song then
-        if song:HasStepsTypeAndDifficulty( st, diff ) then
-          local steps = song:GetOneSteps( st, diff )
-          self:visible(true)
-        else
-            self:visible(false)
-        end
-      else
-        -- self:visible(false)
-      end;
       local steps = GAMESTATE:GetCurrentSteps(pn)
+
+      if not song then self:diffusealpha(0) return else self:diffusealpha(1) end
 
       local total_diffs
       if song then
@@ -81,7 +54,6 @@ for i, difficulty in ipairs(difficulties) do
 
       local current_diff = difficulty
       local current_diff_index = nil
-
 
       -- Single loop to find the current difficulty index
       for i, diff in ipairs(total_diffs) do
@@ -98,11 +70,7 @@ for i, difficulty in ipairs(difficulties) do
         self:diffusealpha(1)
       end
 
-      if GAMESTATE:GetCurrentStyle():GetName() == "double" then
-        self:y(((current_diff_index - 1) * 38) - 80)
-      else
-        self:y(((current_diff_index - 1) * 38) - 80)
-      end
+      self:y(((current_diff_index - 1) * 38) - 80)
     end;
     Def.BitmapText{
       Font="_dispatrox 32px",
@@ -196,7 +164,7 @@ for i, difficulty in ipairs(difficulties) do
                 local greats = topscore:GetTapNoteScore("TapNoteScore_W3");
                 local perfects = topscore:GetTapNoteScore("TapNoteScore_W2");
                 local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1");
-                if (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
+                if topscore:GetGrade() ~= "Grade_Failed" and (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
                   if (greats+perfects) == 0 then
                     self:Load(THEME:GetPathG("","ScreenSelectMusic/MarvelousFullCombo_ring"))
                   elseif greats == 0 then
@@ -318,12 +286,10 @@ return Def.ActorFrame{
                 end
             end
     
+            if not current_diff_index then return end
+
             -- Calculate the position if current_diff_index is found
-            if current_diff_index and GAMESTATE:GetCurrentStyle():GetName() == "double" then
-                s:y(((current_diff_index - 1) * 38) - 80)
-            elseif current_diff_index and GAMESTATE:GetCurrentStyle():GetName() == "single" then
-                s:y(((current_diff_index - 1) * 38) - 80)
-            end
+            s:y(((current_diff_index - 1) * 38) - 80)
         else
             s:visible(false)
         end

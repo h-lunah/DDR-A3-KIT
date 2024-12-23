@@ -190,7 +190,7 @@ local function genScrollerFrame(player)
 							local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
 							local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
 							local hasUsedBattery = string.find(topscore:GetModifiers(),"Lives")
-							if (misses) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
+							if topscore:GetGrade() ~= "Grade_Failed" and (misses) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
 								if (greats+perfects) == 0 then
 									s:Load(THEME:GetPathB("ScreenSelectMusic overlay/TwoPartDiff/Cleared","MarvelousFC"))
 									s:diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.7")):effectperiod(0.09)

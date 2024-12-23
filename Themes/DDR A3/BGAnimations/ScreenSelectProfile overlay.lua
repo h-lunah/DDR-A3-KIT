@@ -3,8 +3,13 @@ This script was taken from KENp's DDR X2 theme
 and was recoded by FlameyBoy and Inorizushi
 ]]--
 
-local font = Language()
-font = font:sub(1, -2)
+local regionFont = "region 20px"
+
+if Language() == "jp_" then
+	regionFont = "_ibm plex sans semibold/jp/20px"
+elseif Language() == "kor_" then
+	regionFont = "_ibm plex sans semibold/kr/20px"
+end
 
 local ProfileInfoCache = {}
 setmetatable(ProfileInfoCache, {__index =
@@ -114,7 +119,7 @@ local function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 				end
 			};
 			Def.BitmapText {
-				Font="_noto sans "..font,
+				Font=regionFont,
 				InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.95)
 					s:x(pn == PLAYER_1 and 128 or 128);
 					s:y(-82):strokecolor(Color("Outline")):maxwidth(120) end,

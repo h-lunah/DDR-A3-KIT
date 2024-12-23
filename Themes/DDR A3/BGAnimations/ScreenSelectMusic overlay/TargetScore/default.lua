@@ -125,6 +125,10 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 					style = GAMESTATE:GetCurrentStyle():GetName()
 					song = GAMESTATE:GetCurrentSong()
 
+					if not song then
+						SCREENMAN:PlayInvalidSound()
+						return end
+
 					if style == "single" and song:GetStepsByStepsType("StepsType_Dance_Double")[1] ~= nil then
 						SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic", "difficulty harder"))
 						GAMESTATE:SetCurrentStyle("double")

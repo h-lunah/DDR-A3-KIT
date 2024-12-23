@@ -20,9 +20,29 @@ local firstStepMade = false -- Flag to check if the first step is made
 
 local alternateSoundIndex = 0 -- Index to alternate between combo and cheering
 
-local currentSong = GAMESTATE:GetCurrentSong()
-local bpm = currentSong and currentSong:GetDisplayBpms()[2]
-local songLength = currentSong and currentSong:GetLastSecond()
+local currentSong = nil
+local bpm = 0
+local songLength = 0
+
+local function updateSongInfo()
+    currentSong = GAMESTATE:GetCurrentSong()
+    if currentSong then
+        bpm = currentSong:GetDisplayBpms()[2] or 0
+        songLength = currentSong:GetLastSecond() or 0
+    end
+end
+
+-- Ensure song info is populated when gameplay starts
+t[#t+1] = Def.ActorFrame {
+    OnCommand = function(self)
+		if not GAMESTATE:GetCurrentSong() then
+        	self:sleep(0.5):queuecommand("UpdateSongInfo")
+		end
+    end,
+    UpdateSongInfoCommand = function(self)
+        updateSongInfo()
+    end,
+}
 
 local function everyoneIsInDanger()
 	-- A similar function exists in the StepMania engine internally, but hasn't been exposed to Lua.
@@ -151,15 +171,16 @@ t[#t+1] = Def.ActorFrame{
 		if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then return end
 
 		-- Handle special milestones for 100 - 1000 combos (always play these)
-		if combo > 0 and combo % 100 == 0 and lastComboMilestonePlayed ~= combo then
-			SOUND:PlayAnnouncer("combo " .. combo .. " ac")
-			lastComboMilestonePlayed = combo
-			return
-		-- Handle milestones for 1000+ combos
-		elseif combo > 1000 and combo % 100 == 0 and lastComboMilestonePlayed ~= combo then
+		if combo > 1000 and combo % 100 == 0 and lastComboMilestonePlayed ~= combo then
 			SOUND:PlayAnnouncer("combo overflow ac")
 			lastComboMilestonePlayed = combo
 		return end
+
+		if combo > 0 and combo % 100 == 0 and lastComboMilestonePlayed ~= combo then
+			SOUND:PlayAnnouncer("combo " .. combo .. " ac")
+			lastComboMilestonePlayed = combo
+		return end
+		
 
 		if combo > 0 or missCombo > 0 then
 			if combo == 0 and missCombo > 0 then
