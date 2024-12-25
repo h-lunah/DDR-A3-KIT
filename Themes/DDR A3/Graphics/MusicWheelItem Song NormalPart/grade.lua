@@ -17,6 +17,7 @@ return Def.ActorFrame{
 		end;
 		DiffChangeCommand=function(self)
 			local st = GAMESTATE:GetCurrentStyle():GetStepsType();
+			if not GAMESTATE:GetCurrentSteps(pn) then return end
 			local diff = GAMESTATE:GetCurrentSteps(pn):GetDifficulty();
 			if self.cur_song then
 				if self.cur_song:HasStepsTypeAndDifficulty(st,diff) then

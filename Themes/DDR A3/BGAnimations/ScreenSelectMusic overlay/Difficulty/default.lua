@@ -1,8 +1,6 @@
 local pn = ...
 local difficulties = {}
 
-initial_style = GAMESTATE:GetCurrentStyle():GetName() 
-
 difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
 
 local DiffList = Def.ActorFrame{}

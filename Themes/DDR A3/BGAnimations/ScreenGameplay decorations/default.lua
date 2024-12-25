@@ -71,6 +71,7 @@ if not GAMESTATE:IsDemonstration() then
 	t[#t+1] = LoadActor("AnnouncerEngine");
 end
 
+
 t[#t+1] = Def.ActorFrame {
 	Condition=not GAMESTATE:IsDemonstration(),
 	InitCommand=function(s) s:x(_screen.cx):y(_screen.cy+12):draworder(99) end,

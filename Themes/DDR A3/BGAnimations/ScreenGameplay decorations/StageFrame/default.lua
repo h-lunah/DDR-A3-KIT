@@ -1,3 +1,22 @@
+function CourseStageIndex(currentStage, maxStage)
+    if currentStage == maxStage then
+        return "FINAL"
+    else
+        local suffix
+        if currentStage % 10 == 1 and currentStage % 100 ~= 11 then
+            suffix = "st"
+        elseif currentStage % 10 == 2 and currentStage % 100 ~= 12 then
+            suffix = "nd"
+        elseif currentStage % 10 == 3 and currentStage % 100 ~= 13 then
+            suffix = "rd"
+        else
+            suffix = "th"
+        end
+        return currentStage .. suffix
+    end
+end
+
+
 return Def.ActorFrame {
 	LoadActor(Model().."frame")..{
 		InitCommand=function(s) s:x(SCREEN_CENTER_X):y(SCREEN_TOP+27):zoom(0.667) end,
@@ -16,16 +35,14 @@ return Def.ActorFrame {
 				if not STATSMAN:GetCurStageStats() then return end
 				local mpStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( GAMESTATE:GetMasterPlayerNumber() )
 				local songsPlayed = mpStats:GetSongsPassed() + 1
-					self:settextf("%i / %i", songsPlayed, GAMESTATE:GetCurrentCourse():GetEstimatedNumStages());
+					self:settextf(CourseStageIndex(songsPlayed, GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()));
 			else
 				if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then
 					self:settextf("CHECKING")
 				elseif GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Lesson by DJ" then
 					self:settextf("HOW TO PLAY")
-				elseif GAMESTATE:IsDemonstration() then
-					self:settextf("DEMO");
-				elseif GAMESTATE:IsEventMode() then
-					self:settextf("EVENT");
+				elseif GAMESTATE:IsEventMode() or GAMESTATE:IsDemonstration() then
+					self:settextf("1st");
 				else
 					local thed_stage= thified_curstage_index(false)
 					
@@ -40,7 +57,7 @@ return Def.ActorFrame {
 					self:settextf(thed_stage)
 				end
 			end;
-			self:zoomx(0.5):zoomy(0.47):maxwidth(135):x(_screen.cx):y(SCREEN_TOP+35):diffuse(color("1,1,1,1"))
+			self:zoom(0.45):maxwidth(135):x(_screen.cx):y(SCREEN_TOP+35):diffuse(color("1,1,1,1"))
 		end;
 		};
 	};

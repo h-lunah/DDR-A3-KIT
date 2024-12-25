@@ -59,6 +59,8 @@ function GaugeTextureHot(g)
 		return "FlareEX"
 	elseif g == 'DrainType_FloatingFlare' then
 		return "FlareEX"
+	elseif g == "DrainType_Class" then
+		return "grade"
 	else
 		return "full"
 	end
@@ -87,6 +89,8 @@ function GaugeTexture(g)
 		return "FlareEX"
 	elseif g == 'DrainType_FloatingFlare' then
 		return "FlareEX"
+	elseif g == "DrainType_Class" then
+		return "grade"
 	else
 		return "normal"
 	end
@@ -121,6 +125,8 @@ end
 function GaugeSpeed(g, s)
 	if string.find(g, "Flare") then
 		return pn=="PlayerNumber_P2" and 0.8 or -0.8
+	elseif string.find(g, "Class") then
+		return pn=="PlayerNumber_P2" and 0.6 or -0.6
 	else
 		return pn=="PlayerNumber_P2" and 0.6 or -0.6
 	end
@@ -129,6 +135,8 @@ end
 function GaugeSpeedNormal(g)
 	if string.find(g, "Flare") then
 		return pn=="PlayerNumber_P2" and 0.8 or -0.8
+	elseif string.find(g, "Class") then
+		return pn=="PlayerNumber_P2" and 0.6 or -0.6
 	else
 		return 0
 	end

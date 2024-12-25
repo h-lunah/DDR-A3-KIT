@@ -60,13 +60,23 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
             SetCommand=function(s)
             local score
 				if IsEXScore() then
-					local rv = GAMESTATE:GetCurrentSteps(pn):GetRadarValues(pn)
-					
-					local maxex = rv:GetValue("RadarCategory_TapsAndHolds")*3 +
-						rv:GetValue("RadarCategory_Holds")*3 +
-						math.floor(rv:GetValue("RadarCategory_Mines")/4)*3
+					local function MaxEXScore(radar)
+						return 3*(radar:GetValue'RadarCategory_TapsAndHolds'
+						+radar:GetValue'RadarCategory_Holds'
+						+math.floor(radar:GetValue'RadarCategory_Mines')/4)
+					end
 
-					score = math.floor(maxex*(pss:GetScore() / 1000000)+0.5)
+					local maxex = 0
+
+					if GAMESTATE:IsCourseMode() then
+						for _, trail in ipairs(GAMESTATE:GetCurrentTrail(pn):GetTrailEntries()) do
+							maxex = maxex + MaxEXScore(trail:GetSteps():GetRadarValues(pn))
+						end
+					elseif not GAMESTATE:IsCourseMode() then
+						maxex = MaxEXScore(GAMESTATE:GetCurrentSteps(pn):GetRadarValues(pn))
+					end
+
+					score = math.floor(maxex*(pss:GetScore() / 1000000))
 				else 
 					score = pss:GetScore();
 				end;
@@ -188,10 +198,15 @@ t[#t+1] = Def.ActorFrame{
 	Def.Sprite {
 		OnCommand=function(s)
 			local song = GAMESTATE:GetCurrentSong()
-			if song then
+			if song and not GAMESTATE:IsCourseMode() then
 				s:Load(GetJacketPath(song))
+				s:setsize(144,144)
+			elseif GAMESTATE:IsCourseMode() then
+				s:Load(GAMESTATE:GetCurrentCourse():GetBannerPath())
+				s:scaletoclipped(300,60)
+				s:addy(20)
 			end;
-			s:setsize(144,144)
+
 		end;
 		OffCommand=cmd(sleep,0.2;bouncebegin,0.175;zoomy,0);
 	};
@@ -211,8 +226,10 @@ t[#t+1] = Def.ActorFrame{
             s:maxwidth(290):zoom(0.9)
             local song = GAMESTATE:GetCurrentSong()
             local course = GAMESTATE:GetCurrentCourse()
-            if song then
+            if song and not GAMESTATE:IsCourseMode() then
                 s:settext(GetSongName(song)):y(-10)
+			elseif course and GAMESTATE:IsCourseMode() then
+				s:settext(course:GetDisplayFullTitle())
             end
         end,
     };		
@@ -221,7 +238,7 @@ t[#t+1] = Def.ActorFrame{
         InitCommand=function(s)
 			s:maxwidth(390):y(12):x(2):zoom(0.7)
             local song = GAMESTATE:GetCurrentSong()
-			if song then
+			if song and not GAMESTATE:IsCourseMode() then
                 s:settext(GetArtistName(song))
             end
         end,

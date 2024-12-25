@@ -4,6 +4,25 @@ t[#t+1] = Def.Quad{
 	InitCommand=function(s) s:FullScreen():diffusecolor(Color.Black):diffusealpha(1) end,
 };
 
+--Thanks Razorblade!
+t[#t+1] = Def.Actor {
+	BeginCommand=function()		
+		THEME:ReloadMetrics()
+		
+		local song = GAMESTATE:GetCurrentSong();
+		
+		if song then
+			song:ReloadFromSongDir() -- This fixes song movies with symbols in filenames from not playing in game
+		end
+		
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			local steps = GAMESTATE:GetCurrentSteps(pn);
+			
+			SCREENMAN:set_input_redirected( pn, false )
+		end
+	end;
+};
+
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:queuecommand("Play") end,
 	PlayCommand=function(s) 
@@ -93,6 +112,8 @@ t[#t+1] = Def.Sprite {
 	local song = GAMESTATE:GetCurrentSong()
 		if song then
 			s:Load(GetJacketPath(song))
+		elseif GAMESTATE:IsCourseMode() then
+			s:Load(GetJacketPath(GAMESTATE:GetCurrentCourse():GetCourseEntries()[1]:GetSong()))
 		end;
 		s:setsize(300,300)
 	end;

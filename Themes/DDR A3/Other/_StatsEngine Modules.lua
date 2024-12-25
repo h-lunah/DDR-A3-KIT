@@ -37,10 +37,9 @@ return {
     			if rv:GetValue'RadarCategory_TapsAndHolds' ~= -1 then
     				maxRawScore = rvMaxRawScore(rv)
     			else
-    				for entry in values(trail:GetTrailEntries()) do
-    					maxRawScore = rvMaxRawScore(entry:GetSteps():GetRadarValues(pn))
-    					+ maxRawScore
-    				end
+    				for _, entry in ipairs(trail:GetTrailEntries()) do
+						maxRawScore = maxRawScore + rvMaxRawScore(entry:GetSteps():GetRadarValues(pn))
+					end
     			end
     		else
 				maxRawScore = rvMaxRawScore(steps:GetRadarValues(pn))

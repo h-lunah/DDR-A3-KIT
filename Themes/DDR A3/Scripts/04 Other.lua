@@ -428,6 +428,7 @@ end
 --Player Options
 
 function ClearedToLoad()
+	if GAMESTATE:GetCurrentSong() == nil then return "CLEARED" end
 	local GetSong = GAMESTATE:GetCurrentSong():GetDisplayFullTitle()
 	if GetSong == "Tohoku EVOLVED" or GetSong == "COVID" or GetSong == "Outbreak" then 
 		return "PRAY"

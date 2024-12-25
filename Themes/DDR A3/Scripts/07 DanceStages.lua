@@ -75,10 +75,12 @@ function setenv(name,value) GAMESTATE:Env()[name] = value end
 function getenv(name) return GAMESTATE:Env()[name] end
 
 function HasVideo()
+	songIndex = #STATSMAN:GetCurStageStats():GetPlayedSongs() > 0 and #STATSMAN:GetCurStageStats():GetPlayedSongs() or 1
+	song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong()
 	VideoFileType = {"mp4","avi","mov","m2ts","m2v","wmv","mpg","mpeg"}
 	Z=0
 	for i=1,#VideoFileType do
-		if FILEMAN:DoesFileExist(GAMESTATE:GetCurrentSong():GetMusicPath():sub(1, -4)..VideoFileType[i]) then
+		if FILEMAN:DoesFileExist(song:GetMusicPath():sub(1, -4)..VideoFileType[i]) then
 			Z=Z+1
 		end
 	end
@@ -90,9 +92,11 @@ function HasVideo()
 end
 
 function PotentialModSong()
-	local folder = FILEMAN:GetDirListing(GAMESTATE:GetCurrentSong():GetSongDir(),false,false)
-	local bgchanges = GAMESTATE:GetCurrentSong():GetBGChanges()
-	local attacks = GAMESTATE:GetCurrentSong():HasAttacks()
+	songIndex = #STATSMAN:GetCurStageStats():GetPlayedSongs() > 0 and #STATSMAN:GetCurStageStats():GetPlayedSongs() or 1
+	song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong()
+	local folder = FILEMAN:GetDirListing(song:GetSongDir(),false,false)
+	local bgchanges = song:GetBGChanges()
+	local attacks = song:HasAttacks()
 
 	for i=1,#folder do
 		if string.match(folder[i],"lua") or (#bgchanges>2) or attacks then
@@ -674,7 +678,8 @@ end
 
 function AssignedDanceStage()
 	local DanceStage;
-	local song = GAMESTATE:GetCurrentSong()
+	songIndex = #STATSMAN:GetCurStageStats():GetPlayedSongs() > 0 and #STATSMAN:GetCurStageStats():GetPlayedSongs() or 1
+	song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong()
 	
 	if DDR_Assigned_Stage then
 		local look_for_assigned_stage = DDR_Assigned_Stage[song:GetGroupName()]

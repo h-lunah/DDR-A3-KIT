@@ -828,13 +828,30 @@ if GAMESTATE:GetPlayMode()=="PlayMode_Oni" then
 --ApplyOptions
 
 -- LET'S CHECK YOUR LEVEL! has its own "lifebar" that doesn't decrease.
-if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or
-GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then
-    GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",1x,bar,lets-check-your-level,failoff");
-    GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P..",1x,bar,lets-check-your-level,failoff");
-else
-	GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P);
-	GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P);
+if not GAMESTATE:IsCourseMode() then
+	if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or
+	GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then
+		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",1x,bar,lets-check-your-level,failoff");
+		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P..",1x,bar,lets-check-your-level,failoff");
+	else
+		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P);
+		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P);
+	end
+end
+
+-- Dan courses use their own lifebar.
+-- It appears to be buggy. Only O.K. recover life, Goods reduce life (I didn't think I coded it like FLARE?)
+if GAMESTATE:IsCourseMode() then
+	if string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "dan") or 
+	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "kaiden") or
+	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "段") or
+	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "皆伝") then
+		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
+		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
+	else
+		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,normal-drain,failimmediate");
+		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,normal-drain,failimmediate");
+	end
 end
 
 return t;

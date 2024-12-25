@@ -35,9 +35,7 @@ end
 -- Ensure song info is populated when gameplay starts
 t[#t+1] = Def.ActorFrame {
     OnCommand = function(self)
-		if not GAMESTATE:GetCurrentSong() then
-        	self:sleep(0.5):queuecommand("UpdateSongInfo")
-		end
+        self:sleep(0.5):queuecommand("UpdateSongInfo")
     end,
     UpdateSongInfoCommand = function(self)
         updateSongInfo()

@@ -67,6 +67,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 					Font="_commador extended 32px",
 					InitCommand=function(s) s:halign(1):zoomy(0.6):zoomx(0.76):playcommand("Set") end,
 					SetCommand=function(s)
+						if not GAMESTATE:GetCurrentSteps(pn) then return end
 						local diff = GAMESTATE:GetCurrentSteps(pn):GetDifficulty()
 						local sDifficulty = ToEnumShortString(diff);
 						if diff then

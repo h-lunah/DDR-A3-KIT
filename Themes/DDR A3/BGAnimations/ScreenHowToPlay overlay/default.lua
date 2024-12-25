@@ -81,7 +81,7 @@ if not IsTitleMenu() then
 			SetCommand=function(s)
 				if GAMESTATE:GetCoinMode() == 'CoinMode_Free' then
 					s:Load(THEME:GetPathG("","ArcadeDecorations/"..Model()..Language().."start"))
-					s:diffusealpha(1):diffuseshift():effectcolor1(color("##ffffff")):effectcolor2(color("#ffea00")):effectperiod(2.5):sleep(2.5):diffusealpha(0):sleep(2.5):queuecommand("Set") 
+					s:diffusealpha(1):diffuseshift():effectcolor1(color("##ffffff")):effectcolor2(color(effectColor())):effectperiod(2.5):sleep(2.5):diffusealpha(0):sleep(2.5):queuecommand("Set") 
 				elseif GAMESTATE:GetCoinMode() == "CoinMode_Home" then
 					s:Load(THEME:GetPathG("","ArcadeDecorations/"..Model()..Language().."start"))
 					s:diffusealpha(1):diffuseshift():effectcolor1(color("##ffffff")):effectcolor2(color(effectColor())):effectperiod(2.5):sleep(2.5):diffusealpha(0):sleep(2.5):queuecommand("Set")    

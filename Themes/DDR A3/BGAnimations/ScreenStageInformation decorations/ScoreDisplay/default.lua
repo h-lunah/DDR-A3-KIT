@@ -4,7 +4,6 @@ local cx = 640
 local ox = 450
 
 local regionFont = "region 20px"
-
 if Language() == "jp_" then
 	regionFont = "_ibm plex sans semibold/jp/20px"
 elseif Language() == "kor_" then
@@ -113,7 +112,8 @@ t[#t+1]=Def.ActorFrame{
 		s:x(pn == PLAYER_1 and cx-546-ox or cx+546+ox)
 		s:draworder(110):pause():queuecommand("Set") end,
 		SetCommand=function(self)
-			local diff = GAMESTATE:GetCurrentSteps(pn):GetDifficulty();
+			local steps = GAMESTATE:GetCurrentSteps(pn) or GAMESTATE:GetCurrentTrail(pn);
+			local diff = steps:GetDifficulty();
 			local sDifficulty = ToEnumShortString(diff);	
 				if sDifficulty == 'Beginner' then
 					self:setstate(0);
@@ -143,54 +143,57 @@ t[#t+1]=Def.ActorFrame{
 			self:x(pn == PLAYER_1 and cx-436 or cx+436);
 		end;
 	};
+
 	Def.Sprite{
 	InitCommand=function(s) s:zoom(0.27):shadowlength(1)
 	s:x(pn == PLAYER_1 and cx-268-ox or cx+603+ox)
 	s:y(SCREEN_BOTTOM+78):horizalign(center):draworder(2) end,
 	OnCommand=function(self) self:sleep(SleepOffset+0.2):linear(0.05):x(pn == PLAYER_1 and cx-268 or cx+603)
-            local song = GAMESTATE:GetCurrentSong();
+			if GAMESTATE:IsCourseMode() then
+				SongOrCourse = GAMESTATE:GetCurrentCourse();
+				StepsOrTrail = GAMESTATE:GetCurrentTrail(pn);
+			else
+				SongOrCourse = GAMESTATE:GetCurrentSong();
+				StepsOrTrail = GAMESTATE:GetCurrentSteps(pn);
+			end;
+
 			local st = GAMESTATE:GetCurrentStyle():GetStepsType();
-			local diff = GAMESTATE:GetCurrentSteps(pn):GetDifficulty();
-			if song then
-				if song:HasStepsTypeAndDifficulty(st,diff) then
-					local steps = song:GetOneSteps( st, diff );
-					local profile = MachineOrProfile(pn)
-					local scorelist = profile:GetHighScoreList(song,steps);
-						assert(scorelist);
-					local scores = scorelist:GetHighScores();
-						assert(scores);
-					local topscore=0;
-					if scores[1] then
-						for _, topscore in ipairs(scores) do
-							assert(topscore);
-							local misses = topscore:GetTapNoteScore("TapNoteScore_Miss") + 
-											topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss") +
-											topscore:GetHoldNoteScore("HoldNoteScore_LetGo") +
-											topscore:GetTapNoteScore("TapNoteScore_HitMine")
-							local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
-							local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
-							local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
-							local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
-							if topscore:GetGrade() ~= "Grade_Failed" and (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
-								if (greats+perfects) == 0 then
-									self:Load(THEME:GetPathG("","ScreenSelectMusic/MarvelousFullcombo_ring"))
-								elseif greats == 0 then
-									self:Load(THEME:GetPathG("","ScreenSelectMusic/PerfectFullcombo_ring"))
-								elseif (misses+goods) == 0 then
-									self:Load(THEME:GetPathG("","ScreenSelectMusic/GreatFullcombo_ring"))
-								elseif (misses) == 0 then
-									self:Load(THEME:GetPathG("","ScreenSelectMusic/GoodFullcombo_ring"))
-								end;
-								self:visible(true):spin():zoom(1):effectmagnitude(0,0,170)
-								break
-							else
-								self:visible(false)
+			local diff = StepsOrTrail:GetDifficulty();
+			if SongOrCourse then
+				local profile = MachineOrProfile(pn)
+				local scorelist = profile:GetHighScoreList(SongOrCourse, StepsOrTrail);
+					assert(scorelist);
+				local scores = scorelist:GetHighScores();
+					assert(scores);
+				local topscore=0;
+				if scores[1] then
+					for _, topscore in ipairs(scores) do
+						assert(topscore);
+						local misses = topscore:GetTapNoteScore("TapNoteScore_Miss") + 
+										topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss") +
+										topscore:GetHoldNoteScore("HoldNoteScore_LetGo") +
+										topscore:GetTapNoteScore("TapNoteScore_HitMine")
+						local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
+						local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
+						local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
+						local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
+						if topscore:GetGrade() ~= "Grade_Failed" and (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
+							if (greats+perfects) == 0 then
+								self:Load(THEME:GetPathG("","ScreenSelectMusic/MarvelousFullcombo_ring"))
+							elseif greats == 0 then
+								self:Load(THEME:GetPathG("","ScreenSelectMusic/PerfectFullcombo_ring"))
+							elseif (misses+goods) == 0 then
+								self:Load(THEME:GetPathG("","ScreenSelectMusic/GreatFullcombo_ring"))
+							elseif (misses) == 0 then
+								self:Load(THEME:GetPathG("","ScreenSelectMusic/GoodFullcombo_ring"))
 							end;
+							self:visible(true):spin():zoom(1):effectmagnitude(0,0,170)
+							break
+						else
+							self:visible(false)
 						end;
-					else
-						self:visible(false)
 					end;
-                else
+				else
 					self:visible(false)
 				end;
             else
@@ -300,12 +303,12 @@ t[#t+1]=Def.ActorFrame{
 						
 						self:diffusealpha(1);
 						
-						self:targetnumber(topscore);
+						self:settext(topscore);
 						scstring = topscore;
 					else
 						self:diffusealpha(1);
 
-						self:targetnumber(0);
+						self:settext('');
 						scstring = 0;
 					end
 				else
@@ -315,21 +318,6 @@ t[#t+1]=Def.ActorFrame{
 				self:x(pn == PLAYER_1 and cx-475 or cx+395);
 			end;
 	};
-	
-
-	--[[--Topscore mod P1
-	LoadFont("_helveticaneuelt pro 65 md 24px") .. {
-		Text = scstring;
-		InitCommand=function(s) s:shadowlength(0):zoomy(0.80):zoomx(1.85):maxwidth(240)
-			s:x(pn == PLAYER_1 and SCREEN_LEFT-OffsetX-40 or SCREEN_RIGHT+OffsetX-40)
-			s:y(_screen.cy+280):horizalign(center) end,
-		OnCommand=function(self)
-			self:diffuse(color("1,1,0.28,1"));
-			self:strokecolor(color("0.0,0.0,0.0,1"));
-			self:sleep(SleepOffset+0.2):linear(0.05)
-			self:x(pn == PLAYER_1 and SCREEN_LEFT+OffsetX-40 or SCREEN_RIGHT-OffsetX-40);
-		end;
-	};]]
 
 	
 	--Name
@@ -345,9 +333,9 @@ t[#t+1]=Def.ActorFrame{
 	};
 
 	LoadFont(regionFont) .. {
-		InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.8)
+		InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.95)
 			s:x(pn == PLAYER_1 and cx-307-ox or cx+562+ox)
-			s:y(SCREEN_BOTTOM+112):strokecolor(Color("Outline")):maxwidth(120) end,
+			s:y(SCREEN_BOTTOM+110):strokecolor(Color("Outline")):maxwidth(120) end,
 		OnCommand=function(self)
 			self:sleep(SleepOffset+0.2):linear(0.05);
 			self:x(pn == PLAYER_1 and cx-307 or cx+562);

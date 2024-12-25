@@ -118,7 +118,7 @@ return Def.ActorFrame{
 			end
 		end;
 		Def.Sprite{
-			Texture=Model().."high",
+			Texture="high",
 			InitCommand=function(s) s:zoom(0.94):x(5)
 				s:diffuseramp():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(0.5)
 			end,
@@ -127,7 +127,7 @@ return Def.ActorFrame{
 			Name="cardcursor",
 			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0")):effectcolor2(color("1,1,1,1")):effectperiod(0.5) end,
 			Def.Sprite{
-				Texture=Model().."line",
+				Texture="thick_high",
 				InitCommand=function(s) s:zoom(0.94):x(5)
 					s:thump(1):effectmagnitude(1.1,1,0):effectperiod(0.5) 
 				end,
