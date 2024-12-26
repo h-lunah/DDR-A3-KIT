@@ -110,8 +110,8 @@ function OptionRowRegion()
         Name = "Region";
         LayoutType = "ShowAllInRow";
         SelectType = "SelectOne";
-        OneChoiceForAllPlayers = true;
-        ExportOnChange = false;
+        OneChoiceForAllPlayers = false;
+        ExportOnChange = true;
         Choices = {}
     };
 
@@ -122,8 +122,9 @@ function OptionRowRegion()
     table.sort(t.Choices)
 
     t.LoadSelections = function(self, list, pn)
-        if ReadPrefFromFile("OptionRowRegion") ~= nil then
-            local savedRegion = GetUserPref("OptionRowRegion")
+        local pName = ToEnumShortString(pn)
+        if ReadPrefFromFile("OptionRowRegion"..pName) ~= nil then
+            local savedRegion = GetUserPref("OptionRowRegion"..pName)
             for i, key in ipairs(self.Choices) do
                 if key == savedRegion then
                     list[i] = true
@@ -132,19 +133,20 @@ function OptionRowRegion()
             end
             list[1] = true
         else
-            WritePrefToFile("OptionRowRegion", self.Choices[1])
+            WritePrefToFile("OptionRowRegion"..pName, self.Choices[1])
             list[1] = true
         end
     end
 
     t.SaveSelections = function(self, list, pn)
+        local pName = ToEnumShortString(pn)
         for i, selected in ipairs(list) do
             if selected then
-                WritePrefToFile("OptionRowRegion", self.Choices[i])
+                WritePrefToFile("OptionRowRegion"..pName, self.Choices[i])
                 return
             end
         end
-        WritePrefToFile("OptionRowRegion", self.Choices[1]) -- Default to the first region
+        WritePrefToFile("OptionRowRegion"..pName, self.Choices[1]) -- Default to the first region
     end
 
     setmetatable(t, t)

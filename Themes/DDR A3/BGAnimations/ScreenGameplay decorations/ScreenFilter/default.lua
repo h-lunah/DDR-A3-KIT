@@ -30,21 +30,24 @@ if GAMESTATE:IsDemonstration()  then Darkness = 0.65 end
 return Def.ActorFrame {
 	InitCommand=function(s) 
 		s:xy(Position,_screen.cy):diffusealpha(0)
-		setenv("OptionRowGuideLines", "false")
+		local pName = ToEnumShortString(pn)
+		setenv("OptionRowGuideLines"..pName, "false")
 		THEME:ReloadMetrics()
 	end,
 	CurrentSongChangedMessageCommand=function(s) s:sleep(BeginReadyDelay()+SongMeasureSec()):diffusealpha(Darkness):queuecommand("Guidelines") end,
 	ChangeCourseSongInMessageCommand=function(s) s:playcommand('FilterOff') end,
 	OffCommand=function(s)
 		s:diffusealpha(0)
-		if GetUserPref("OptionRowGuideLinesEnabled") == 'true' then
-			setenv("OptionRowGuideLines", "false")
+		local pName = ToEnumShortString(pn)
+		if GetUserPref("OptionRowGuideLinesEnabled"..pName) == 'true' then
+			setenv("OptionRowGuideLines"..pName, "false")
 			THEME:ReloadMetrics()
 		end
 	end,
 	GuidelinesCommand=function(s)
-		if GetUserPref("OptionRowGuideLinesEnabled") == 'true' then
-			setenv("OptionRowGuideLines", "true")
+		local pName = ToEnumShortString(pn)
+		if GetUserPref("OptionRowGuideLinesEnabled"..pName) == 'true' then
+			setenv("OptionRowGuideLines"..pName, "true")
 			THEME:ReloadMetrics()
 		end
 	end,

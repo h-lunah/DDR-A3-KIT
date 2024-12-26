@@ -4,7 +4,7 @@ t[#t+1] = StatsEngine()
 
 t[#t+1] = Def.Actor{
 	OffCommand=function(s)
-		if (GAMESTATE:GetSongBeat() >= GAMESTATE:GetCurrentSong():GetLastBeat()) then
+		if not GAMESTATE:IsCourseMode() and (GAMESTATE:GetSongBeat() >= GAMESTATE:GetCurrentSong():GetLastBeat()) then
 			-- This stage has ended. Grant Extra Stage stars now.
 			AddExtraStageStars(STATSMAN:GetCurStageStats():GetPlayerStageStats(GAMESTATE:GetMasterPlayerNumber()):GetGrade(), GAMESTATE:GetMasterPlayerNumber())
 		end

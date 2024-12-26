@@ -5,6 +5,7 @@
 -- Player variables
 local player = PLAYER_2;
 
+
 -- Target score
 local ts = 0;
 

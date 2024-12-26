@@ -747,3 +747,19 @@ function RandomComment()
 		return math.random(15, 20)
 	end
 end
+
+function CourseModeName()
+	if not GAMESTATE:IsEventMode() and GAMESTATE:GetCurrentStage() > "Stage_1st" then
+		return ""
+	else
+		return "Course"
+	end
+end
+
+function CourseModeCommand()
+	if not GAMESTATE:IsEventMode() and GAMESTATE:GetCurrentStage() > "Stage_1st" then
+		return ""
+	else
+		return "playmode,nonstop;screen,ScreenSelectCourse;setenv,sMode,Extended"
+	end
+end

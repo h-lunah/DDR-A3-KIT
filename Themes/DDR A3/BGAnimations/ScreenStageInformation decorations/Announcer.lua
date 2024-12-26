@@ -1,5 +1,5 @@
 local Announcer
-if (GAMESTATE:GetCurrentStage() == 'Stage_1st') then
+if (GAMESTATE:GetCurrentStage() == 'Stage_1st') or (GAMESTATE:IsCourseMode()) then
 	Announcer = "stage 1"
 elseif (GAMESTATE:GetCurrentStage() == 'Stage_2nd') then
 	Announcer = "stage 2"

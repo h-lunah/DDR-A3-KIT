@@ -12,7 +12,7 @@ t[#t+1] = Def.Actor {
 		local song = GAMESTATE:GetCurrentSong();
 		
 		if song then
-			song:ReloadFromSongDir() -- This fixes song movies with symbols in filenames from not playing in game
+			song:ReloadFromSongDir()		--- This fixes song movies with symbols in filenames from not playing in game
 		end
 		
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do

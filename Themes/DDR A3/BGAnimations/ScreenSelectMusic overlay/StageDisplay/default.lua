@@ -10,8 +10,10 @@ local tRemap = {
 
 if tRemap[sStage] == PREFSMAN:GetPreference("SongsPerPlay") then
 	sStage = "Stage_Final";
-else
+elseif not GAMESTATE:IsCourseMode() then
 	sStage = sStage;
+else
+	sStage = "Stage_1st"
 end;
 
 return Def.ActorFrame {

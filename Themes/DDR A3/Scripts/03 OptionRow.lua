@@ -94,30 +94,32 @@ function OptionRowFastSlow()
 		Name = "FastSlow";
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
-		OneChoiceForAllPlayers = true;
+		OneChoiceForAllPlayers = false;
 		ExportOnChange = true,
 		Choices = {"Off", "On", };
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("OptionRowFastSlow") ~= nil then
-				if GetUserPref("OptionRowFastSlow")=='Off' then
+			local pName = ToEnumShortString(pn)
+			if ReadPrefFromFile("OptionRowFastSlow"..pName) ~= nil then
+				if GetUserPref("OptionRowFastSlow"..pName)=='Off' then
 					list[1] = true
-				elseif GetUserPref("OptionRowFastSlow")=='On' then
+				elseif GetUserPref("OptionRowFastSlow"..pName)=='On' then
 					list[2] = true
 				else
 					list[2] = true
 				end
 			else
-				WritePrefToFile("OptionRowFastSlow",'On');
+				WritePrefToFile("OptionRowFastSlow"..pName,'On');
 				list[1] = true;
 			end;
 		end;
 		SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
 			if list[1] then
-				WritePrefToFile("OptionRowFastSlow",'Off');
+				WritePrefToFile("OptionRowFastSlow"..pName,'Off');
 			elseif list[2] then
-				WritePrefToFile("OptionRowFastSlow",'On');
+				WritePrefToFile("OptionRowFastSlow"..pName,'On');
 			else
-				WritePrefToFile("OptionRowFastSlow",'On');
+				WritePrefToFile("OptionRowFastSlow"..pName,'On');
 			end;
 		end;
 	};
@@ -207,30 +209,32 @@ function OptionRowGuideLines()
 		Name = "GuideLines";
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
-		OneChoiceForAllPlayers = true;
+		OneChoiceForAllPlayers = false;
 		ExportOnChange = true;
 		Choices = {"Off", "On", };
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("OptionRowGuideLinesEnabled") ~= nil then
-				if GetUserPref("OptionRowGuideLinesEnabled")=='true' then
+			local pName = ToEnumShortString(pn)
+			if ReadPrefFromFile("OptionRowGuideLinesEnabled"..pName) ~= nil then
+				if GetUserPref("OptionRowGuideLinesEnabled"..pName)=='true' then
 					list[2] = true
-				elseif GetUserPref("OptionRowGuideLinesEnabled")=='false' then
+				elseif GetUserPref("OptionRowGuideLinesEnabled"..pName)=='false' then
 					list[1] = true
 				else
 					list[2] = true
 				end
 			else
-				WritePrefToFile("OptionRowGuideLinesEnabled",true);
+				WritePrefToFile("OptionRowGuideLinesEnabled"..pName,true);
 				list[2] = true;
 			end;
 		end;
 		SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
 			if list[2] then
-				WritePrefToFile("OptionRowGuideLinesEnabled",true);
+				WritePrefToFile("OptionRowGuideLinesEnabled"..pName,true);
 			elseif list[1] then
-				WritePrefToFile("OptionRowGuideLinesEnabled",false);
+				WritePrefToFile("OptionRowGuideLinesEnabled"..pName,false);
 			else
-				WritePrefToFile("OptionRowGuideLinesEnabled",true);
+				WritePrefToFile("OptionRowGuideLinesEnabled"..pName,true);
 			end;
 			THEME:ReloadMetrics();
 		end;
@@ -281,7 +285,7 @@ function OptionRowScreenFilter()
 		Name = "ScreenFilter";
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
-		OneChoiceForAllPlayers = true;
+		OneChoiceForAllPlayers = false;
 		ExportOnChange = true;
 		Choices = {"Off", "Dark", "Darker", "Darkest", };
 		LoadSelections = function(self, list, pn)
@@ -553,70 +557,72 @@ function OptionRowDanCourse()
 		Name = "DanCourse";
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
-		OneChoiceForAllPlayers = true;
-		ExportOnChange = false;
+		OneChoiceForAllPlayers = false;
+		ExportOnChange = true;
 		Choices = {"None" ,"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "Kaiden", };
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("OptionRowDanCourse") ~= nil then
-				if GetUserPref("OptionRowDanCourse")=='None' then
+			local pName = ToEnumShortString(pn)
+			if ReadPrefFromFile("OptionRowDanCourse"..pName) ~= nil then
+				if GetUserPref("OptionRowDanCourse"..pName)=='None' then
 					list[1] = true
-				elseif GetUserPref("OptionRowDanCourse")=='1st' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='1st' then
 					list[2] = true
-				elseif GetUserPref("OptionRowDanCourse")=='2nd' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='2nd' then
 					list[3] = true
-				elseif GetUserPref("OptionRowDanCourse")=='3rd' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='3rd' then
 					list[4] = true
-				elseif GetUserPref("OptionRowDanCourse")=='4th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='4th' then
 					list[5] = true
-				elseif GetUserPref("OptionRowDanCourse")=='5th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='5th' then
 					list[6] = true
-				elseif GetUserPref("OptionRowDanCourse")=='6th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='6th' then
 					list[7] = true
-				elseif GetUserPref("OptionRowDanCourse")=='7th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='7th' then
 					list[8] = true
-				elseif GetUserPref("OptionRowDanCourse")=='8th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='8th' then
 					list[9] = true
-				elseif GetUserPref("OptionRowDanCourse")=='9th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='9th' then
 					list[10] = true
-				elseif GetUserPref("OptionRowDanCourse")=='10th' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='10th' then
 					list[11] = true
-				elseif GetUserPref("OptionRowDanCourse")=='Kaiden' then
+				elseif GetUserPref("OptionRowDanCourse"..pName)=='Kaiden' then
 					list[12] = true
 				else
 					list[1] = true
 				end
 			else
-				WritePrefToFile("OptionRowDanCourse",'None');
+				WritePrefToFile("OptionRowDanCourse"..pName,'None');
 				list[1] = true;
 			end;
 		end;
 		SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
 			if list[1] then
-				WritePrefToFile("OptionRowDanCourse",'None');
+				WritePrefToFile("OptionRowDanCourse"..pName,'None');
 			elseif list[2] then
-				WritePrefToFile("OptionRowDanCourse",'1st');
+				WritePrefToFile("OptionRowDanCourse"..pName,'1st');
 			elseif list[3] then
-				WritePrefToFile("OptionRowDanCourse",'2nd');
+				WritePrefToFile("OptionRowDanCourse"..pName,'2nd');
 			elseif list[4] then
-				WritePrefToFile("OptionRowDanCourse",'3rd');
+				WritePrefToFile("OptionRowDanCourse"..pName,'3rd');
 			elseif list[5] then
-				WritePrefToFile("OptionRowDanCourse",'4th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'4th');
 			elseif list[6] then
-				WritePrefToFile("OptionRowDanCourse",'5th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'5th');
 			elseif list[7] then
-				WritePrefToFile("OptionRowDanCourse",'6th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'6th');
 			elseif list[8] then
-				WritePrefToFile("OptionRowDanCourse",'7th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'7th');
 			elseif list[9] then
-				WritePrefToFile("OptionRowDanCourse",'8th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'8th');
 			elseif list[10] then
-				WritePrefToFile("OptionRowDanCourse",'9th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'9th');
 			elseif list[11] then
-				WritePrefToFile("OptionRowDanCourse",'10th');
+				WritePrefToFile("OptionRowDanCourse"..pName,'10th');
 			elseif list[12] then
-				WritePrefToFile("OptionRowDanCourse",'Kaiden');
+				WritePrefToFile("OptionRowDanCourse"..pName,'Kaiden');
 			else
-				WritePrefToFile("OptionRowDanCourse",'None');
+				WritePrefToFile("OptionRowDanCourse"..pName,'None');
 			end;
 		end;
 	};
@@ -774,30 +780,32 @@ function OptionRowEXScore()
 		Name = "EXScore";
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
-		OneChoiceForAllPlayers = true;
+		OneChoiceForAllPlayers = false;
 		ExportOnChange = true;
 		Choices = {"Off", "On", };
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("OptionRowEXScore") ~= nil then
-				if GetUserPref("OptionRowEXScore")=='Off' then
+			local pName = ToEnumShortString(pn)
+			if ReadPrefFromFile("OptionRowEXScore"..pName) ~= nil then
+				if GetUserPref("OptionRowEXScore"..pName)=='Off' then
 					list[1] = true
-				elseif GetUserPref("OptionRowEXScore")=='On' then
+				elseif GetUserPref("OptionRowEXScore"..pName)=='On' then
 					list[2] = true
 				else
 					list[1] = true
 				end
 			else
-				WritePrefToFile("OptionRowEXScore",'Off');
+				WritePrefToFile("OptionRowEXScore"..pName,'Off');
 				list[1] = true;
 			end;
 		end;
 		SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
 			if list[1] then
-				WritePrefToFile("OptionRowEXScore",'Off');
+				WritePrefToFile("OptionRowEXScore"..pName,'Off');
 			elseif list[2] then
-				WritePrefToFile("OptionRowEXScore",'On');
+				WritePrefToFile("OptionRowEXScore"..pName,'On');
 			else
-				WritePrefToFile("OptionRowEXScore",'Off');
+				WritePrefToFile("OptionRowEXScore"..pName,'Off');
 			end;
 		end;
 	};
@@ -989,9 +997,9 @@ function OptionRowTargetScore()
         ExportOnChange = true,
         Choices = {"Off", "On"},
         LoadSelections = function(self, list, pn)
-			if GetUserPref("OptionRowTargetScore")=='Off' then
+			if GetUserPref("OptionRowTargetScore"..pName)=='Off' then
             	list[1] = true
-			elseif GetUserPref("OptionRowTargetScore")=='On' then
+			elseif GetUserPref("OptionRowTargetScore"..pName)=='On' then
 				list[2] = true
 			end
         end,
@@ -1003,7 +1011,7 @@ function OptionRowTargetScore()
                 value = "Off"
             end
 
-            WritePrefToFile("OptionRowTargetScore", value)
+            WritePrefToFile("OptionRowTargetScore"..pName, value)
         end,
     };
     setmetatable(t, t);

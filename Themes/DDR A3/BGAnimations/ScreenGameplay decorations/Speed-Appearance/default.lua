@@ -840,10 +840,9 @@ if not GAMESTATE:IsCourseMode() then
 end
 
 -- Dan courses use their own lifebar.
--- It appears to be buggy. Only O.K. recover life, Goods reduce life (I didn't think I coded it like FLARE?)
 if GAMESTATE:IsCourseMode() then
-	if string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "dan") or 
-	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "kaiden") or
+	if string.find(string.lower(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle()), "dan") or 
+	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "kaiden") or
 	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "段") or
 	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "皆伝") then
 		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");

@@ -1,7 +1,7 @@
 local positions = {-50, -25, 1}
 
 t = Def.ActorFrame{
-	Condition=not GAMESTATE:IsEventMode();
+	Condition=not GAMESTATE:IsEventMode() and not GAMESTATE:IsCourseMode();
 }
 
 t[#t+1]	= LoadActor(THEME:GetPathB("ScreenEvaluation","decorations/stars/"..Model().."base"))..{
