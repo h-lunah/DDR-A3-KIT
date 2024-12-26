@@ -155,15 +155,15 @@ Branch = {
 					return "ScreenEvaluationSummary"
 				else
 					local Players = GAMESTATE:GetHumanPlayers()
-					-- if string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P1"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"battery")  
-						-- or string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P1"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives")  
-						-- or string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P2"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives") 
+					-- if string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Preferred")) ,"battery")  
+						-- or string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives")  
+						-- or string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives") 
 						-- then
 					
 					local GameplayMeterTypeP1 = "";
 					local GameplayMeterTypeP2 = "";
-					if string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile("PlayerNumber_P1"):GetGUID(),GameplayMeterTypeP1),'Lives') or 
-						string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile("PlayerNumber_P2"):GetGUID(),GameplayMeterTypeP2),'Lives') 
+					if string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile(PLAYER_1):GetGUID(),GameplayMeterTypeP1),'Lives') or 
+						string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile(PLAYER_2):GetGUID(),GameplayMeterTypeP2),'Lives') 
 					then --ReadOrCreateGameplayMeterTypeForPlayer  See BGAnimations/ScreenGameply decorations/OptionsHack.lua
 					
 						
@@ -255,15 +255,15 @@ Branch = {
 		elseif GAMESTATE:IsCourseMode() then
 			return "ScreenProfileSaveSummary"
 		elseif STATSMAN:GetCurStageStats():AllFailed() then
-			-- if string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P1"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"battery")  
-				-- or string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P2"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"battery") 
-				-- or string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P1"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives")  
-				-- or string.find(string.lower(GAMESTATE:GetPlayerState("PlayerNumber_P2"):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives") 
+			-- if string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Preferred")) ,"battery")  
+				-- or string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString("ModsLevel_Preferred")) ,"battery") 
+				-- or string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives")  
+				-- or string.find(string.lower(GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString("ModsLevel_Preferred")) ,"lives") 
 				-- then
 			local GameplayMeterTypeP1 = "";
 			local GameplayMeterTypeP2 = "";
-			if string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile("PlayerNumber_P1"):GetGUID(),GameplayMeterTypeP1),'Lives') or 
-				string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile("PlayerNumber_P2"):GetGUID(),GameplayMeterTypeP2),'Lives') 
+			if string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile(PLAYER_1):GetGUID(),GameplayMeterTypeP1),'Lives') or 
+				string.find(ReadOrCreateGameplayMeterTypeForPlayer(PROFILEMAN:GetProfile(PLAYER_2):GetGUID(),GameplayMeterTypeP2),'Lives') 
 			then	 --ReadOrCreateGameplayMeterTypeForPlayer  See BGAnimations/ScreenGameply decorations/OptionsHack.lua
 				return "ScreenProfileSave"
 				

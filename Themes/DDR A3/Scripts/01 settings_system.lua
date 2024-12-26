@@ -155,7 +155,7 @@ local function id_to_prof_dir(id, reason)
 	if id == "!MACHINE" then
 		prof_dir= "Save"
 	elseif id:match("^!MC[01]$") then
-		local player= (id=="!MC0") and 'PlayerNumber_P1' or 'PlayerNumber_P2'
+		local player= (id=="!MC0") and PLAYER_1 or PLAYER_2
 		if not PROFILEMAN:ProfileWasLoadedFromMemoryCard(player) then
 			return
 		end

@@ -1,9 +1,9 @@
 local t = Def.ActorFrame{};
 
-local OptionsP1P = GAMESTATE:GetPlayerState('PlayerNumber_P1'):GetPlayerOptionsString('ModsLevel_Preferred');
-local OptionsP2P = GAMESTATE:GetPlayerState('PlayerNumber_P2'):GetPlayerOptionsString('ModsLevel_Preferred');
-local OptionsP1S = GAMESTATE:GetPlayerState('PlayerNumber_P1'):GetPlayerOptionsString('ModsLevel_Song');
-local OptionsP2S = GAMESTATE:GetPlayerState('PlayerNumber_P2'):GetPlayerOptionsString('ModsLevel_Song');
+local OptionsP1P = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString('ModsLevel_Preferred');
+local OptionsP2P = GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString('ModsLevel_Preferred');
+local OptionsP1S = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString('ModsLevel_Song');
+local OptionsP2S = GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString('ModsLevel_Song');
 
 
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
@@ -162,7 +162,7 @@ function RecordGameplayMeterType(player)
 	if GAMESTATE:IsCourseMode() == false and GAMESTATE:IsExtraStage()==false and GAMESTATE:IsExtraStage2() ==false then
 		local PlayerUID = PROFILEMAN:GetProfile(player):GetGUID(); 
 		local Options = "";
-		if player=="PlayerNumber_P1" then
+		if player==PLAYER_1 then
 			Options= OptionsP1P;
 		else
 			Options= OptionsP2P;
@@ -213,10 +213,10 @@ function SetGameplayMeterType(player)
 		local PlayerUID = PROFILEMAN:GetProfile(player):GetGUID();
 		local val;		
 		local Options = "";
-		local OptionsP1P = GAMESTATE:GetPlayerState('PlayerNumber_P1'):GetPlayerOptionsString('ModsLevel_Preferred');
-		local OptionsP2P = GAMESTATE:GetPlayerState('PlayerNumber_P2'):GetPlayerOptionsString('ModsLevel_Preferred');
+		local OptionsP1P = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString('ModsLevel_Preferred');
+		local OptionsP2P = GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString('ModsLevel_Preferred');
 		
-		if player=="PlayerNumber_P1" then
+		if player==PLAYER_1 then
 			Options= OptionsP1P;
 		else
 			Options= OptionsP2P;
@@ -288,10 +288,10 @@ function SetGameplayMeterType(player)
 			Options = string.gsub(Options, "(battery,)", "");
 		end;
 		
-		if player=="PlayerNumber_P1" then
-			GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',Options);
+		if player==PLAYER_1 then
+			GAMESTATE:GetPlayerState(PLAYER_1):SetPlayerOptions('ModsLevel_Preferred',Options);
 		else
-			GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',Options);
+			GAMESTATE:GetPlayerState(PLAYER_2):SetPlayerOptions('ModsLevel_Preferred',Options);
 		end
 		
 	end
@@ -385,7 +385,7 @@ function InitCoverPos(self, player, CoverPosition, pos, Mode, TwoCoverMode)
 		end
 		
 		local OptionString = "";
-		if player=="PlayerNumber_P1" then
+		if player==PLAYER_1 then
 			OptionString = OptionsP1P;
 		else
 			OptionString = OptionsP2P;
@@ -500,7 +500,7 @@ function ControlCoverPos(self, params, player, CoverPosition, Mode, TwoCoverMode
 		end
 		
 		local OptionString = "";
-		if player=="PlayerNumber_P1" then
+		if player==PLAYER_1 then
 			OptionString = OptionsP1P;
 		else
 			OptionString = OptionsP2P;
@@ -544,7 +544,7 @@ function SongChangeCoverPos(self, player, CoverPosition, pos, Mode, TwoCoverMode
 		end
 		
 		local OptionString = "";
-		if player=="PlayerNumber_P1" then
+		if player==PLAYER_1 then
 			OptionString = OptionsP1P;
 		else
 			OptionString = OptionsP2P;
@@ -744,8 +744,8 @@ if GAMESTATE:GetPlayMode()=="PlayMode_Oni" then
 	local trailHasSpeedMod = false;
 	local trailHasAppearanceMode = false;
 	
-	if  GAMESTATE:IsPlayerEnabled('PlayerNumber_P1') then
-		curTrailP1 = GAMESTATE:GetCurrentTrail('PlayerNumber_P1'):GetTrailEntries();
+	if  GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+		curTrailP1 = GAMESTATE:GetCurrentTrail(PLAYER_1):GetTrailEntries();
 		local temp=#curTrailP1;
 		
 		if curTrailP1[1] then
@@ -760,8 +760,8 @@ if GAMESTATE:GetPlayMode()=="PlayMode_Oni" then
 			end
 		end
 	end
-	if  GAMESTATE:IsPlayerEnabled('PlayerNumber_P2') then
-		curTrailP1 = GAMESTATE:GetCurrentTrail('PlayerNumber_P2'):GetTrailEntries();
+	if  GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+		curTrailP1 = GAMESTATE:GetCurrentTrail(PLAYER_2):GetTrailEntries();
 		local temp=#curTrailP2;
 		
 		if curTrailP2[1] then
@@ -778,44 +778,44 @@ if GAMESTATE:GetPlayMode()=="PlayMode_Oni" then
 	end
 	
 	if not trailHasAppearanceMode then
-		if	GAMESTATE:IsPlayerEnabled('PlayerNumber_P1') then
-			OptionsP1P = AppearancePlusMain('PlayerNumber_P1');
+		if	GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+			OptionsP1P = AppearancePlusMain(PLAYER_1);
 		end
-		if	GAMESTATE:IsPlayerEnabled('PlayerNumber_P2') then
-			OptionsP2P = AppearancePlusMain('PlayerNumber_P2');
+		if	GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+			OptionsP2P = AppearancePlusMain(PLAYER_2);
 		end
 	end	
 
 else
 
-	if	GAMESTATE:IsPlayerEnabled('PlayerNumber_P1') then
-		OptionsP1P = AppearancePlusMain('PlayerNumber_P1');
-		RecordGameplayMeterType('PlayerNumber_P1')
+	if	GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+		OptionsP1P = AppearancePlusMain(PLAYER_1);
+		RecordGameplayMeterType(PLAYER_1)
 	end
-	if	GAMESTATE:IsPlayerEnabled('PlayerNumber_P2') then
-		OptionsP2P = AppearancePlusMain('PlayerNumber_P2');
-		RecordGameplayMeterType('PlayerNumber_P2')
+	if	GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+		OptionsP2P = AppearancePlusMain(PLAYER_2);
+		RecordGameplayMeterType(PLAYER_2)
 	end
 
 end
 
---local OptionsP1Song = GAMESTATE:GetPlayerState('PlayerNumber_P1'):GetPlayerOptionsString('ModsLevel_Song');
+--local OptionsP1Song = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString('ModsLevel_Song');
 
   --Options Hack
   
 
 if GAMESTATE:GetPlayMode()=="PlayMode_Oni" then
 	
-	if	GAMESTATE:IsPlayerEnabled('PlayerNumber_P1') then
-		if GAMESTATE:GetCurrentTrail('PlayerNumber_P1'):GetDifficulty() == "Difficulty_Hard" then
+	if	GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+		if GAMESTATE:GetCurrentTrail(PLAYER_1):GetDifficulty() == "Difficulty_Hard" then
 			OptionsP1P = OptionsP1P..',battery,4 lives,failimmediate';
 		else
 			OptionsP1P = OptionsP1P..',battery,8 lives,failimmediate';
 		end
 	end
 	
-	if	GAMESTATE:IsPlayerEnabled('PlayerNumber_P2') then
-		if GAMESTATE:GetCurrentTrail('PlayerNumber_P2'):GetDifficulty() == "Difficulty_Hard" then
+	if	GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+		if GAMESTATE:GetCurrentTrail(PLAYER_2):GetDifficulty() == "Difficulty_Hard" then
 			OptionsP2P = OptionsP2P..',battery,4 lives,failimmediate';
 		else
 			OptionsP2P = OptionsP2P..',battery,8 lives,failimmediate';
@@ -831,25 +831,25 @@ if GAMESTATE:GetPlayMode()=="PlayMode_Oni" then
 if not GAMESTATE:IsCourseMode() then
 	if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or
 	GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then
-		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",1x,bar,lets-check-your-level,failoff");
-		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P..",1x,bar,lets-check-your-level,failoff");
+		GAMESTATE:GetPlayerState(PLAYER_1):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",1x,bar,lets-check-your-level,failoff");
+		GAMESTATE:GetPlayerState(PLAYER_2):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P..",1x,bar,lets-check-your-level,failoff");
 	else
-		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P);
-		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P);
+		GAMESTATE:GetPlayerState(PLAYER_1):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P);
+		GAMESTATE:GetPlayerState(PLAYER_2):SetPlayerOptions('ModsLevel_Preferred',OptionsP2P);
 	end
 end
 
 -- Dan courses use their own lifebar.
 if GAMESTATE:IsCourseMode() then
-	if string.find(string.lower(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle()), "dan") or 
-	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "kaiden") or
+	if string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "dan") or 
+	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "kaiden") or
 	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "段") or
 	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "皆伝") then
-		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
-		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
+		GAMESTATE:GetPlayerState(PLAYER_1):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
+		GAMESTATE:GetPlayerState(PLAYER_2):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
 	else
-		GAMESTATE:GetPlayerState('PlayerNumber_P1'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,normal-drain,failimmediate");
-		GAMESTATE:GetPlayerState('PlayerNumber_P2'):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,normal-drain,failimmediate");
+		GAMESTATE:GetPlayerState(PLAYER_1):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,normal-drain,failimmediate");
+		GAMESTATE:GetPlayerState(PLAYER_2):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,normal-drain,failimmediate");
 	end
 end
 

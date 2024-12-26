@@ -7,12 +7,12 @@ local gaugeP1 = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptions('ModsLevel_C
 local gaugeP2 = GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptions('ModsLevel_Current'):DrainSetting()
 
 local flareData = {
-    PlayerNumber_P1 = {
+    ["PlayerNumber_P1"] = {
         isFlare = false,
         currentFlare = 9,
         previousFlareLife = 1,
     },
-    PlayerNumber_P2 = {
+    ["PlayerNumber_P2"] = {
         isFlare = false,
         currentFlare = 9,
         previousFlareLife = 1,
@@ -124,19 +124,19 @@ end
 
 function GaugeSpeed(g, s)
 	if string.find(g, "Flare") then
-		return pn=="PlayerNumber_P2" and 0.8 or -0.8
+		return pn==PLAYER_2 and 0.8 or -0.8
 	elseif string.find(g, "Class") then
-		return pn=="PlayerNumber_P2" and 0.6 or -0.6
+		return pn==PLAYER_2 and 0.6 or -0.6
 	else
-		return pn=="PlayerNumber_P2" and 0.6 or -0.6
+		return pn==PLAYER_2 and 0.6 or -0.6
 	end
 end
 
 function GaugeSpeedNormal(g)
 	if string.find(g, "Flare") then
-		return pn=="PlayerNumber_P2" and 0.8 or -0.8
+		return pn==PLAYER_2 and 0.8 or -0.8
 	elseif string.find(g, "Class") then
-		return pn=="PlayerNumber_P2" and 0.6 or -0.6
+		return pn==PLAYER_2 and 0.6 or -0.6
 	else
 		return 0
 	end
@@ -145,9 +145,9 @@ end
 
 function GaugeSpeedDanger(g)
 	if string.find(g, "Flare") then
-		return pn=="PlayerNumber_P2" and 0.8 or -0.8
+		return pn==PLAYER_2 and 0.8 or -0.8
 	else
-		return pn=="PlayerNumber_P2" and 4 or -4
+		return pn==PLAYER_2 and 4 or -4
 	end
 end
 
