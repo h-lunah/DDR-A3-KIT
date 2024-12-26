@@ -2,7 +2,7 @@
 	-- ProductCode = "DDR_A3_ArcadeMod",
 	-- Name = "DDR A3 (ArcadeMod)",
 	-- Version = "4.0",
-	-- Date = "20241207",
+	-- Date = "20241225",
 	-- Author = "KENP",
 	-- Mod = "SchneiderAFX, Curilang, Inorizushi, Wyvern-D, Midflight Digital, Jindev, Lunah"
 -- },
