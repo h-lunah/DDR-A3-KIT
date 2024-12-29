@@ -32,13 +32,13 @@ local center = math.ceil(numDiffs/2)
 
 --This is the variable for holding the frame after it's compiled
 local frame = {
-	["PlayerNumber_P1"] = nil,
-	["PlayerNumber_P2"] = nil
+	[PLAYER_1] = nil,
+	[PLAYER_2] = nil
 }
 --Take a wild guess.
 local selection = {
-	["PlayerNumber_P1"] = 1,
-	["PlayerNumber_P2"] = 1
+	[PLAYER_1] = 1,
+	[PLAYER_2] = 1
 }
 
 

@@ -17,33 +17,33 @@ local minMilestoneDistance = 10 -- How many combos must a next milestone be afte
 
 -- Separate combo tracking for each player
 local playerCombos = {
-    PlayerNumber_P1 = 0,
-    PlayerNumber_P2 = 0
+    [PLAYER_1] = 0,
+    [PLAYER_2] = 0
 }
 
 local playerMissCombos = {
-    PlayerNumber_P1 = 0,
-    PlayerNumber_P2 = 0
+    [PLAYER_1] = 0,
+    [PLAYER_2] = 0
 }
 
 local playerJudgedMines = {
-    PlayerNumber_P1 = 0,
-    PlayerNumber_P2 = 0
+    [PLAYER_1] = 0,
+    [PLAYER_2] = 0
 }
 
 local playerLastComboMilestonePlayed = {
-    PlayerNumber_P1 = 0,
-    PlayerNumber_P2 = 0
+    [PLAYER_1] = 0,
+    [PLAYER_2] = 0
 }
 
 local playerLastCheeringComboPlayed = {
-    PlayerNumber_P1 = 0,
-    PlayerNumber_P2 = 0
+    [PLAYER_1] = 0,
+    [PLAYER_2] = 0
 }
 
 local playerLastFixedComboMilestonePlayed = {
-    PlayerNumber_P1 = 0,
-    PlayerNumber_P2 = 0
+    [PLAYER_1] = 0,
+    [PLAYER_2] = 0
 }
 
 local function updateSongInfo()

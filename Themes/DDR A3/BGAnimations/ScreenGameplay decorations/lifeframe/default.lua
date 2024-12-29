@@ -7,12 +7,12 @@ local gaugeP1 = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptions('ModsLevel_C
 local gaugeP2 = GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptions('ModsLevel_Current'):DrainSetting()
 
 local flareData = {
-    ["PlayerNumber_P1"] = {
+    [PLAYER_1] = {
         isFlare = false,
         currentFlare = 9,
         previousFlareLife = 1,
     },
-    ["PlayerNumber_P2"] = {
+    [PLAYER_2] = {
         isFlare = false,
         currentFlare = 9,
         previousFlareLife = 1,
@@ -20,11 +20,11 @@ local flareData = {
 }
 
 if gaugeP1 == "DrainType_FloatingFlare" then
-	flareData["PlayerNumber_P1"].isFlare = true;
+	flareData[PLAYER_1].isFlare = true;
 end
 
 if gaugeP2 == "DrainType_FloatingFlare" then
-	flareData["PlayerNumber_P2"].isFlare = true;
+	flareData[PLAYER_2].isFlare = true;
 end
 
 function GaugeTextureDanger(g)

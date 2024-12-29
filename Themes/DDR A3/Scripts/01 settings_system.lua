@@ -159,7 +159,7 @@ local function id_to_prof_dir(id, reason)
 		if not PROFILEMAN:ProfileWasLoadedFromMemoryCard(player) then
 			return
 		end
-		local slot= ({['PlayerNumber_P1']='ProfileSlot_Player1',['PlayerNumber_P2']='ProfileSlot_Player2'})[player]
+		local slot= ({[PLAYER_1]='ProfileSlot_Player1',[PLAYER_2]='ProfileSlot_Player2'})[player]
 		if slot then
 			prof_dir= PROFILEMAN:GetProfileDir(slot)
 		end
