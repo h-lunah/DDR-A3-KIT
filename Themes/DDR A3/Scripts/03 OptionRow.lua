@@ -439,36 +439,38 @@ function OptionRowGoldenLeague()
 		Name = "GoldenLeague";
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
-		OneChoiceForAllPlayers = true;
-		ExportOnChange = false;
+		OneChoiceForAllPlayers = false;
+		ExportOnChange = true;
 		Choices = {"Off" ,"Bronze", "Silver", "Gold" };
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("OptionRowGoldenLeague") ~= nil then
-				if GetUserPref("OptionRowGoldenLeague")=='Off' then
+			local pName = ToEnumShortString(pn)
+			if ReadPrefFromFile("OptionRowGoldenLeague"..pName) ~= nil then
+				if GetUserPref("OptionRowGoldenLeague"..pName)=='Off' then
 					list[1] = true
-				elseif GetUserPref("OptionRowGoldenLeague")=='Bronze' then
+				elseif GetUserPref("OptionRowGoldenLeague"..pName)=='Bronze' then
 					list[2] = true
-				elseif GetUserPref("OptionRowGoldenLeague")=='Silver' then
+				elseif GetUserPref("OptionRowGoldenLeague"..pName)=='Silver' then
 					list[3] = true
-				elseif GetUserPref("OptionRowGoldenLeague")=='Gold' then
+				elseif GetUserPref("OptionRowGoldenLeague"..pName)=='Gold' then
 					list[4] = true
 				else
 					list[1] = true
 				end
 			else
-				WritePrefToFile("OptionRowGoldenLeague",'Off');
+				WritePrefToFile("OptionRowGoldenLeague"..pName,'Off');
 				list[1] = true;
 			end;
 		end;
 		SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
 			if list[1] then
-				WritePrefToFile("OptionRowGoldenLeague",'Off');
+				WritePrefToFile("OptionRowGoldenLeague"..pName,'Off');
 			elseif list[2] then
-				WritePrefToFile("OptionRowGoldenLeague",'Bronze');
+				WritePrefToFile("OptionRowGoldenLeague"..pName,'Bronze');
 			elseif list[3] then
 				WritePrefToFile("OptionRowGoldenLeague",'Silver');
 			elseif list[4] then
-				WritePrefToFile("OptionRowGoldenLeague",'Gold');
+				WritePrefToFile("OptionRowGoldenLeague"..pName,'Gold');
 			else
 				WritePrefToFile("OptionRowGoldenLeague",'Off');
 			end;
@@ -997,6 +999,7 @@ function OptionRowTargetScore()
         ExportOnChange = true,
         Choices = {"Off", "On"},
         LoadSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
 			if GetUserPref("OptionRowTargetScore"..pName)=='Off' then
             	list[1] = true
 			elseif GetUserPref("OptionRowTargetScore"..pName)=='On' then
@@ -1004,6 +1007,7 @@ function OptionRowTargetScore()
 			end
         end,
         SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
             local value
             if list[2] then
                 value = "On"

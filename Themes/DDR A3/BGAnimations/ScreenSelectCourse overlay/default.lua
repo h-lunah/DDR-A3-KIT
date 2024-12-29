@@ -18,7 +18,6 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 			OnCommand=function(s) s:diffusealpha(0):linear(0.4):diffusealpha(1) end,
 		};
 	};
-    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectCourse","overlay/TargetScore/default.lua"))(pn);
 	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectCourse","overlay/diff"))(pn)..{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+94 or SCREEN_RIGHT-94,_screen.cy-97):zoom(0.667) end,
 	};
@@ -36,6 +35,8 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		InitCommand=function(s) s:x(pn==PLAYER_1 and SCREEN_LEFT+153 or SCREEN_RIGHT-50) end,
 	};
 end
+
+t[#t+1] = LoadActor(THEME:GetPathB("ScreenSelectCourse","overlay/TargetScore/default.lua"));
 
 
 return t;

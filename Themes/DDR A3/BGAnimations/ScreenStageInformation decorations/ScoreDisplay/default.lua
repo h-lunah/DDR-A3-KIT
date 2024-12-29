@@ -353,7 +353,7 @@ t[#t+1]=Def.ActorFrame{
 				index = 2
 			end
 
-			self:settext(regions[Region()][index])
+			self:settext(regions[GetUserPref("OptionRowRegion"..ToEnumShortString(pn))][index])
 		end;
 	};
 };

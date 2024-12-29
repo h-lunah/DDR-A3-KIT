@@ -1,11 +1,10 @@
-local args = {...}
-local player = args[1]
+local player = ...
 local short_plr = ToEnumShortString(player)
 
 local rn_type = "RollingNumbers"
 local data_source = "AScoring"
 
-if IsEXScore() then
+if IsEXScore(player) then
 	rn_type = "RollingNumbersEXScore"
     data_source = "EXScore"
 end
@@ -18,7 +17,7 @@ return Def.ActorFrame{
 	Def.RollingNumbers{
 		Name="ScoreCounter"..short_plr,
 		Font=THEME:GetPathF("ScreenGameplay","Score"),
-		InitCommand=function(s) s:Load(rn_type):xy(IsEXScore() and 69 or 7.5,-7):zoomx(0.556):zoomy(0.29) end,
+		InitCommand=function(s) s:Load(rn_type):xy(IsEXScore(player) and 69 or 7.5,-7):zoomx(0.556):zoomy(0.29) end,
 		AfterStatsEngineMessageCommand=function(s,p)
 			if p.Player == player then
 				local value = p.Data[data_source].Score 

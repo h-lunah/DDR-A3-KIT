@@ -1,4 +1,4 @@
-local pn = ({...})[1]
+local pn = ...
 local ScreenFilter = FilterReadPref(pn);
 
 local Filter

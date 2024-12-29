@@ -36,7 +36,7 @@ local Judge = Def.BitmapText{
 
 local base = "NORMAL"
 
-if IsEXScore() then
+if IsEXScore(pn) then
 	base = "EX"
 end
 
@@ -45,7 +45,7 @@ return Def.ActorFrame{
 	LoadActor(base);
 	Def.Sprite{
 		Texture="FAST",
-		InitCommand=function(s) s:visible(ShowFastSlow()) end,
+		InitCommand=function(s) s:visible(ShowFastSlow(pn)) end,
 	};
 	Large..{
 		Name="MaxCombo",
@@ -98,7 +98,7 @@ return Def.ActorFrame{
 	};
 	Large..{
 		InitCommand=function(s) s:y(107):halign(1)
-			if IsEXScore() then
+			if IsEXScore(pn) then
 				s:x(133):settextf("%4d",Score)
 			else
 				s:x(93):settextf("%4d",EXScore)
@@ -106,7 +106,7 @@ return Def.ActorFrame{
 		end,
 	};
 	Def.ActorFrame{
-	Condition=ShowFastSlow();
+	Condition=ShowFastSlow(pn);
 		Judge..{
 			Name="Fast",
 			InitCommand=function(s) s:xy(205,11):halign(1):settextf(Fast) end,

@@ -46,10 +46,10 @@ Branch = {
 		return hour > 3 and hour < 6 and "ScreenNoise" or "ScreenInit"
 	end,
 	OldSM = function()
-		if _VERSION ~= "Lua 5.3" and tonumber(VersionDate()) < 20190328 then
+		if _VERSION ~= "Lua 5.3" and tonumber(VersionDate()) < 20241009 then
 			return "ScreenOldSM"
 		else
-			return "ScreenWarning"
+			return "ScreenSelftest"
 		end
 	end,
 	TitleMenu = function()

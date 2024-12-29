@@ -23,185 +23,231 @@ end
 
 local difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge"}
 for _, diff in ipairs(difficulties) do
-	DiffList[#DiffList+1] = Def.ActorFrame{ 
-		InitCommand=function(s)
-			s:xy(pn==PLAYER_1 and -3 or 3,(Difficulty:Reverse()[diff] * yspacing)-120) end,
-		SetCommand=function(self)
-			local st =GAMESTATE:GetCurrentStyle():GetStepsType()
-			local song = GAMESTATE:GetCurrentCourse()
-			local steps = GAMESTATE:GetCurrentTrail(pn)
+    DiffList[#DiffList+1] = Def.ActorFrame{
+        InitCommand=function(s)
+            s:xy(pn==PLAYER_1 and -3 or 3, (Difficulty:Reverse()[diff] * yspacing) - 120)
+        end,
+        SetCommand=function(self)
+            local st = GAMESTATE:GetCurrentStyle():GetStepsType()
+            local song = GAMESTATE:GetCurrentCourse()
+            local steps = GAMESTATE:GetCurrentTrail(pn)
 
-			local all_trails = GAMESTATE:GetCurrentCourse():GetAllTrails()
-			local available_difficulties = {}
-			local exists = false
+            local all_trails = GAMESTATE:GetCurrentCourse():GetAllTrails()
+            local available_difficulties = {}
+            local exists = false
 
-			for _, trail in ipairs(all_trails) do
-				table.insert(available_difficulties, trail:GetDifficulty())
-			end
-				
-			if song then
-				for _, adiff in ipairs(available_difficulties) do
-					if adiff == diff then
-						exists = true
-						break
-					end
-				end
+            for _, trail in ipairs(all_trails) do
+                table.insert(available_difficulties, trail:GetDifficulty())
+            end
 
-				if exists then
-					self:visible(true)
-				else
-					self:visible(false)
-				end
-			else
-				self:visible(false)
-			end;
-		end;
-		Def.BitmapText{
-			Font="_dispatrox 32px",
-			InitCommand=function(self)
-				self:halign(pn=='pnNumber_P2' and 1 or 0):draworder(99):diffuse(Color.White):zoomx(0.5):zoomy(0.6):maxwidth(150)
-				self:x(-119)
-				self:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff)))
-			end;
-		};
-		Def.ActorFrame{
-			InitCommand=function(s) s:x(pn==pn_2 and 26 or -26) end,
-			Def.Quad{
-				InitCommand=function(s) s:setsize(26,25):diffuse(CustomDifficultyToColor(diff)) end,
-			};
-			Def.BitmapText{
-				Font="_impact 32px",
-				Name="Meter";
-				InitCommand=function(s) s:draworder(99):strokecolor(Color.Black):zoom(0.75) 
-					s:settext( CalculateHardestDifficulty(GAMESTATE:GetCurrentCourse(), diff) )
-				end,
-				
-				CurrentCourseChangedMessageCommand=function(s)
-					s:settext( CalculateHardestDifficulty(GAMESTATE:GetCurrentCourse(), diff) )
-				end,
-			};
-			Def.BitmapText{
-				Font="_geo 957 Bold",
-				Name="Score";
-				InitCommand=function(s) s:draworder(5):diffuse(Color.White):xy(105,-1):zoom(1.1):halign(1):maxwidth(80) end,
-				SetCommand=function(self)
-				 self:settext('')
-				 local course = GAMESTATE:GetCurrentCourse()
-				 local trail = GAMESTATE:GetCurrentTrail(pn)
+            if song then
+                for _, adiff in ipairs(available_difficulties) do
+                    if adiff == diff then
+                        exists = true
+                        break
+                    end
+                end
 
-				 if PROFILEMAN:IsPersistentProfile(pn) then
-					profile = PROFILEMAN:GetProfile(pn);
-				 else
-					profile = PROFILEMAN:GetMachineProfile();
-				 end;
+                if exists then
+                    self:visible(true)
+                else
+                    self:visible(false)
+                end
+            else
+                self:visible(false)
+            end
+        end,
+        Def.BitmapText{
+            Font="_dispatrox 32px",
+            InitCommand=function(self)
+                self:halign(pn=='pnNumber_P2' and 1 or 0):draworder(99):diffuse(Color.White):zoomx(0.5):zoomy(0.6):maxwidth(150)
+                self:x(-119)
+                self:settext(THEME:GetString("CustomDifficulty", ToEnumShortString(diff)))
+            end
+        },
+        Def.ActorFrame{
+            InitCommand=function(s) s:x(pn==pn_2 and 26 or -26) end,
+            Def.Quad{
+                InitCommand=function(s) s:setsize(26, 25):diffuse(CustomDifficultyToColor(diff)) end
+            },
+            Def.BitmapText{
+                Font="_impact 32px",
+                Name="Meter",
+                InitCommand=function(s)
+                    s:draworder(99):strokecolor(Color.Black):zoom(0.75)
+                    s:settext(CalculateHardestDifficulty(GAMESTATE:GetCurrentCourse(), diff))
+                end,
+                CurrentCourseChangedMessageCommand=function(s)
+                    s:settext(CalculateHardestDifficulty(GAMESTATE:GetCurrentCourse(), diff))
+                end
+            },
+            Def.BitmapText{
+                Font="_geo 957 Bold",
+                Name="Score",
+                InitCommand=function(s)
+                    s:draworder(5):diffuse(Color.White):xy(105, -1):zoom(1.1):halign(1):maxwidth(80):queuecommand("Set")
+                end,
+                SetCommand=function(self)
+                    local course = GAMESTATE:GetCurrentCourse()
 
-				 scorelist = profile:GetHighScoreList(course,trail);
+                    if course and diff then
+                        if PROFILEMAN:IsPersistentProfile(pn) then
+                            profile = PROFILEMAN:GetProfile(pn)
+                        else
+                            profile = PROFILEMAN:GetMachineProfile()
+                        end
 
-				 scores = scorelist:GetHighScores()
+                        -- Find the trail that matches the current difficulty
+                        local all_trails = course:GetAllTrails()
+                        local trail = nil
+                        for _, t in ipairs(all_trails) do
+                            if t:GetDifficulty() == diff then
+                                trail = t
+                                break
+                            end
+                        end
 
-				 if scores[1] and trail:GetDifficulty() == diff then
-					self:settext(commify(scores[1]:GetScore()))
-				 end
-				end 
-			};
-			Def.ActorFrame{
-				InitCommand=function(s) s:x(115) end,
-				Def.Sprite{
-				  InitCommand=function(s) s:xy(27,2) end,
-				  SetCommand=function(self)
-				    self:visible(false)
-					local course = GAMESTATE:GetCurrentCourse()
-				 	local trail = GAMESTATE:GetCurrentTrail(pn)
+                        if trail then
+                            -- Fetch the high score list for the current course and trail
+                            local scorelist = profile:GetHighScoreList(course, trail)
+                            local scores = scorelist:GetHighScores()
 
-					if PROFILEMAN:IsPersistentProfile(pn) then
-						profile = PROFILEMAN:GetProfile(pn);
-					else
-						profile = PROFILEMAN:GetMachineProfile();
-					end;
-	
-					scorelist = profile:GetHighScoreList(course,trail);
-	
-					scores = scorelist:GetHighScores()
+                            -- Display the score if it exists
+                            if scores[1] then
+                                self:settext(commify(scores[1]:GetScore()))
+                            else
+                                self:settext("")  -- Hide the score if there's no score for this difficulty
+                            end
+                        else
+                            self:settext("")  -- Hide the score if there's no trail for this difficulty
+                        end
+                    else
+                        self:settext("")  -- Hide the score if there's no course or difficulty
+                    end
+                end
+            },
+            Def.ActorFrame{
+                InitCommand=function(s) s:x(115):queuecommand("Set") end,
+                Def.Sprite{
+                    InitCommand=function(s) s:xy(27, 2) end,
+                    SetCommand=function(self)
+                        local course = GAMESTATE:GetCurrentCourse()
 
-					if trail:GetDifficulty() ~= diff then return end
+                        if course and diff then
+                            if PROFILEMAN:IsPersistentProfile(pn) then
+                                profile = PROFILEMAN:GetProfile(pn)
+                            else
+                                profile = PROFILEMAN:GetMachineProfile()
+                            end
 
-					if scores[1] then
-						for _, topscore in ipairs(scores) do
-							assert(topscore);
-							local misses = topscore:GetTapNoteScore("TapNoteScore_Miss") + 
-                                topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss") +
-                                topscore:GetHoldNoteScore("HoldNoteScore_LetGo") +
-                                topscore:GetTapNoteScore("TapNoteScore_HitMine")
-							local goods = topscore:GetTapNoteScore("TapNoteScore_W4");
-							local greats = topscore:GetTapNoteScore("TapNoteScore_W3");
-							local perfects = topscore:GetTapNoteScore("TapNoteScore_W2");
-							local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1");
+                            -- Find the trail that matches the current difficulty
+                            local all_trails = course:GetAllTrails()
+                            local trail = nil
+                            for _, t in ipairs(all_trails) do
+                                if t:GetDifficulty() == diff then
+                                    trail = t
+                                    break
+                                end
+                            end
 
-							if (misses) == 0 and topscore:GetScore() > 0 and (marvelous+perfects)>0 then
-								if (greats+perfects) == 0 then
-									self:Load(THEME:GetPathG("","ScreenSelectMusic/MarvelousFullCombo_ring"))
-								elseif greats == 0 then
-								self:Load(THEME:GetPathG("","ScreenSelectMusic/PerfectFullCombo_ring"))
-								elseif (misses+goods) == 0 then
-								self:Load(THEME:GetPathG("","ScreenSelectMusic/GreatFullCombo_ring"))
-								elseif (misses) == 0 then
-								self:Load(THEME:GetPathG("","ScreenSelectMusic/GoodFullCombo_ring"))
-								end;
-								self:visible(true):zoom(0.66):spin():effectmagnitude(0,0,170)
-								break
-							else
-								self:visible(false)
-							end
-						end
-					end
-			      end
-				};
-				Def.Quad{
-					Name="Grade";
-					InitCommand=function(s) s:draworder(5):visible(false):zoom(1.1):x(8) end,
-      				SetCommand=function(self)
-						self:visible(false)
-						local course = GAMESTATE:GetCurrentCourse()
-						local trail = GAMESTATE:GetCurrentTrail(pn)
+                            if trail then
+                                -- Fetch the high score list for the current course and trail
+                                local scorelist = profile:GetHighScoreList(course, trail)
+                                local scores = scorelist:GetHighScores()
 
-						if PROFILEMAN:IsPersistentProfile(pn) then
-							profile = PROFILEMAN:GetProfile(pn);
-						else
-							profile = PROFILEMAN:GetMachineProfile();
-						end;
-		
-						scorelist = profile:GetHighScoreList(course,trail);
-		
-						scores = scorelist:GetHighScores()
-						local topscore=0
+                                if scores[1] then
+                                    for _, topscore in ipairs(scores) do
+                                        assert(topscore)
+                                        local misses = topscore:GetTapNoteScore("TapNoteScore_Miss") +
+                                            topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss") +
+                                            topscore:GetHoldNoteScore("HoldNoteScore_LetGo") +
+                                            topscore:GetTapNoteScore("TapNoteScore_HitMine")
+                                        local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
+                                        local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
+                                        local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
+                                        local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
 
-						if trail:GetDifficulty() ~= diff then return end
-						
-						if scores[1] then
-							topscore = scores[1]:GetScore()
-						end
-
-						local topgrade
-						if scores[1] then
-							topgrade = scores[1]:GetGrade();
-							assert(topgrade)
-							local tier = topgrade
-							if scores[1]:GetScore()>1  then
-								if topgrade == 'Grade_Failed' then
-									self:LoadBackground(THEME:GetPathG("","ScreenSelectMusic/Grade Failed"));
+                                        if misses == 0 and topscore:GetScore() > 0 and (marvelous + perfects) > 0 then
+                                            if (greats + perfects) == 0 then
+                                                self:Load(THEME:GetPathG("", "ScreenSelectMusic/MarvelousFullCombo_ring"))
+                                            elseif greats == 0 then
+                                                self:Load(THEME:GetPathG("", "ScreenSelectMusic/PerfectFullCombo_ring"))
+                                            elseif (misses + goods) == 0 then
+                                                self:Load(THEME:GetPathG("", "ScreenSelectMusic/GreatFullCombo_ring"))
+                                            elseif misses == 0 then
+                                                self:Load(THEME:GetPathG("", "ScreenSelectMusic/GoodFullCombo_ring"))
+                                            end
+                                            self:visible(true):zoom(0.66):spin():effectmagnitude(0, 0, 170)
+                                            break
+                                        else
+                                            self:visible(false)
+                                        end
+									end
 								else
-									self:LoadBackground(THEME:GetPathG("ScreenSelectMusic/Grade",ToEnumShortString(tier)));
-								end;
-								self:visible(true)
-							else
-								self:visible(false)
-							end;
-						end
-					end
-				}
-			}
-		};
-	};
+									self:visible(false)
+                                end
+                            end
+                        end
+                    end
+                },
+                Def.Quad{
+                    Name="Grade",
+                    InitCommand=function(s) s:draworder(5):visible(false):zoom(1.1):x(8):queuecommand("Set") end,
+                    SetCommand=function(self)
+                        local course = GAMESTATE:GetCurrentCourse()
+
+                        if course and diff then
+                            if PROFILEMAN:IsPersistentProfile(pn) then
+                                profile = PROFILEMAN:GetProfile(pn)
+                            else
+                                profile = PROFILEMAN:GetMachineProfile()
+                            end
+
+                            -- Find the trail that matches the current difficulty
+                            local all_trails = course:GetAllTrails()
+                            local trail = nil
+                            for _, t in ipairs(all_trails) do
+                                if t:GetDifficulty() == diff then
+                                    trail = t
+                                    break
+                                end
+                            end
+
+                            if trail then
+                                -- Fetch the high score list for the current course and trail
+                                local scorelist = profile:GetHighScoreList(course, trail)
+                                local scores = scorelist:GetHighScores()
+                                local topscore = 0
+
+                                if scores[1] then
+                                    topscore = scores[1]:GetScore()
+                                end
+
+                                local topgrade
+                                if scores[1] then
+                                    topgrade = scores[1]:GetGrade()
+                                    assert(topgrade)
+                                    local tier = topgrade
+                                    if scores[1]:GetScore() > 1 then
+                                        if topgrade == 'Grade_Failed' then
+                                            self:LoadBackground(THEME:GetPathG("", "ScreenSelectMusic/Grade Failed"))
+                                        else
+                                            self:LoadBackground(THEME:GetPathG("ScreenSelectMusic/Grade", ToEnumShortString(tier)))
+                                        end
+                                        self:visible(true)
+                                    else
+                                        self:visible(false)
+                                    end
+								else
+									self:visible(false)
+                                end
+                            end
+                        end
+                    end
+                }
+            }
+        }
+    }
 end
 
 local TwoPart = Def.ActorFrame{

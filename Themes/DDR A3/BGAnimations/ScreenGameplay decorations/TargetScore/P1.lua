@@ -22,12 +22,12 @@ local t = Def.ActorFrame {};
 -- Determine scoring system
 local data_source = "AScoring"
 
-if IsEXScore() then
+if IsEXScore(player) then
     data_source = "EXScore"
 end
 
 -- Turn off Target Score when not playing a normal song in-game. Courses and Demonstration will turn it off.
-if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTATE:GetPlayMode() == 'PlayMode_Regular' and ReadPrefFromFile("OptionRowTargetScore") == "On" then
+if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTATE:GetPlayMode() == 'PlayMode_Regular' and ReadPrefFromFile("OptionRowTargetScore"..ToEnumShortString(player)) == "On" then
 	-- Current song's chart
 	local steps = GAMESTATE:GetCurrentSteps(player);
 	-- Radar values of the current chart

@@ -39,7 +39,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		OffCommand=function(s) s:sleep(0.2):linear(0.2):addx(pn==PLAYER_1 and -700 or 700)  end,
 	};
 	local IsScore = "NORMAL.png"
-	if IsEXScore() then
+	if IsEXScore(pn) then
 		IsScore = "EX.png"
 	end
 	t[#t+1] = Def.ActorFrame{
@@ -59,7 +59,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
             OffCommand=function(s) s:sleep(0.067):zoom(0) end,
             SetCommand=function(s)
             local score
-				if IsEXScore() then
+				if IsEXScore(pn) then
 					local function MaxEXScore(radar)
 						return 3*(radar:GetValue'RadarCategory_TapsAndHolds'
 						+radar:GetValue'RadarCategory_Holds'
@@ -203,7 +203,7 @@ t[#t+1] = Def.ActorFrame{
 				s:setsize(144,144)
 			elseif GAMESTATE:IsCourseMode() then
 				s:Load(GAMESTATE:GetCurrentCourse():GetBannerPath())
-				s:scaletoclipped(300,60)
+				s:scaletoclipped(266,50)
 				s:addy(20)
 			end;
 

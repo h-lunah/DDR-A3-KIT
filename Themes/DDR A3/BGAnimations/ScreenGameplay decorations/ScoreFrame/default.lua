@@ -133,7 +133,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathG("","_shared/EX"),
-			InitCommand=function(s) s:xy(-83,yval+1):visible(IsEXScore()) end,
+			InitCommand=function(s) s:xy(-83,yval+1):visible(IsEXScore(pn)) end,
 		};
 		
     };

@@ -3,9 +3,35 @@ local cleared = Def.ActorFrame{};
 local cursor = Def.ActorFrame{};
 local diff = Def.ActorFrame{};
 
+cleared[#cleared+1] = Def.ActorFrame{
+	Name="Clear Bases",
+	Def.Sprite{
+		Texture=THEME:GetPathG("MusicWheelItem Song","NormalPart/cleared"),
+		InitCommand=function(s) s:xy(-320,-18):zoomy(1.2) end,
+	};
+};
+
+cleared[#cleared+1] = Def.ActorFrame{
+	Name="Clear Bases",
+	Def.Sprite{
+		Texture=THEME:GetPathG("MusicWheelItem Song","NormalPart/cleared"),
+		InitCommand=function(s) s:xy(320,-18):zoomy(1.2) end,
+	};
+};
+
 for i,pn in pairs(GAMESTATE:GetEnabledPlayers()) do 
 	diff[#diff+1] = loadfile(THEME:GetPathG("MusicWheelItem","Course NormalPart/diff.lua"))(pn)..{
-		InitCommand=function(s) s:xy(pn == PLAYER_1 and -340 or 74,-80) end,
+		InitCommand=function(s) s:xy(pn == PLAYER_1 and -335 or 335,-90) end,
+	};
+
+	cleared[#cleared+1] = loadfile(THEME:GetPathG("MusicWheelItem","Course NormalPart/grade.lua"))(pn)..{
+		InitCommand=function(s) s:xy(pn == PLAYER_1 and -37 or 44,-17):zoomtoheight(1.35) end,
+		OnCommand=function(s)
+			if #GAMESTATE:GetEnabledPlayers() == 1 then
+				s:zoomtowidth(1.145)
+				s:addx(39)
+			end
+		end
 	};
 end
 

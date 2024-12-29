@@ -38,7 +38,6 @@ return Def.CourseContentsList {
 	CurrentTrailP2ChangedMessageCommand=function(s) s:playcommand("Set") end,
 
 	Display = Def.ActorFrame {
-		InitCommand=function(s) s:setsize(1,33) end,
 		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
 		Def.ActorFrame{
 			InitCommand=function(s) s:xy(-210,-36) end,

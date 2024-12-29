@@ -119,17 +119,25 @@ function ShockArrows()
 	end
 end
 
-function GuideLines()
-	if getenv("OptionRowGuideLines") == 'false' then
+function GuideLinesP1()
+	if getenv("OptionRowGuideLines"..ToEnumShortString(PLAYER_1)) == 'false' then
 		return false
 	else
 		return true
 	end
 end
 
-function ShowFastSlow()
-	if ReadPrefFromFile("OptionRowFastSlow") ~= nil then
-		if GetUserPref("OptionRowFastSlow") == 'Off' then
+function GuideLinesP2()
+	if getenv("OptionRowGuideLines"..ToEnumShortString(PLAYER_2)) == 'false' then
+		return false
+	else
+		return true
+	end
+end
+
+function ShowFastSlow(pn)
+	if ReadPrefFromFile("OptionRowFastSlow"..ToEnumShortString(pn)) ~= nil then
+		if GetUserPref("OptionRowFastSlow"..ToEnumShortString(pn)) == 'Off' then
 			return false
 		else
 			return true
@@ -151,8 +159,8 @@ function SpeedDisplay()
 	end
 end
 
-function IsEXScore()
-	if GetUserPref("OptionRowEXScore") == 'On' then
+function IsEXScore(pn)
+	if GetUserPref("OptionRowEXScore"..ToEnumShortString(pn)) == 'On' then
 		if GAMESTATE:IsDemonstration() then
 			return false
 		else
@@ -295,53 +303,93 @@ function GetCurrentModel()
 	end
 end
 
-function League()
-	if ReadPrefFromFile("OptionRowGoldenLeague") ~= nil then
-		if GetUserPref("OptionRowGoldenLeague")=='Bronze' then
+function League(pn)
+	pName = ToEnumShortString(pn)
+	if ReadPrefFromFile("OptionRowGoldenLeague"..pName) ~= nil then
+		if GetUserPref("OptionRowGoldenLeague"..pName)=='Bronze' then
 			return "brn_" 
-		elseif GetUserPref("OptionRowGoldenLeague")=='Silver' then
+		elseif GetUserPref("OptionRowGoldenLeague"..pName)=='Silver' then
 			return "slv_"
-		elseif GetUserPref("OptionRowGoldenLeague")=='Gold' then
+		elseif GetUserPref("OptionRowGoldenLeague"..pName)=='Gold' then
 			return "gld_"
 		end
 	end
 end
 
-function GoldenLeague()
-	if League() == "brn_" then
-		return "Bronze"
-	elseif League() == "slv_" then
-		return "Silver"
-	elseif League() == "gld_" then
-		return "Gold"
+function GoldenLeague(pn)
+    if not pn then
+        -- Define the leagues and their values
+        local leagues = {
+            ["brn_"] = 1,
+            ["slv_"] = 2,
+            ["gld_"] = 3
+        }
+
+        -- Initialize variables to track the highest value and its corresponding player
+        local maxPlayer = PLAYER_1
+        local maxLeague = nil
+        local maxValue = -math.huge  -- Start with the smallest possible number
+
+        -- Iterate through all enabled players
+        for _, player in ipairs(GAMESTATE:GetEnabledPlayers()) do
+            -- Get the league for the current player
+            local league = League(player)
+            
+            -- Get the league value from the leagues table
+            local leagueValue = leagues[league]
+
+            -- Check if this league value is the highest so far
+            if leagueValue and leagueValue > maxValue then
+                maxValue = leagueValue
+                maxLeague = league
+                maxPlayer = player
+            end
+        end
+
+        -- If a player with the highest league is found, use that player
+        if maxPlayer then
+            pn = maxPlayer
+        else
+            return ""
+        end
+    end
+
+    -- Return the league name based on the player's league
+    if League(pn) == "brn_" then
+        return "Bronze"
+    elseif League(pn) == "slv_" then
+        return "Silver"
+    elseif League(pn) == "gld_" then
+        return "Gold"
 	end
 end
 
-function DanCourse()
-	if ReadPrefFromFile("OptionRowDanCourse") ~= nil then
-		if GetUserPref("OptionRowDanCourse")=='None' then
+function DanCourse(pn)
+	pName = ToEnumShortString(pn)
+	if ReadPrefFromFile("OptionRowDanCourse"..pName) ~= nil then
+		if GetUserPref("OptionRowDanCourse"..pName)=='None' then
 			return "None" 
-		elseif GetUserPref("OptionRowDanCourse")=='1st' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='1st' then
 			return "Dan 01"
-		elseif GetUserPref("OptionRowDanCourse")=='2nd' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='2nd' then
 			return "Dan 02"
-		elseif GetUserPref("OptionRowDanCourse")=='3rd' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='3rd' then
 			return "Dan 03"
-		elseif GetUserPref("OptionRowDanCourse")=='4th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='4th' then
 			return "Dan 04"
-		elseif GetUserPref("OptionRowDanCourse")=='5th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='5th' then
 			return "Dan 05"
-		elseif GetUserPref("OptionRowDanCourse")=='6th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='6th' then
 			return "Dan 06"
-		elseif GetUserPref("OptionRowDanCourse")=='7th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='7th' then
 			return "Dan 07"
-		elseif GetUserPref("OptionRowDanCourse")=='8th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='8th' then
 			return "Dan 08"
-		elseif GetUserPref("OptionRowDanCourse")=='9th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='9th' then
 			return "Dan 09"
-		elseif GetUserPref("OptionRowDanCourse")=='10th' then
+		elseif GetUserPref("OptionRowDanCourse"..pName)=='10th' then
 			return "Dan 10"
-		elseif GetUserPref("OptionRowDanCourse")=='Kaiden' then
+		elseif GetUserPref("OptionRowDanCourse")..pName=='Kaiden' then
 			return "Kaiden"
 		else
 			return "None"

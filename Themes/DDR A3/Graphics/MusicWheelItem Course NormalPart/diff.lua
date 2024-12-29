@@ -204,21 +204,5 @@ return Def.ActorFrame{
 			CurrentTrailP2ChangedMessageCommand=function(self) setDiff(self) end;
 			CurrentCourseChangedMessageCommand=function(self) setDiff(self) end;
 		};
-		Def.ActorFrame{
-			Name="Clear Bases",
-			Def.Sprite{
-				Texture=THEME:GetPathG("MusicWheelItem Song","NormalPart/cleared"),
-				InitCommand=function(s) s:xy(55,155):zoomto(20, 300) end,
-			};
-			Def.Sprite{
-				Texture=THEME:GetPathG("MusicWheelItem Song","NormalPart/cleared"),
-				InitCommand=function(s) s:xy((SCREEN_RIGHT*2)-65,155):zoomto(20, 300) end,
-			};
-		};
-
-		loadfile(THEME:GetPathG("MusicWheelItem","Course NormalPart/grade.lua"))(pn)..{
-			InitCommand=function(s) s:xy(857,158):zoomy(3.5):zoomx(2.845) end,
-		};
-
 	};
 };

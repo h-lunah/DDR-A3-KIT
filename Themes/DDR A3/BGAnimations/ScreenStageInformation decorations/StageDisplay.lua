@@ -10,6 +10,8 @@ local tRemap = {
 
 if tRemap[sStage] == PREFSMAN:GetPreference("SongsPerPlay") then
 	sStage = "Stage_Final";
+elseif GAMESTATE:IsEventMode() then
+	sStage = "Stage_1st";
 else
 	sStage = sStage;
 end;

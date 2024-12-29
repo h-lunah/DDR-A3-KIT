@@ -3,6 +3,7 @@ This script was taken from KENp's DDR X2 theme
 and was recoded by FlameyBoy and Inorizushi
 ]]--
 
+local pn = {PLAYER_1, PLAYER_2}
 local regionFont = "region 20px"
 
 if Language() == "jp_" then
@@ -76,44 +77,44 @@ local function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 				InitCommand=function(s) s:y(60) end,
 				Def.Sprite{ Texture=THEME:GetPathG("","ScreenSelectProfile/"..Language().."dan"),
 					InitCommand=function(s) s:x(-56):animate(0) 
-							if DanCourse() == "None"   then s:setstate(0)
-						elseif DanCourse() == "Dan 01" then s:setstate(1)
-						elseif DanCourse() == "Dan 02" then s:setstate(2)
-						elseif DanCourse() == "Dan 03" then s:setstate(3)
-						elseif DanCourse() == "Dan 04" then s:setstate(4)
-						elseif DanCourse() == "Dan 05" then s:setstate(5)
-						elseif DanCourse() == "Dan 06" then s:setstate(6)
-						elseif DanCourse() == "Dan 07" then s:setstate(7)
-						elseif DanCourse() == "Dan 08" then s:setstate(8)
-						elseif DanCourse() == "Dan 09" then s:setstate(9)
-						elseif DanCourse() == "Dan 10" then s:setstate(10)
-						elseif DanCourse() == "Kaiden" then s:setstate(11)
+							if DanCourse(Player) == "None"   then s:setstate(0)
+						elseif DanCourse(Player) == "Dan 01" then s:setstate(1)
+						elseif DanCourse(Player) == "Dan 02" then s:setstate(2)
+						elseif DanCourse(Player) == "Dan 03" then s:setstate(3)
+						elseif DanCourse(Player) == "Dan 04" then s:setstate(4)
+						elseif DanCourse(Player) == "Dan 05" then s:setstate(5)
+						elseif DanCourse(Player) == "Dan 06" then s:setstate(6)
+						elseif DanCourse(Player) == "Dan 07" then s:setstate(7)
+						elseif DanCourse(Player) == "Dan 08" then s:setstate(8)
+						elseif DanCourse(Player) == "Dan 09" then s:setstate(9)
+						elseif DanCourse(Player) == "Dan 10" then s:setstate(10)
+						elseif DanCourse(Player) == "Kaiden" then s:setstate(11)
 						end
 					end,
 				};
 				Def.Sprite{ Texture=THEME:GetPathG("","ScreenSelectProfile/"..Language().."dan"),
 					InitCommand=function(s) s:x(136):animate(0) 
-							if DanCourse() == "None"   then s:setstate(0)
-						elseif DanCourse() == "Dan 01" then s:setstate(1)
-						elseif DanCourse() == "Dan 02" then s:setstate(2)
-						elseif DanCourse() == "Dan 03" then s:setstate(3)
-						elseif DanCourse() == "Dan 04" then s:setstate(4)
-						elseif DanCourse() == "Dan 05" then s:setstate(5)
-						elseif DanCourse() == "Dan 06" then s:setstate(6)
-						elseif DanCourse() == "Dan 07" then s:setstate(7)
-						elseif DanCourse() == "Dan 08" then s:setstate(8)
-						elseif DanCourse() == "Dan 09" then s:setstate(9)
-						elseif DanCourse() == "Dan 10" then s:setstate(10)
-						elseif DanCourse() == "Kaiden" then s:setstate(11)
+							if DanCourse(Player) == "None"   then s:setstate(0)
+						elseif DanCourse(Player) == "Dan 01" then s:setstate(1)
+						elseif DanCourse(Player) == "Dan 02" then s:setstate(2)
+						elseif DanCourse(Player) == "Dan 03" then s:setstate(3)
+						elseif DanCourse(Player) == "Dan 04" then s:setstate(4)
+						elseif DanCourse(Player) == "Dan 05" then s:setstate(5)
+						elseif DanCourse(Player) == "Dan 06" then s:setstate(6)
+						elseif DanCourse(Player) == "Dan 07" then s:setstate(7)
+						elseif DanCourse(Player) == "Dan 08" then s:setstate(8)
+						elseif DanCourse(Player) == "Dan 09" then s:setstate(9)
+						elseif DanCourse(Player) == "Dan 10" then s:setstate(10)
+						elseif DanCourse(Player) == "Kaiden" then s:setstate(11)
 						end
 					end,
 				};
 			};
 			Def.Sprite{ Texture=THEME:GetPathG("","ScreenSelectProfile/league"),
 				InitCommand=function(s) s:xy(90,154):animate(0)
-						if GoldenLeague() == "Bronze"   then s:setstate(1)
-					elseif GoldenLeague() == "Silver" 	then s:setstate(2)
-					elseif GoldenLeague() == "Gold" 	then s:setstate(3)
+						if GoldenLeague(Player) == "Bronze"   then s:setstate(1)
+					elseif GoldenLeague(Player) == "Silver" 	then s:setstate(2)
+					elseif GoldenLeague(Player) == "Gold" 	then s:setstate(3)
 					else								     s:setstate(0)
 					end
 				end
@@ -140,7 +141,7 @@ local function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 						index = 2
 					end
 		
-					self:settext(regions[Region()][index])
+					self:settext(regions[GetUserPref("OptionRowRegion"..ToEnumShortString(Player))][index])
 				end;
 			};
 		};

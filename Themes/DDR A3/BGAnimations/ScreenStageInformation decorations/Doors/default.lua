@@ -1,3 +1,4 @@
+
 local loader
 if IsGoldenLeague() then
 	loader = "GoldenLeague"

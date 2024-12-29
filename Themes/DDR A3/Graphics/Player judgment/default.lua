@@ -25,7 +25,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadActor("FastSlow")..{
 		InitCommand=function(s) s:diffusealpha(0):animate(false):xy(80,IsReverse(player) and -70 or 60) end,
 		JudgmentMessageCommand=function(self, params)
-			if not ShowFastSlow() then return end;
+			if not ShowFastSlow(params.Player) then return end;
 			if params.Player ~= player then return end;
 			if 		params.TapNoteScore == 'TapNoteScore_W1' 
 				or	params.TapNoteScore == 'TapNoteScore_Miss'
