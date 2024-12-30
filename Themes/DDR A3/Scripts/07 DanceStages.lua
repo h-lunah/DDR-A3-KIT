@@ -76,7 +76,10 @@ function getenv(name) return GAMESTATE:Env()[name] end
 
 function HasVideo()
 	songIndex = #STATSMAN:GetCurStageStats():GetPlayedSongs() > 0 and #STATSMAN:GetCurStageStats():GetPlayedSongs() or 1
-	song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong()
+	song = GAMESTATE:GetCurrentSong() or ( GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong() ) or nil
+
+	if not song then return false end
+	
 	VideoFileType = {"mp4","avi","mov","m2ts","m2v","wmv","mpg","mpeg"}
 	Z=0
 	for i=1,#VideoFileType do
@@ -93,7 +96,10 @@ end
 
 function PotentialModSong()
 	songIndex = #STATSMAN:GetCurStageStats():GetPlayedSongs() > 0 and #STATSMAN:GetCurStageStats():GetPlayedSongs() or 1
-	song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong()
+	song = GAMESTATE:GetCurrentSong() or ( GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong() ) or nil
+
+	if not song then return false end
+
 	local folder = FILEMAN:GetDirListing(song:GetSongDir(),false,false)
 	local bgchanges = song:GetBGChanges()
 	local attacks = song:HasAttacks()
@@ -679,7 +685,9 @@ end
 function AssignedDanceStage()
 	local DanceStage;
 	songIndex = #STATSMAN:GetCurStageStats():GetPlayedSongs() > 0 and #STATSMAN:GetCurStageStats():GetPlayedSongs() or 1
-	song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong()
+	song = GAMESTATE:GetCurrentSong() or ( GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():GetCourseEntries()[songIndex]:GetSong() ) or nil
+
+	if not song then return end
 	
 	if DDR_Assigned_Stage then
 		local look_for_assigned_stage = DDR_Assigned_Stage[song:GetGroupName()]

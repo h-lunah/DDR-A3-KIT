@@ -6,16 +6,22 @@ local t = Def.ActorFrame{
 	SPos = GAMESTATE:GetSongPosition();
 
 	OnCommand=function(self)
-
 		self:Center():fov(gFOV());
 		Camera = self
 		if not (HasVideo() and _VERSION ~= "Lua 5.3") then Camera:SetUpdateFunction(SlowMotion) end
 	end;
 };
 
+local DanceStage
+
+if HasVideo() then
+	DanceStage = "(2014) BOOM BLUE"
+elseif not HasVideo() then
+	DanceStage = DanceStageLoader()
+end
+
 ------- DANCESTAGE LOADER -------
 local StagesFolder = "/DanceStages/"
-local DanceStage = DanceStageLoader()
 	
 ------- DANCESTAGE LOADER 1 -------
 

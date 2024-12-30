@@ -254,7 +254,7 @@ function Language()
 		return "en_"
 	elseif GetUserPref("OptionRowLanguage")=='kor' then
 		return "kor_"
-	else
+	elseif GetUserPref("OptionRowLanguage")=='default' then
 		return "jp_"
 	end
 end

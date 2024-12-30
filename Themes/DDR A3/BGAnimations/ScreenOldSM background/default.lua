@@ -41,9 +41,9 @@ return Def.ActorFrame {
 	Def.BitmapText{
 		Font="_service",
 		InitCommand=function(s)
-			s:xy(SCREEN_CENTER_X-90, SCREEN_CENTER_Y-40)
+			s:xy(SCREEN_CENTER_X-90, SCREEN_CENTER_Y-20)
 			s:zoom(0.5)
-			s:settext("Please obtain a new version of StepMania 5.\nhttps://github.com/h-lunah/stepmania-ddr")
+			s:settext("Please obtain a new version of StepMania 5.\nhttps://github.com/h-lunah/stepmania-ddr\nDetected: "..ProductID().." ("..tonumber(VersionDate())..")".."\nExpected: OpenDDR 5.1 (>=20241009)")
 			s:horizalign(left)
 		end,
 	};
@@ -51,15 +51,17 @@ return Def.ActorFrame {
 	Def.BitmapText{
 		Font="_service",
 		InitCommand=function(s)
-			local credits = math.floor(GAMESTATE:GetCoins() / GAMESTATE:GetCoinsNeededToJoin())
-			local coins = GAMESTATE:GetCoins() % GAMESTATE:GetCoinsNeededToJoin()
+			local neededCoins = GAMESTATE:GetCoinsNeededToJoin() > 0 and GAMESTATE:GetCoinsNeededToJoin() or 1
+			local credits = math.floor(GAMESTATE:GetCoins() / neededCoins)
+			local coins = GAMESTATE:GetCoins() % neededCoins
 			s:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y+140)
 			s:zoom(0.5)
 			s:settext("CREDIT(S) ="..credits..", COIN(S) ="..coins)
 		end,
 		CoinInsertedMessageCommand=function(s)
-			local credits = math.floor(GAMESTATE:GetCoins() / GAMESTATE:GetCoinsNeededToJoin())
-			local coins = GAMESTATE:GetCoins() % GAMESTATE:GetCoinsNeededToJoin()
+			local neededCoins = GAMESTATE:GetCoinsNeededToJoin() > 0 and GAMESTATE:GetCoinsNeededToJoin() or 1
+			local credits = math.floor(GAMESTATE:GetCoins() / neededCoins)
+			local coins = GAMESTATE:GetCoins() % neededCoins
 			s:settext("CREDIT(S) ="..credits..", COIN(S) ="..coins)
 		end,
 	};

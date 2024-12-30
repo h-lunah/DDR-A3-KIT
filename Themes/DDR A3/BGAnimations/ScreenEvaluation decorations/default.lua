@@ -202,7 +202,7 @@ t[#t+1] = Def.ActorFrame{
 				s:Load(GetJacketPath(song))
 				s:setsize(144,144)
 			elseif GAMESTATE:IsCourseMode() then
-				s:Load(GAMESTATE:GetCurrentCourse():GetBannerPath())
+				s:Load(GAMESTATE:GetCurrentCourse():GetBannerPath() or THEME:GetPathG("","Common fallback banner"))
 				s:scaletoclipped(266,50)
 				s:addy(20)
 			end;
