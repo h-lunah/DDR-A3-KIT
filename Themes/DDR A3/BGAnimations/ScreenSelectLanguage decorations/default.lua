@@ -3,7 +3,17 @@ local t = Def.ActorFrame{
 };
 local xspacing = 40
 local curIndex = 2;
-local LangItems = { "jp", "en", "kor" };
+
+local LangItems = nil
+
+if Language() == "jp_" then
+    LangItems = {"en", "jp", "kor"}
+elseif Language() == "en_" then
+    LangItems = {"jp", "en", "kor"}
+else
+    LangItems = {"jp", "kor", "en"}
+end
+
 
 local function MakeRowItem(LangItems, idx)
     return Def.ActorFrame{
@@ -118,13 +128,7 @@ t[#t+1] = Def.ActorFrame{
         Def.Sprite{
             BeginCommand=function(s) s:playcommand("MoveScroller") end,
             MoveScrollerMessageCommand=function(s)
-                if curIndex == 1 then
-                    s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/lang_jp"))
-                elseif curIndex == 2 then
-                    s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/lang_en"))
-                else
-                    s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/lang_kor"))
-                end
+                s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/lang_"..LangItems[curIndex]))
             end
         };
     };
@@ -139,13 +143,7 @@ t[#t+1] = Def.ActorFrame{
         Def.Sprite{
             BeginCommand=function(s) s:playcommand("MoveScroller") end,
             MoveScrollerMessageCommand=function(s)
-                if curIndex == 1 then
-                    s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/"..Model().."japanese"))
-                elseif curIndex == 2 then
-                    s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/"..Model().."english"))
-                else
-                    s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/"..Model().."korean"))
-                end
+                s:Load(THEME:GetPathB("ScreenSelectLanguage","decorations/"..Model()..LangItems[curIndex]))
             end
         };
     };

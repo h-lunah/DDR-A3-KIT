@@ -2,7 +2,7 @@ local loader
 if IsGoldenLeague() then
 	loader = "_doors GoldenLeague close"
 else
-	loader = "_doors close"
+	loader = "_doors close sound"
 end
 
 return Def.ActorFrame{ LoadActor(loader); }

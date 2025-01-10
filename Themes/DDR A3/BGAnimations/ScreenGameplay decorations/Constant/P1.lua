@@ -46,8 +46,6 @@ local function UpdateConstantMod()
 
     -- Avoid redundant replacements
     if not string.find(currentOptions, "Sudden," .. constantOffset .. "%% SuddenOffset") then
-        currentOptions = currentOptions:gsub(",Sudden,-?%d+%% SuddenOffset", "")
-
         -- Resolve Flare conflict dynamically
         local OptionsP1P = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString('ModsLevel_Preferred')
         local flareModifiers = {
@@ -71,6 +69,9 @@ local function UpdateConstantMod()
                 break
             end
         end
+
+        currentOptions = currentOptions:gsub("Stealth,", "")
+        currentOptions = currentOptions:gsub("Hidden,", "")
 
         -- Apply updated options
         playerState:SetPlayerOptions("ModsLevel_Song", currentOptions .. ",Sudden," .. constantOffset .. "% SuddenOffset" .. flareModifier)

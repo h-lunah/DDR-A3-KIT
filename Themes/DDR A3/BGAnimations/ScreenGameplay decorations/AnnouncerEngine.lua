@@ -181,6 +181,7 @@ t[#t+1] = Def.ActorFrame{
     JudgmentMessageCommand=function(self, params)
         local pn = params.Player
         if params.TapNoteScore == "TapNoteScore_Miss" or params.TapNoteScore == "TapNoteScore_HitMine" or params.HoldNoteScore == "HoldNoteScore_LetGo" then
+            if params.HoldNoteScore == "HoldNoteScore_MissedHold" then return end
             playerJudgedMines[pn] = 0
             playerCombos[pn] = 0
             playerMissCombos[pn] = playerMissCombos[pn] + 1
@@ -227,7 +228,7 @@ t[#t+1] = Def.ActorFrame{
 
         if playerCombos[pn] > 0 or playerMissCombos[pn] > 0 then
             if playerCombos[pn] == 0 and playerMissCombos[pn] > 0 then
-                playerCombos[pn] = playerCombos[pn] - playerMissCombos[pn]
+                playerCombos[pn] = playerCombos[pn]
             end
 
             -- Play timed announcer lines to make sure the announcer isn't completely quiet during very easy songs
@@ -330,7 +331,7 @@ t[#t+1] = Def.ActorFrame{
 
             -- Handle combo break and ensure fixed 50 combo milestone still goes off
             if playerCombos[pn] == 0 and not soundPlaying then
-                if maxCombo > 0 and maxCombo < 50 then
+                if playerCombos[pn] > 0 and playerCombos[pn] < 50 then
                     if everyoneIsInDanger() then
                         SOUND:PlayAnnouncer("combo 50 danger ac")
                     else

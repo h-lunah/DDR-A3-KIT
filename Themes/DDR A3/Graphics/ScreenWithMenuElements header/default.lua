@@ -4,7 +4,7 @@ local screenName = Var "LoadingScreen"
 local disp_stage
 
 if PREFSMAN:GetPreference("EventMode") then
-	disp_stage = "EVENT";
+	disp_stage = "FIRST";
 	--Final
 elseif GAMESTATE:GetCurrentStageIndex() == PREFSMAN:GetPreference("SongsPerPlay") then
 	disp_stage = "FINAL";

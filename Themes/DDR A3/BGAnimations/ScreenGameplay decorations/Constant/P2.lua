@@ -72,6 +72,9 @@ local function UpdateConstantMod()
             end
         end
 
+        currentOptions = currentOptions:gsub("Stealth,", "")
+        currentOptions = currentOptions:gsub("Hidden,", "")
+
         -- Apply updated options
         playerState:SetPlayerOptions("ModsLevel_Song", currentOptions .. ",Sudden," .. constantOffset .. "% SuddenOffset" .. flareModifier)
     end

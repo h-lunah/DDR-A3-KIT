@@ -6,8 +6,8 @@ local Awards = {}
 local isSoundPlaying = false  -- Flag to track if a sound is currently playing
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-    Awards[pn] = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetCurrentLife() > 0 and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetStageAward() or nil
-    Grades[pn] = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetCurrentLife() > 0 and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetGrade() or "Grade_Failed"
+    Awards[pn] = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetStageAward()
+    Grades[pn] = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetGrade() 
 end
 
 function PlaySound(sound)

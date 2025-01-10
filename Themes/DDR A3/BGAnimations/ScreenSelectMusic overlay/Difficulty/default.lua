@@ -259,10 +259,10 @@ return Def.ActorFrame{
 		InitCommand=function(s) s:x(pn==PLAYER_1 and 0 or -14) end,
       OnCommand=function(s) s:diffusealpha(0):sleep(0.4):linear(0.05):diffusealpha(0.75):linear(0.1):diffusealpha(0.25):linear(0.1):diffusealpha(1) end,
     };
-	LoadActor(Model().."line")..{
+	Def.Quad{
 		InitCommand=function(s) s:x(pn==PLAYER_1 and 0 or -9)
 			s:setsize(246,25):diffusealpha(0)
-			s:diffuseramp():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(0.8):visible(false) 
+			s:diffuseramp():effectcolor1(color("0,1,1,0.2")):effectcolor2(color("0,1,1,1")):effectperiod(0.6):visible(false) 
 		end,
 		OnCommand=function(s) 
       s:diffusealpha(0):sleep(0.8):diffusealpha(1) end,

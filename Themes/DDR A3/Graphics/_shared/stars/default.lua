@@ -46,7 +46,7 @@ if currentScreen == "ScreenEvaluationNormal" and StarsActuallyAdded > 0 then
                 end,
 
                 ExtraStageCommand=function(s)
-                    if GetExtraStageStars() == 9 and STATSMAN:GetCurStageStats():GetStage() == "Stage_Final" then
+                    if GetExtraStageStars() == 9 and STATSMAN:GetCurStageStats():GetStage() == "Stage_Final" and STATSMAN:GetCurStageStats():GetPlayerStageStats(GAMESTATE:GetMasterPlayerNumber()):GetGrade() > HasEarnedArcadeExtraStage() then
                         s:rainbow()
                     end
                 end,

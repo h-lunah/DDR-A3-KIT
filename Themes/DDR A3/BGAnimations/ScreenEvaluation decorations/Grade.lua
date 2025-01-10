@@ -2,7 +2,7 @@ local t = Def.ActorFrame{};
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	local Award = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetStageAward()
-	local Grade = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetCurrentLife() > 0 and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetGrade() or "Grade_Failed"
+	local Grade = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetGrade()
 
 	t[#t+1] = LoadActor("AnnouncerEngineEvaluation.lua")
 

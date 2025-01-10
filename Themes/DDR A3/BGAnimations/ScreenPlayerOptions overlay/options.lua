@@ -20,7 +20,7 @@ local screen = SCREENMAN:GetTopScreen();
 
 local rownames;
 if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
-	rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore",  }
+	rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore"  }
 else
 	if GetUserPref("OptionRowGameplayBackground")=='DanceStages' then
 		if GetUserPref("NTOption")=='On' then

@@ -90,6 +90,12 @@ if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTAT
 				if GAMESTATE:GetCurrentStyle():GetName() == "double" then
 					self:x(SCREEN_CENTER_X+55)
 				end
+
+				local options = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Preferred")
+
+				if options:find("Reverse") then
+					self:addy(145)
+				end
 			end;
 			-- Determine if we failed the song and hide the Target Score
 			LifeChangedMessageCommand=function(self,params)

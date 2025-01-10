@@ -7,6 +7,16 @@ t[#t+1] = Def.Quad {
     end;
 }
 
+t[#t+1] = Def.Actor {
+    OnCommand=function(s)
+        s:sleep(8)
+         :queuecommand("StartAttract")
+    end;
+    StartAttractCommand=function(s)
+        SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+    end;
+}
+
 t[#t+1] = Def.BitmapText {
     Font="_service";
     InitCommand=function(s)

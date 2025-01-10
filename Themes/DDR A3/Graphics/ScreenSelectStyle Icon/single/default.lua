@@ -20,9 +20,6 @@ return Def.ActorFrame{
 			LoseFocusCommand=function(s) s:queuecommand("Off") end,
 			OffCommand=function(s) s:stoptweening():smooth(0.07):diffusealpha(0) end,
 			LoadActor(THEME:GetPathG("ScreenSelectStyle","Icon/Single/"..Language().."text"));
-			LoadActor(THEME:GetPathG("ScreenSelectStyle","Icon/Single/"..Model().."pad"))..{
-				InitCommand=function(s) s:xy(166,34) end,
-			};
 		};
 		Def.ActorFrame{
 			InitCommand=function(s) s:diffusealpha(0) end,
