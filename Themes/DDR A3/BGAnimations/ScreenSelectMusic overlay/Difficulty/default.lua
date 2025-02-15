@@ -20,18 +20,24 @@ for i, difficulty in ipairs(difficulties) do
       -- Single loop to find the current difficulty index
       for i, diff in ipairs(total_diffs) do
           if diff:GetDifficulty() == current_diff then
-              current_diff_index = i
-              break
+            current_diff_index = i
+            for j, difficulty_name in ipairs(difficulties) do
+              if difficulty_name == current_diff then
+                current_diff_index = j
+              end
+            end
+            break
           end
       end
 
-      if current_diff_index == nil then 
+
+      if current_diff_index == nil then
         s:diffusealpha(0)
         return
       else
         s:diffusealpha(1)
       end
-
+      
       s:y(((current_diff_index - 1) * 38) - 80)
     end,
     SetCommand=function(self)
@@ -40,7 +46,7 @@ for i, difficulty in ipairs(difficulties) do
       local song=GAMESTATE:GetCurrentSong()
       local steps = GAMESTATE:GetCurrentSteps(pn)
 
-      if not song then self:diffusealpha(0) return else self:diffusealpha(1) end
+      if not song then self:diffusealpha(1) return else self:diffusealpha(1) end
 
       local total_diffs
       if song then
@@ -55,15 +61,31 @@ for i, difficulty in ipairs(difficulties) do
 
       -- Single loop to find the current difficulty index
       for i, diff in ipairs(total_diffs) do
-          if diff:GetDifficulty() == current_diff then
-              current_diff_index = i
-              break
+        if diff:GetDifficulty() == current_diff then
+          current_diff_index = i
+          for j, difficulty_name in ipairs(difficulties) do
+            if difficulty_name == current_diff then
+              current_diff_index = j
+            end
           end
-      end
+          break
+        end
+    end
+
 
       if current_diff_index == nil then
+        if current_diff == "Difficulty_Beginner" then
+          current_diff_index = 1
+        elseif current_diff == "Difficulty_Easy" then
+          current_diff_index = 2
+        elseif current_diff == "Difficulty_Medium" then
+          current_diff_index = 3
+        elseif current_diff == "Difficulty_Hard" then
+          current_diff_index = 4
+        elseif current_diff == "Difficulty_Challenge" then
+          current_diff_index = 5
+        end
         self:diffusealpha(0)
-        return
       else
         self:diffusealpha(1)
       end
@@ -214,7 +236,7 @@ for i, difficulty in ipairs(difficulties) do
 
             local topgrade
             if scores[1] then
-              topgrade = scores[1]:GetGrade();
+              topgrade = GetGrade(nil, scores[1])
               assert(topgrade)
               local tier = topgrade
               if scores[1]:GetScore()>1  then
@@ -278,11 +300,16 @@ return Def.ActorFrame{
     
             -- Single loop to find the current difficulty index
             for i, diff in ipairs(total_diffs) do
-                if diff:GetDifficulty() == current_diff then
-                    current_diff_index = i
-                    break
+              if diff:GetDifficulty() == current_diff then
+                current_diff_index = i
+                for j, difficulty_name in ipairs(difficulties) do
+                  if difficulty_name == current_diff then
+                    current_diff_index = j
+                  end
                 end
-            end
+                break
+              end
+          end
     
             if not current_diff_index then return end
 

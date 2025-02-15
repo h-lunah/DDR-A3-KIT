@@ -74,7 +74,7 @@ t = Def.ActorFrame {
 }
 
 t[#t+1] = Def.BitmapText {
-	Font="Common Normal";
+	Font="_futura lt medium 24px";
 	InitCommand=function(s)
 		s:xy(SCREEN_CENTER_X, SCREEN_BOTTOM-padding)
 		s:strokecolor(color("0,0,0,1"))
@@ -112,7 +112,7 @@ t[#t+1] = Def.BitmapText {
 }
 
 t[#t+1] = Def.BitmapText {
-	Font="Common Normal";
+	Font="_futura lt medium 24px";
 	InitCommand=function(s)
 		s:xy(SCREEN_CENTER_X+80, SCREEN_BOTTOM-padding)
 		s:strokecolor(color("0,0,0,1"))
@@ -144,7 +144,7 @@ t[#t+1] = Def.BitmapText {
 }
 
 t[#t+1] = Def.BitmapText {
-	Font="Common Normal";
+	Font="_futura lt medium 24px";
 
 	InitCommand=function(s)
 		s:xy(SCREEN_CENTER_X-190, SCREEN_BOTTOM-padding)
@@ -172,7 +172,7 @@ t[#t+1] = Def.BitmapText {
 }
 
 t[#t+1] = Def.BitmapText {
-	Font="Common Normal";
+	Font="_futura lt medium 24px";
 
 	InitCommand=function(s)
 		s:xy(SCREEN_LEFT+padding, SCREEN_BOTTOM-padding)
@@ -219,7 +219,7 @@ t[#t+1] = Def.BitmapText {
 }
 
 t[#t+1] = Def.BitmapText {
-	Font="Common Normal";
+	Font="_futura lt medium 24px";
 
 	InitCommand=function(s)
 		s:xy(SCREEN_RIGHT-padding, SCREEN_BOTTOM-padding)

@@ -27,7 +27,7 @@ return {
 		Code = function(pn, song, steps, course, trail)
 			local function rvMaxRawScore(rv)
 				return 5*(rv:GetValue'RadarCategory_TapsAndHolds'
-				+rv:GetValue'RadarCategory_Holds'+rv:GetValue'RadarCategory_Rolls'
+				+rv:GetValue'RadarCategory_Holds'
 				+math.floor(rv:GetValue'RadarCategory_Mines')/4)
     		end
 			local maxRawScore = 0

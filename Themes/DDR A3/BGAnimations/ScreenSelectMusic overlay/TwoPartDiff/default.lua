@@ -7,6 +7,8 @@ local function getXSpacing(pn)
 	return pn == PLAYER_1 and X_SPACING*-1 or X_SPACING
 end;
 
+IsSelecting = true
+
 -- Create a curve instead of laying the objects inline
 local function getCurveX(pn, i, selection, is_focus, k)
     local d = i - selection[pn]

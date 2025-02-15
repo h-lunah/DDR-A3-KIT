@@ -7,7 +7,7 @@ local isSoundPlaying = false  -- Flag to track if a sound is currently playing
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     Awards[pn] = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetStageAward()
-    Grades[pn] = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetGrade() 
+    Grades[pn] = GetGrade(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn), nil)
 end
 
 function PlaySound(sound)
@@ -22,7 +22,7 @@ t = Def.ActorFrame {
         local hasAward = false
         local highestGrade = nil
         local gradeOrder = {
-            "Grade_Tier02", "Grade_Tier03", "Grade_Tier04", "Grade_Tier05", "Grade_Tier06",
+            "Grade_Tier01", "Grade_Tier02", "Grade_Tier03", "Grade_Tier04", "Grade_Tier05", "Grade_Tier06",
             "Grade_Tier07", "Grade_Tier08", "Grade_Tier09", "Grade_Tier10", "Grade_Tier11",
             "Grade_Tier12", "Grade_Tier13", "Grade_Tier14", "Grade_Tier15", "Grade_Tier16", 
             "Grade_Tier17", "Grade_Failed"
@@ -55,6 +55,7 @@ t = Def.ActorFrame {
 
         if not hasAward and highestGrade then
             local gradeSounds = {
+                Grade_Tier01 = "evaluation aaa ac",
                 Grade_Tier02 = "evaluation aaa ac",
                 Grade_Tier03 = "evaluation aa+ ac",
                 Grade_Tier04 = "evaluation aa ac",

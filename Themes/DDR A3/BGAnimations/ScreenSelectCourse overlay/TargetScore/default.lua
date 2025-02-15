@@ -30,6 +30,43 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 				end;
 			end;
 		end,
+		CodeMessageCommand=function(self,params)
+			local player = params.PlayerNumber
+			if player == pn then
+				if params.Name=="ChangeStyle" then
+					style = GAMESTATE:GetCurrentStyle():GetName()
+					course = GAMESTATE:GetCurrentCourse()
+
+					if not course or IsSelecting then
+						SCREENMAN:PlayInvalidSound()
+					return end
+
+					if style == "single" and course:IsPlayableIn("StepsType_Dance_Double") then
+						SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic", "difficulty harder"))
+						GAMESTATE:SetCurrentStyle("double")
+						for _, trail in pairs(course:GetAllTrails()) do
+							if trail:GetStepsType() == "StepsType_Dance_Double" then
+								GAMESTATE:SetCurrentTrail(pn, trail)
+								break
+							end
+						end
+						SOUND:PlayAnnouncer("style double")
+					elseif style == "double" and course:IsPlayableIn("StepsType_Dance_Single") then
+						SOUND:PlayOnce(THEME:GetPathS("ScreenSelectMusic", "difficulty harder"))
+						GAMESTATE:SetCurrentStyle("single")
+						for _, trail in pairs(course:GetAllTrails()) do
+							if trail:GetStepsType() == "StepsType_Dance_Single" then
+								GAMESTATE:SetCurrentTrail(pn, trail)
+								break
+							end
+						end
+						SOUND:PlayAnnouncer("style single")
+					else
+						SCREENMAN:PlayInvalidSound()
+					end
+				end;
+			end
+		end,
 	};
 end
 

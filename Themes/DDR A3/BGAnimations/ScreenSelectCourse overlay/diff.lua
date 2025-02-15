@@ -25,7 +25,15 @@ local difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medi
 for _, diff in ipairs(difficulties) do
     DiffList[#DiffList+1] = Def.ActorFrame{
         InitCommand=function(s)
-            s:xy(pn==PLAYER_1 and -3 or 3, (Difficulty:Reverse()[diff] * yspacing) - 120)
+            entry = Difficulty:Reverse()[diff]
+
+            for j, difficulty_name in ipairs(difficulties) do
+                if difficulty_name == diff then
+                  entry = j
+                end
+            end
+
+            s:xy(pn==PLAYER_1 and -3 or 3, (entry * yspacing) - 120)
         end,
         SetCommand=function(self)
             local st = GAMESTATE:GetCurrentStyle():GetStepsType()
@@ -225,7 +233,7 @@ for _, diff in ipairs(difficulties) do
 
                                 local topgrade
                                 if scores[1] then
-                                    topgrade = scores[1]:GetGrade()
+                                    topgrade = GetGrade(nil, scores[1])
                                     assert(topgrade)
                                     local tier = topgrade
                                     if scores[1]:GetScore() > 1 then
@@ -291,7 +299,15 @@ return Def.ActorFrame{
 			if steps then
 				local diff = steps:GetDifficulty();
 				local st=GAMESTATE:GetCurrentStyle():GetStepsType();
-				s:y((Difficulty:Reverse()[diff] * yspacing)-120)
+				entry = Difficulty:Reverse()[diff]
+
+                for j, difficulty_name in ipairs(difficulties) do
+                    if difficulty_name == diff then
+                    entry = j
+                    end
+                end
+                
+                s:xy(pn==PLAYER_1 and 0 or -8, (entry * yspacing) - 120)
 			else
 				s:visible(false)
 			end;

@@ -21,7 +21,7 @@ t[#t+1] = Def.BitmapText {
     Font="_service";
     InitCommand=function(s)
         s:uppercase(true)
-         :settext("MDX:J:A:A:2024052200")
+         :settext(GetBuild())
          :xy(100, 30)
          :zoom(0.7)
     end;

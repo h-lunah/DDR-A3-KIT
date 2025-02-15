@@ -25,25 +25,25 @@ return Def.ActorFrame{
 	--Thank
 	LoadActor(THEME:GetPathB("ScreenGameOver","underlay/"..Model().."thank"))..{
 		InitCommand=function(s) s:xy(_screen.cx-183,_screen.cy-88) end,
-		OnCommand=function(s) s:addy(70):zoom(0):sleep(0.2):decelerate(0.3):addy(-70):zoom(1):sleep(4):accelerate(0.6):addx(183):addy(70):zoom(0) end,
+		OnCommand=function(s) s:addy(70):zoom(0):sleep(0.2):decelerate(0.4):addy(-70):zoom(1):sleep(3.5):accelerate(0.9):addx(183):addy(70):zoom(0) end,
 	};
 	
 	--You
 	LoadActor(THEME:GetPathB("ScreenGameOver","underlay/"..Model().."you"))..{
 		InitCommand=function(s) s:xy(_screen.cx+315,_screen.cy-88) end,
-		OnCommand=function(s) s:addy(50):zoom(0):sleep(0.27):decelerate(0.3):addy(-50):zoom(1):sleep(4):accelerate(0.6):addx(-315):addy(70):zoom(0) end,
+		OnCommand=function(s) s:addy(50):zoom(0):sleep(0.3):decelerate(0.4):addy(-50):zoom(1):sleep(3.5):accelerate(0.8):addx(-315):addy(70):zoom(0) end,
 	};
 	
 	--For
 	LoadActor(THEME:GetPathB("ScreenGameOver","underlay/"..Model().."for"))..{
 		InitCommand=function(s) s:xy(_screen.cx-348,_screen.cy+90) end,
-		OnCommand=function(s) s:addy(-70):zoom(0):sleep(0.5):decelerate(0.3):addy(70):zoom(1):sleep(4):accelerate(0.6):addx(348):addy(-50):zoom(0) end,
+		OnCommand=function(s) s:addy(-70):zoom(0):sleep(0.5):decelerate(0.4):addy(70):zoom(1):sleep(3.5):accelerate(0.5):addx(348):addy(-50):zoom(0) end,
 	};
 	
 	--Playing
 	LoadActor(THEME:GetPathB("ScreenGameOver","underlay/"..Model().."playing"))..{
 		InitCommand=function(s) s:xy(_screen.cx+206,_screen.cy+90) end,
-		OnCommand=function(s) s:addy(-50):zoom(0):sleep(0.55):decelerate(0.3):addy(50):zoom(1):sleep(4):accelerate(0.6):addx(-190):addy(-50):zoom(0) end,
+		OnCommand=function(s) s:addy(-50):zoom(0):sleep(0.6):decelerate(0.4):addy(50):zoom(1):sleep(3.5):accelerate(0.4):addx(-190):addy(-50):zoom(0) end,
 	};
 	
 	--Sparkles

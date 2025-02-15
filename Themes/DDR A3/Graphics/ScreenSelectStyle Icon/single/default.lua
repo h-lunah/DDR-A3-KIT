@@ -1,10 +1,12 @@
 return Def.ActorFrame{
+	InitCommand=function(s) if GAMESTATE:GetNumSidesJoined() == 2 then s:diffusealpha(0) else s:sleep(0.6):queuecommand("Anim") end end,
 	Def.ActorFrame{
 	InitCommand=function(s) s:xy(_screen.cx+362,_screen.cy+20) end,
 		LoadActor(THEME:GetPathG("","_shared/infomiddle"))..{
 			InitCommand=function(s) s:diffusealpha(0):zoomy(0) end,
 			OnCommand=function(s) s:sleep(0.5):queuecommand("Anim") end,
-			GainFocusCommand=function(s) setenv("SelSing",1) s:stoptweening():sleep(0.1):queuecommand("Anim") end,
+			GainFocusCommand=function(s) 
+				setenv("SelSing",1) s:stoptweening():sleep(0.1):queuecommand("Anim") end,
 			AnimCommand=function(s)
 				s:smooth(0.2):zoomy(1.4):diffusealpha(1)
 				s:smooth(0.1):zoomy(1.1) 

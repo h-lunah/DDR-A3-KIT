@@ -36,18 +36,20 @@ return Def.ActorFrame {
                 if GAMESTATE:IsCourseMode() then
                     if not STATSMAN:GetCurStageStats() then return end
                     local mpStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( GAMESTATE:GetMasterPlayerNumber() )
-                    local songsPlayed = mpStats:GetSongsPassed() + 1
-                    local stage, suffix = CourseStageIndex(songsPlayed, GAMESTATE:GetCurrentCourse():GetEstimatedNumStages())
+                    local songsPlayed = mpStats:GetSongsPlayed()
+                    stage, suffix = CourseStageIndex(songsPlayed, GAMESTATE:GetCurrentCourse():GetEstimatedNumStages())
                     self:settext(stage)
                     self:GetParent():GetChild("Suffix"):settext(suffix)
                 else
                     if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then
                         self:settext("CHECKING")
+                        suffix = ""
                         self:GetParent():GetChild("Suffix"):settext("")
                     elseif GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Lesson by DJ" then
                         self:settext("HOW TO PLAY")
+                        suffix = ""
                         self:GetParent():GetChild("Suffix"):settext("")
-                    elseif GAMESTATE:IsEventMode() or GAMESTATE:IsDemonstration() then
+                    elseif GAMESTATE:IsEventMode() or GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() then
                         self:settext("1")
 						suffix = "st"
                         self:GetParent():GetChild("Suffix"):settext("st")
@@ -81,8 +83,8 @@ return Def.ActorFrame {
 					self:x(_screen.cx):y(SCREEN_TOP+35):zoom(0.45):diffuse(color("1,1,1,1"))
 					self:GetParent():GetChild("Suffix"):visible(false) -- Hide suffix
 				else
-					self:zoom(0.45):maxwidth(135):x(_screen.cx - mainNumberWidth / 2):y(SCREEN_TOP+35):diffuse(color("1,1,1,1"))
-					self:GetParent():GetChild("Suffix"):x(_screen.cx + mainNumberWidth / 2):y(SCREEN_TOP+35):halign(0.25):valign(0.25)
+					self:zoom(0.45):maxwidth(135):x(_screen.cx - mainNumberWidth / 3):y(SCREEN_TOP+35):diffuse(color("1,1,1,1")):addx(-1)
+					self:GetParent():GetChild("Suffix"):x(_screen.cx + mainNumberWidth / 3):y(SCREEN_TOP+35):halign(0.25):valign(0.25)
 				end
             end;
         };

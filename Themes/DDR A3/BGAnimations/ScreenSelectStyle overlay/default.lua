@@ -1,5 +1,19 @@
 local t = Def.ActorFrame {};
 
+local function SelectedStyleBeforeJoin()
+	local envs = {
+		["Single"] = getenv("SelSing"),
+		["Double"] = getenv("SelDoub"),
+		["Versus"] = getenv("SelVers")
+	}
+
+	for k,v in pairs(envs) do
+		if v == 1 then
+			return k
+		end
+	end
+end
+
 for i=1,2 do
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s) s:xy(i==1 and SCREEN_LEFT-1 or SCREEN_RIGHT+1,SCREEN_BOTTOM-53):zoom(0.667):sleep(2):queuecommand("Comment") end,
@@ -31,16 +45,24 @@ for i=1,2 do
 			OnCommand=function(s) s:diffusealpha(0):rotationz(45):sleep(0.3):linear(0.3):rotationz(0):diffusealpha(1) end,
 		};
 		Def.Sprite{
-			InitCommand=function(s) s:xy(i==1 and 260 or -260,2):queuecommand("Set") end,
+			InitCommand=function(s) s:xy(i==1 and 260 or -260,2):queuecommand("Set"):queuecommand("Update") end,
 			OnCommand=function(s) s:diffusealpha(0):sleep(0.3):linear(0.3):diffusealpha(1) end,
 			CoinInsertedMessageCommand=function(s) s:queuecommand("Set") end,
+			UpdateCommand=function(s)
+				s:sleep(0.1):queuecommand("Set"):queuecommand("Init")
+			end,
 			SetCommand=function(s)
 				local GetP1 = GAMESTATE:IsPlayerEnabled(PLAYER_1)
 				local GetP2 = GAMESTATE:IsPlayerEnabled(PLAYER_2)
 				local masterPlayer = GAMESTATE:GetMasterPlayerNumber()
+
 				if i == 1 then
-					if GetP1 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
+					if GetP1 == true and GAMESTATE:GetNumPlayersEnabled() == 1 and SelectedStyleBeforeJoin() ~= "Versus" then
 						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Model()..Language().."1p_start"));
+					elseif SelectedStyleBeforeJoin() == "Versus" and GetP2 == false then
+						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Language().."single_cantplay"));
+					elseif SelectedStyleBeforeJoin() == "Double" and GAMESTATE:GetNumPlayersEnabled() == 2 then
+						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Language().."couple_cantplay"));
 					elseif GetP1 == false and GAMESTATE:PlayersCanJoin() and GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 then
 						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Model()..Language().."1p_join"));
 					elseif GAMESTATE:GetNumPlayersEnabled() == 2 then
@@ -53,6 +75,10 @@ for i=1,2 do
 				elseif i == 2 then
 					if GetP2 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
 						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Model()..Language().."2p_start"));
+					elseif SelectedStyleBeforeJoin() == "Versus" and GetP1 == false then
+						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Language().."single_cantplay"));
+					elseif SelectedStyleBeforeJoin() == "Double" and GAMESTATE:GetNumPlayersEnabled() == 2 then
+						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Language().."couple_cantplay"));
 					elseif GetP2 == false and GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 and GAMESTATE:EnoughCreditsToJoin() then
 						s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/"..Model()..Language().."2p_join"));
 					elseif GAMESTATE:GetNumPlayersEnabled() == 2 then
@@ -148,8 +174,14 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		OnCommand=function(s) 
 			s:zoom(0):rotationz(-720):linear(0.35):rotationz(720):diffusealpha(1):zoom(0.67):playcommand("Animate") 
 		end;
-		AnimateCommand=function(s) 
-			s:zoomy(0.67):linear(0.25):zoomx(0.67):linear(0.25):zoomx(0.72):queuecommand("Animate") 
+		AnimateCommand=function(s)
+			if SelectedStyleBeforeJoin() == "Versus" and GAMESTATE:GetNumPlayersEnabled() == 1 then
+				s:stoptweening():linear(0.25):zoomy(0):diffusealpha(0):queuecommand("On")
+			elseif SelectedStyleBeforeJoin() == "Double" and GAMESTATE:GetNumPlayersEnabled() == 2 then
+				s:stoptweening():linear(0.25):zoomy(0):diffusealpha(0):queuecommand("On")
+			else
+				s:zoomy(0.67):linear(0.25):zoomx(0.67):linear(0.25):zoomx(0.72):queuecommand("Animate")
+			end
 		end,
 		OffCommand=function(s) 
 			s:stoptweening():linear(0.25):zoomy(0):diffusealpha(0) 

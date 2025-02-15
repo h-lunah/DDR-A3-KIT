@@ -6,6 +6,13 @@ local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local NumSides = GAMESTATE:GetNumSidesJoined()
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 local st = GAMESTATE:GetCurrentStyle():GetStepsType()
+local combo = {[PLAYER_1]=0,[PLAYER_2]=0}
+local judgedMines = {[PLAYER_1]=0,[PLAYER_2]=0}
+
+-- Flag to track if the effect has been triggered
+local effectTriggered = {[PLAYER_1]=false,[PLAYER_2]=false}
+local triggeredAt = {[PLAYER_1]=0,[PLAYER_2]=0}
+
 
 local function GetPosition(pn)
 	if st == "StepsType_Dance_Double" or st == "StepsType_Dance_Solo" or Center1Player then return SCREEN_WIDTH/2;
@@ -56,6 +63,12 @@ local function IsFullCombo()
 	end
 end
 
+local function GetTotalSteps(pn)
+    if GAMESTATE:IsCourseMode() then steps_or_trail = GAMESTATE:GetCurrentTrail(pn) else steps_or_trail = GAMESTATE:GetCurrentSteps(pn) end
+	assert(steps_or_trail)
+    return steps_or_trail:GetRadarValues(pn):GetValue('RadarCategory_TapsAndHolds') + steps_or_trail:GetRadarValues(pn):GetValue('RadarCategory_Holds') + math.floor(steps_or_trail:GetRadarValues(pn):GetValue('RadarCategory_Mines') / 4)
+end
+
 local FullComboEffectColor1 = {
 	TapNoteScore_W1=color("#ffffff");
 	TapNoteScore_W2=color("#f0f389");
@@ -84,10 +97,67 @@ function PlayerStageStats:FullComboType()
 	end
 end
 
-local t = Def.ActorFrame{};
+local t = Def.ActorFrame{
+	-- Check for Full Combo when a judgment occurs or on FullComboEffectCommand
+	JudgmentMessageCommand=function(self, params)
+		-- Add a small delay to ensure the combo and Full Combo state are updated
+		local pn = params.Player
+		self:sleep(0.01) -- 10ms delay (adjust as needed)\
+
+		if params.TapNoteScore ~= 'TapNoteScore_Miss' and params.HoldNoteScore ~= 'HoldNoteScore_MissedHold' and params.HoldNoteScore ~= 'HoldNoteScore_LetGo' then
+			if params.TapNoteScore == "TapNoteScore_AvoidMine" then
+				judgedMines[pn] = judgedMines[pn]  + 1
+				if judgedMines[pn] == 4 then
+					combo[pn] = combo[pn] + 1
+					judgedMines[pn] = 0
+				end
+			else
+				if params.TapNoteScore == "TapNoteScore_HitMine" then
+					judgedMines[pn] = judgedMines[pn]  + 1
+					if judgedMines[pn] == 4 then
+						combo[pn] = combo[pn] + 1
+						judgedMines[pn] = 0
+					end
+				else
+					judgedMines[pn]  = 0
+					combo[pn] = combo[pn] + 1
+				end
+			end
+		end
+		self:queuecommand("CheckFullCombo"..ToEnumShortString(pn))
+	end,
+	CheckFullComboP1Command=function(self)
+		if pn == PLAYER_1 and not effectTriggered[pn] and IsFullCombo() and combo[pn] == GetTotalSteps(pn) then
+			effectTriggered[pn] = true
+			triggeredAt[pn] = GetTimeSinceStart()
+			self:queuecommand("TriggerFullComboEffect")
+		end
+	end,
+	CheckFullComboP2Command=function(self)
+		if pn == PLAYER_2 and not effectTriggered[pn] and IsFullCombo() and combo[pn] == GetTotalSteps(pn) then
+			effectTriggered[pn] = true
+			triggeredAt[pn] = GetTimeSinceStart()
+			self:queuecommand("TriggerFullComboEffect")
+		end
+	end,
+	FullComboEffectCommand=function(self)
+		if not effectTriggered[pn] and IsFullCombo() then
+			effectTriggered[pn] = true
+
+			lua.ReportScriptError(triggeredAt[PLAYER_1] - triggeredAt[PLAYER_2])
+
+			if triggeredAt[PLAYER_1] - triggeredAt[PLAYER_2] > 1 / 60 then
+				self:queuecommand("TriggerFullComboEffect")
+			end
+		end
+	end,
+	TriggerFullComboEffectCommand=function(self)
+		self:playcommand("FullComboEffect")
+	end,
+};
 
 t[#t+1] = Def.Sound {
-	OffCommand=function(s) s:queuecommand("Play") end,
+	FullComboEffectCommand=function(s) s:queuecommand("Play") end,
 	PlayCommand=function(s) 
 		if IsFullCombo() then
 			local sound = THEME:GetPathS("ScreenGameplay","ComboSplash")
@@ -111,7 +181,7 @@ for i=1,NumColumns do
 				s:y(_screen.cy+(THEME:GetMetric("Player","ReceptorArrowsYStandard")))
 			end
 		end,
-		OffCommand = function(s)
+		FullComboEffectCommand = function(s)
 			if IsFullCombo() then
 				s:diffuse(FullComboEffectColor1[pss:FullComboType()])
 			end
@@ -120,7 +190,7 @@ for i=1,NumColumns do
 			InitCommand=function(s) s:blend(Blend.Add)
 				s:x((NFWidth/1.6)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
 			end,
-			OffCommand=function(s)
+			FullComboEffectCommand=function(s)
 				if IsFullCombo() then
 					s:diffusealpha(1):rotationz(-20):zoom(2):linear(0.5):zoom(0.3):rotationz(60)
 					:linear(0.25):zoom(0):rotationz(150)
@@ -131,7 +201,7 @@ for i=1,NumColumns do
 			InitCommand=function(s) s:zoom(0):blend(Blend.Add)
 				s:x((NFWidth/1.6)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
 			end,
-			OffCommand=function(s)
+			FullComboEffectCommand=function(s)
 				if IsFullCombo() then
 					s:diffuse(Color.White):sleep(0.65):diffusealpha(0.8)
 					:zoomx(2):zoomy(0):linear(0.1):zoomy(2):rotationz(0):linear(0.5)
@@ -145,7 +215,7 @@ end
 
 t[#t+1] = Def.ActorFrame{
 	InitCommand=function(s) s:x(GetPosition(pn)):diffusealpha(0):zoom(0.47) end,
-	OffCommand = function(s)
+	FullComboEffectCommand = function(s)
 		if IsFullCombo() then
 			s:diffuse(FullComboEffectColor1[pss:FullComboType()])
 		end
@@ -161,7 +231,7 @@ t[#t+1] = Def.ActorFrame{
 				:zoomy(-1)
 			end
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				if IsReverse(pn) then
 					s:diffusealpha(0.5):zoomtowidth(NFWidth)
@@ -184,7 +254,7 @@ t[#t+1] = Def.ActorFrame{
 				s:y(_screen.cy+(THEME:GetMetric("Player","ReceptorArrowsYStandard")))
 			end
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				if IsReverse(pn) then
 					s:diffusealpha(1):zoomx(0):linear(0.1):zoomx(4):zoomy(1):linear(0.12)
@@ -204,7 +274,7 @@ t[#t+1] = Def.ActorFrame{
 				s:y(SCREEN_BOTTOM+545)
 			end
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				if IsReverse(pn) then
 					s:diffusealpha(0):sleep(0.48):diffusealpha(0.5):zoomto(64,0):linear(0.5)
@@ -225,7 +295,7 @@ t[#t+1] = Def.ActorFrame{
 				s:y(SCREEN_TOP)
 			end
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				if IsReverse(pn) then
 					s:zoomx(1.125):zoomy(0.75):diffusealpha(0)
@@ -250,7 +320,7 @@ t[#t+1] = Def.ActorFrame{
 				s:y(SCREEN_TOP)
 			end
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				if IsReverse(pn) then
 					s:zoomx(-1.125):zoomy(0.75):diffusealpha(0)
@@ -279,7 +349,7 @@ t[#t+1] = Def.ActorFrame{
 				s:blend(Blend.Add):zoom(0)
 				s:y(_screen.cy)
 			end,
-			OffCommand=function(s)
+			FullComboEffectCommand=function(s)
 				if IsFullCombo() then
 					s:sleep(0.65):diffusealpha(1):zoomx(1.4):zoomy(0):linear(0.1)
 					:zoomy(1.4):rotationz(0):linear(0.5):zoom(0.7):rotationz(90):diffusealpha(0.4)
@@ -292,7 +362,7 @@ t[#t+1] = Def.ActorFrame{
 				s:blend(Blend.Add):zoom(0)
 				s:y(_screen.cy)
 			end,
-			OffCommand=function(s)
+			FullComboEffectCommand=function(s)
 				if IsFullCombo() then
 					s:diffuse(color("#ffffff"))
 					s:sleep(0.65):diffusealpha(0.5):zoomx(1.4):zoomy(0):linear(0.1)
@@ -306,7 +376,7 @@ t[#t+1] = Def.ActorFrame{
 				s:zoom(0)
 				s:y(_screen.cy)
 			end,
-			OffCommand=function(s)
+			FullComboEffectCommand=function(s)
 				if IsFullCombo() then
 					s:diffuse(FullComboEffectColor2[pss:FullComboType()])
 					s:sleep(0.65):zoomx(1.8):zoomy(0):linear(0.1):zoomy(1.8)
@@ -320,7 +390,7 @@ t[#t+1] = Def.ActorFrame{
 			s:zoom(0)
 			s:y(_screen.cy)
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				s:diffuse(FullComboEffectColor2[pss:FullComboType()])
 				s:sleep(0.65):zoomx(1.8):zoomy(0):linear(0.1):zoomy(1.8)
@@ -346,7 +416,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s)
 			s:y(_screen.cy)
 		end,
-		OffCommand=function(s)
+		FullComboEffectCommand=function(s)
 			if IsFullCombo() then
 				if pss:FullComboOfScore('TapNoteScore_W1') then
 					s:Load(THEME:GetPathB("ScreenGameplay","overlay/FullCombo/FCM.png"))
@@ -376,7 +446,7 @@ for i=1,(NumColumns*0.75) do
 				s:y(_screen.cy+(THEME:GetMetric("Player","ReceptorArrowsYStandard")))
 			end
 		end,
-		OffCommand = function(s)
+		FullComboEffectCommand = function(s)
 			if IsFullCombo() then
 				s:diffuse(FullComboEffectColor1[pss:FullComboType()])
 			end
@@ -385,7 +455,7 @@ for i=1,(NumColumns*0.75) do
 			InitCommand=function(s) s:blend(Blend.Add)
 				s:x((NFWidth/2)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
 			end,
-			OffCommand=function(s)
+			FullComboEffectCommand=function(s)
 				if IsFullCombo() then
 					s:diffusealpha(0.5):zoomx(0):zoomy(0.5):linear(0.25):diffusealpha(0.25)
 					:zoomx(1):zoomy(1.75):linear(0.25):zoomx(0):zoomy(0.5):diffusealpha(0)

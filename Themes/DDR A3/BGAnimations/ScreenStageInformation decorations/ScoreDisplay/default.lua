@@ -243,8 +243,8 @@ t[#t+1]=Def.ActorFrame{
 					local temp=#scores;
 						if scores[1] then
 							for i=1,temp do 
-								topgrade = scores[1]:GetGrade();
-								curgrade = scores[i]:GetGrade();
+								topgrade = GetGrade(scores[1]:GetGrade());
+								curgrade = GetGrade(scores[i]:GetGrade());
 								assert(topgrade);
 								if scores[1]:GetScore()>1  then
 									if scores[1]:GetScore()==1000000 and scores[1]:GetGrade() =="Grade_Tier17" then --AutoPlayHack

@@ -140,7 +140,7 @@ return Def.ActorFrame{
 		SetMessageCommand=function(s,p)
 			local song = p.Song
 			if song then
-				s:visible(PROFILEMAN:IsSongNew(song))
+				s:visible(IsNewSong(song))
 			end
 		end,
 	};

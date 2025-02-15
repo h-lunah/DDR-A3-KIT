@@ -11,7 +11,6 @@ t = Def.ActorFrame{};
 
 t[#t+1] = LoadActor(loader);
 
-
 t[#t+1] = Def.Quad {
 	InitCommand=function(s)
 		s:zoomto(10000, 10000):Center():diffuse(color("#000000")):visible(HasVideo())
@@ -20,6 +19,5 @@ t[#t+1] = Def.Quad {
 		s:visible(HasVideo())
 	end;
 }
-
 
 return t;

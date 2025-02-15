@@ -4,6 +4,30 @@ t[#t+1] = Def.Quad{
 	InitCommand=function(s) s:FullScreen():diffusecolor(Color.Black):diffusealpha(1) end,
 };
 
+local mpStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( GAMESTATE:GetMasterPlayerNumber() )
+local songsPlayed = mpStats:GetSongsPlayed()
+
+IsSelecting = false
+
+if GAMESTATE:IsCourseMode() then
+	local currentCourse = GAMESTATE:GetCurrentCourse()
+	
+	-- Not every course can have the same songs.
+	-- Reset that number when you start a new course.
+	if currentCourse ~= previousCourse then
+        sStage = "Stage_1st"
+        songsPlayed = 1
+		previousCourse = currentCourse
+    end
+
+	-- After ending the current course there number of stages played will exceed the number of stages in the course.
+	-- Reset that number so we don't try to index beyond the course.
+	if songsPlayed > GAMESTATE:GetCurrentCourse():GetEstimatedNumStages() then
+		sStage = "Stage_1st"
+		songsPlayed = 1
+	end
+end
+
 --Thanks Razorblade!
 t[#t+1] = Def.Actor {
 	BeginCommand=function()		
@@ -25,7 +49,8 @@ t[#t+1] = Def.Actor {
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:queuecommand("Play") end,
-	PlayCommand=function(s) 
+	PlayCommand=function(s)
+		if GAMESTATE:IsCourseMode() and songsPlayed > 1 or IsTransitioning then return end
 		local sound = THEME:GetPathS("ScreenStageInformation","StageSound")
 		SOUND:PlayOnce(StreamingSound(sound)) 
 	end,
@@ -33,7 +58,8 @@ t[#t+1] = Def.ActorFrame{
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:sleep(0.3):queuecommand("Play") end,
-	PlayCommand=function(s) 
+	PlayCommand=function(s)
+		if GAMESTATE:IsCourseMode() and songsPlayed > 1 or IsTransitioning then return end
 		local sound = THEME:GetPathS("","DoorClose")
 		SOUND:PlayOnce(StreamingSound(sound)) 
 	end,
@@ -41,7 +67,8 @@ t[#t+1] = Def.ActorFrame{
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:sleep(1.55):queuecommand("Play") end,
-	PlayCommand=function(s) 
+	PlayCommand=function(s)
+		if GAMESTATE:IsCourseMode() and songsPlayed > 1 or IsTransitioning then return end
 		local sound = THEME:GetPathS("ScreenStageInformation","JacketSound")
 		SOUND:PlayOnce(StreamingSound(sound)) 
 	end,
@@ -124,6 +151,8 @@ t[#t+1] = Def.Quad{
 	OnCommand=function(s) s:sleep(0.164):linear(0.2):diffusealpha(0.7):linear(0.3):diffusealpha(0) end,
 };
 
-t[#t+1] = LoadActor("ScoreDisplay")..{ InitCommand=function(s) s:zoom(0.667) end, };
+if ( GAMESTATE:IsCourseMode() and songsPlayed == 1 ) or ( not GAMESTATE:IsCourseMode() ) then
+	t[#t+1] = LoadActor("ScoreDisplay")..{ InitCommand=function(s) s:zoom(0.667) end, };
+end
 
 return t

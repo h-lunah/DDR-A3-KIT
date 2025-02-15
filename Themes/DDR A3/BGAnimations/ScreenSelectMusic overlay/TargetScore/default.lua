@@ -125,7 +125,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 					style = GAMESTATE:GetCurrentStyle():GetName()
 					song = GAMESTATE:GetCurrentSong()
 
-					if not song then
+					if not song or IsSelecting then
 						SCREENMAN:PlayInvalidSound()
 					return end
 

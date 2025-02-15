@@ -16,4 +16,8 @@ if not GAMESTATE:IsCourseMode() then
 	end;
 end
 
+if GAMESTATE:IsCourseMode() then
+	t[#t+1] = LoadActor("CourseTransition");
+end
+
 return t;

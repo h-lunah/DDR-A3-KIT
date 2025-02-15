@@ -841,10 +841,7 @@ end
 
 -- Dan courses use their own lifebar.
 if GAMESTATE:IsCourseMode() then
-	if string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "dan") or 
-	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "kaiden") or
-	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "段") or
-	   string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "皆伝") then
+	if IsDanCourse() then
 		GAMESTATE:GetPlayerState(PLAYER_1):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
 		GAMESTATE:GetPlayerState(PLAYER_2):SetPlayerOptions('ModsLevel_Preferred',OptionsP1P..",bar,class,failimmediate");
 	else

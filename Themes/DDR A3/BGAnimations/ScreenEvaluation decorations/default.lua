@@ -3,6 +3,8 @@ local t = Def.ActorFrame{};
 local StageIndex = GAMESTATE:GetCurrentStageIndex()
 local FinalStage = PREFSMAN:GetPreference("SongsPerPlay")
 
+IsTransitioning = false
+
 t[#t+1] = Def.ActorFrame{
     StandardDecorationFromFile("Header","Header");
     StandardDecorationFromFileOptional("Footer","Footer");
@@ -34,7 +36,12 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		};
 	end
 	t[#t+1] = Def.Sprite{
-		Texture=Language().."exp",
+		Texture="exp_base",
+		InitCommand=function(s) s:xy(pn==PLAYER_1 and _screen.cx-212.5 or _screen.cx+212.5,_screen.cy+179):zoom(0.6) end,
+		OffCommand=function(s) s:sleep(0.2):linear(0.2):addx(pn==PLAYER_1 and -700 or 700)  end,
+	};
+	t[#t+1] = Def.Sprite{
+		Texture=IsNetConnected() and Language().."savetoeamuse" or Language().."exp",
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and _screen.cx-212.5 or _screen.cx+212.5,_screen.cy+179):zoom(0.6) end,
 		OffCommand=function(s) s:sleep(0.2):linear(0.2):addx(pn==PLAYER_1 and -700 or 700)  end,
 	};

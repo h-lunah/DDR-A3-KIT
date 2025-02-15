@@ -642,16 +642,18 @@ GoldenLeagueSong = {
 	["Not Alone"] = "league";								--14th
 };
 
-DemoSong = {
-	-- A3
-	["fill this out"] = "demo";
-	-- A20 PLUS
-	["fill this out"] = "demo";
-	-- A20
-	["fill this out"] = "demo";
-	-- A
-	["fill this out"] = "demo";
-};
+NewSong = {
+	-- insert new songs here
+}
+
+function IsNewSong(song)
+	for ns, _ in pairs(NewSong) do
+		if song:GetDisplayFullTitle() == ns then
+			return true
+		end
+	end
+	return false
+end
 
 function AttackPerfectFullCombo()
 	if GAMESTATE:IsExtraStage2() then
@@ -785,17 +787,6 @@ function dofile_safer(path, env)
     return pcall(code)
 end
 
-
--- Make announcer talk his lines with random timing.
--- DDR does not wait exactly an amount before dispatching a new announcer line.
-function RandomComment()
-	if GAMESTATE:GetNumSidesJoined() == 1 then
-    	return math.random(5, 10)
-	else
-		return math.random(15, 20)
-	end
-end
-
 function CourseModeName()
 	if not GAMESTATE:IsEventMode() and GAMESTATE:GetCurrentStage() > "Stage_1st" then
 		return ""
@@ -809,5 +800,20 @@ function CourseModeCommand()
 		return ""
 	else
 		return "playmode,nonstop;screen,ScreenSelectCourse;setenv,sMode,Extended"
+	end
+end
+
+function IsDanCourse()
+	if GAMESTATE:IsCourseMode() then
+		if string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "dan") or 
+		string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle():lower(), "kaiden") or
+		string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "段") or
+		string.find(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle(), "皆伝") then
+			return true
+		else
+			return false
+		end
+	else
+		return false
 	end
 end

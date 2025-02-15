@@ -26,25 +26,42 @@ if IsEXScore(player) then
     data_source = "EXScore"
 end
 
--- Turn off Target Score when not playing a normal song in-game. Courses and Demonstration will turn it off.
-if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTATE:GetPlayMode() == 'PlayMode_Regular' and ReadPrefFromFile("OptionRowTargetScore"..ToEnumShortString(player)) == "On" then
-	-- Current song's chart
-	local steps = GAMESTATE:GetCurrentSteps(player);
-	-- Radar values of the current chart
-	local rv = steps:GetRadarValues(player);
-	-- Current song
-	local song = GAMESTATE:GetCurrentSong()
-	-- Max amount of steps in the current chart
-	local maxsteps = math.max(rv:GetValue('RadarCategory_TapsAndHolds')
-	+rv:GetValue('RadarCategory_Holds')
-	+math.floor(rv:GetValue('RadarCategory_Mines')/4),1);
+-- Turn off Target Score when not in-game. Demonstration will turn it off.
+if not GAMESTATE:IsDemonstration() and ReadPrefFromFile("OptionRowTargetScore"..ToEnumShortString(player)) == "On" then
+	-- Determine if the current song is part of a course
+	local isCourse = GAMESTATE:IsCourseMode()
 
-	-- Max obtainable EX Score in the current chart
-	local maxex = math.max(rv:GetValue('RadarCategory_TapsAndHolds')*3
-	+rv:GetValue('RadarCategory_Holds')*3
-	+math.floor(rv:GetValue('RadarCategory_Mines')/4)*3,1);
+	-- Current song or course
+	local song = GAMESTATE:GetCurrentSong()
+	local course = GAMESTATE:GetCurrentCourse()
+
+	-- Initialize variables for steps/trails and radar values
+	local steps, trail, rv
+
+	if isCourse then
+		-- Get the current trail if in course mode
+		trail = GAMESTATE:GetCurrentTrail(player)
+		-- Radar values of the current trail
+		rv = trail:GetRadarValues(player)
+	else
+		-- Get the current steps if in normal mode
+		steps = GAMESTATE:GetCurrentSteps(player)
+		-- Radar values of the current chart
+		rv = steps:GetRadarValues(player)
+	end
+
+	-- Max amount of steps in the current chart or trail
+	local maxsteps = math.max(rv:GetValue('RadarCategory_TapsAndHolds')
+		+ rv:GetValue('RadarCategory_Holds')
+		+ math.floor(rv:GetValue('RadarCategory_Mines') / 4), 1)
+
+	-- Max obtainable EX Score in the current chart or trail
+	local maxex = math.max(rv:GetValue('RadarCategory_TapsAndHolds') * 3
+		+ rv:GetValue('RadarCategory_Holds') * 3
+		+ math.floor(rv:GetValue('RadarCategory_Mines') / 4) * 3, 1)
 
 	-- Determine the profile to use
+	local profile
 	if PROFILEMAN:IsPersistentProfile(player) then
 		profile = PROFILEMAN:GetProfile(player)
 	else
@@ -52,8 +69,13 @@ if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTAT
 	end
 
 	-- Get scores for this profile
-	scorelist = profile:GetHighScoreList(song,steps)
-	local scores = scorelist:GetHighScores()
+	local scorelist, scores
+	if isCourse then
+		scorelist = profile:GetHighScoreList(course, trail)
+	else
+		scorelist = profile:GetHighScoreList(song, steps)
+	end
+	scores = scorelist:GetHighScores()
 
 	-- Get score to beat
 	local topscore = 0
@@ -61,14 +83,14 @@ if not GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() and GAMESTAT
 	if scores[1] and data_source ~= "EXScore" then
 		topscore = scores[1]:GetScore()
 	elseif scores[1] and data_source == "EXScore" then
-		topscore = math.floor(maxex*(scores[1]:GetScore()/1000000)+0.5)
-	end;
+		topscore = math.floor(maxex * (scores[1]:GetScore() / 1000000) + 0.5)
+	end
 
 	-- Validate the score is valid
-	assert(topscore);
-	
+	assert(topscore)
+
 	-- Determine points per step
-	local moto=topscore/maxsteps;
+	local moto = topscore / maxsteps
 
 	-- Initialize visual element
 	t[#t+1] = Def.ActorFrame {

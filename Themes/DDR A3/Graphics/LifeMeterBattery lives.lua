@@ -16,7 +16,7 @@ return Def.ActorFrame{
 			self:diffuseblink()
 			self:effectcolor1(color("#ffffff"))
 			self:effectcolor2(color("#000000"))
-			self:effectperiod(0.0166)
+			self:effectperiod(1/60)
 		end;
 	};
 	-- LIFE 2-3

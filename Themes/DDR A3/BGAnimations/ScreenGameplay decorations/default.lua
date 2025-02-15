@@ -11,6 +11,26 @@ t[#t+1] = Def.Actor{
 	end
 }
 
+-- Fail out in Event Mode by ending the current stage
+t[#t+1] = Def.Actor {
+	LifeChangedMessageCommand=function(s, p)
+		-- Note: This will jump to the next song if you are currently playing a non-Dan course.
+		local chartP1 = GAMESTATE:GetCurrentSteps(PLAYER_1) or GAMESTATE:GetCurrentTrail(PLAYER_1)
+		local chartP2 = GAMESTATE:GetCurrentSteps(PLAYER_2) or GAMESTATE:GetCurrentTrail(PLAYER_2)
+
+		if p.Player == PLAYER_1 and GAMESTATE:IsSideJoined(PLAYER_1) and not GAMESTATE:IsSideJoined(PLAYER_2) and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetCurrentMissCombo() >= 5 * chartP1:GetMeter() + 25 and p.LifeMeter:GetLife() == 0 then
+			SCREENMAN:GetTopScreen():PostScreenMessage("SM_NotesEnded", 0)
+		elseif p.Player == PLAYER_2 and GAMESTATE:IsSideJoined(PLAYER_2) and not GAMESTATE:IsSideJoined(PLAYER_1) and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetCurrentMissCombo() >= 5 * chartP2:GetMeter() + 25 and p.LifeMeter:GetLife() == 0 then
+			SCREENMAN:GetTopScreen():PostScreenMessage("SM_NotesEnded", 0)
+		else
+			if STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetCurrentMissCombo() >= 5 * chartP1:GetMeter() + 25 and
+			   STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetCurrentMissCombo() >= 5 * chartP2:GetMeter() + 25 and
+			    p.LifeMeter:GetLife() == 0 then SCREENMAN:GetTopScreen():PostScreenMessage("SM_NotesEnded", 0) end
+		end
+	end
+}
+
+
 t[#t+1] = Def.Actor{
     AfterStatsEngineMessageCommand = function(self, params)
         local pn = params.Player
@@ -71,6 +91,32 @@ if not GAMESTATE:IsDemonstration() then
 	t[#t+1] = LoadActor("AnnouncerEngine");
 end
 
+if GAMESTATE:IsCourseMode() then
+	local BreakTime = IsDanCourse() and 60 or 0
+	shouldDo = false
+	t[#t+1] = Def.ActorFrame {
+		OnCommand=function(s)
+			if shouldDo then
+				s:AddChildFromPath(THEME:GetPathB("ScreenGameplay", "decorations/Doors/default.lua"))
+				local sound = THEME:GetPathS("","DoorOpen")
+				SOUND:PlayOnce(StreamingSound(sound)) 
+				shouldDo = false
+			end;
+		end;
+		CurrentSongChangedMessageCommand=function(s)
+			local mpStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(GAMESTATE:GetMasterPlayerNumber())
+			local songsPlayed = mpStats:GetSongsPlayed()
+
+			-- Only proceed if at least 2 songs have been played
+			if songsPlayed < 2 then return end
+
+			s:sleep(4.6 + BreakTime)
+			shouldDo = true
+			s:queuecommand("On")
+		end;
+	}
+end
+
 
 t[#t+1] = Def.ActorFrame {
 	Condition=not GAMESTATE:IsDemonstration(),
@@ -92,6 +138,11 @@ if GAMESTATE:IsSideJoined(PLAYER_1) then
 	t[#t+1] = LoadActor("SpeedChange/P1");
 	t[#t+1] = LoadActor("Constant/P1");
 	t[#t+1] = LoadActor(THEME:GetPathG("", "Player ShockArrow judgment/P1"))..{ InitCommand=function(s) s:draworder(OptionRowComboUnderField() and 1 or 0) end, };
+	if GAMESTATE:GetCurrentStyle():GetName() ~= "double" then
+		t[#t+1] = LoadActor(THEME:GetPathG("", "HoldJudgment label 1x2/CustomHold/P1"))..{ InitCommand=function(s) s:draworder(OptionRowComboUnderField() and 1 or 0) end, };
+	else
+		t[#t+1] = LoadActor(THEME:GetPathG("", "HoldJudgment label 1x2/CustomHold/Double"))..{ InitCommand=function(s) s:draworder(OptionRowComboUnderField() and 1 or 0) end, };
+	end
 end
 
 if GAMESTATE:IsSideJoined(PLAYER_2) then
@@ -99,6 +150,11 @@ if GAMESTATE:IsSideJoined(PLAYER_2) then
 	t[#t+1] = LoadActor("SpeedChange/P2");
 	t[#t+1] = LoadActor("Constant/P2");
 	t[#t+1] = LoadActor(THEME:GetPathG("", "Player ShockArrow judgment/P2"))..{ InitCommand=function(s) s:draworder(OptionRowComboUnderField() and 1 or 0) end, };
+	if GAMESTATE:GetCurrentStyle():GetName() ~= "double" then
+		t[#t+1] = LoadActor(THEME:GetPathG("", "HoldJudgment label 1x2/CustomHold/P2"))..{ InitCommand=function(s) s:draworder(OptionRowComboUnderField() and 1 or 0) end, };
+	else
+		t[#t+1] = LoadActor(THEME:GetPathG("", "HoldJudgment label 1x2/CustomHold/Double"))..{ InitCommand=function(s) s:draworder(OptionRowComboUnderField() and 1 or 0) end, };
+	end
 end
 
 return t

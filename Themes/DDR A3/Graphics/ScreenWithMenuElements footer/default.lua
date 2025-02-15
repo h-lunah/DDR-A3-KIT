@@ -6,7 +6,7 @@ if screenName == "ScreenSelectMusic" then
 	footerTextImage = Language().."selmus"
 elseif screenName == "ScreenEvaluationNormal" then
 	footerTextImage = Language().."eval"
-elseif screenName == "ScreenEvaluationSummary" then
+elseif screenName == "ScreenEvaluationSummary" or screenName == "ScreenGameplay" then
 	footerTextImage = Language().."esum"
 end
 
