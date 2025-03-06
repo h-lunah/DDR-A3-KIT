@@ -19,8 +19,7 @@ if GAMESTATE:IsCourseMode() then
 		Announcer = "stage "..songsPlayed
 	end
 
-elseif GAMESTATE:IsEventMode() and not GAMESTATE:IsCourseMode() then
-	Announcer = "stage 1"
+
 elseif (GAMESTATE:GetCurrentStage() == 'Stage_1st') and not GAMESTATE:IsCourseMode() then
 	Announcer = "stage 1"
 elseif (GAMESTATE:GetCurrentStage() == 'Stage_2nd') and not GAMESTATE:IsCourseMode() then
@@ -36,7 +35,11 @@ elseif (GAMESTATE:IsExtraStage()) and not GAMESTATE:IsCourseMode() then
 elseif (GAMESTATE:IsExtraStage2()) and not GAMESTATE:IsCourseMode() then
 	Announcer = "stage extra2"
 elseif (GAMESTATE:IsEventMode()) and not GAMESTATE:IsCourseMode() then
-	Announcer = "stage event"
+	if songsPlayedThisGame < 4 then
+		Announcer = "stage "..songsPlayedThisGame+1
+	else
+		Announcer = "stage final"
+	end
 end
 
 return Def.ActorFrame{

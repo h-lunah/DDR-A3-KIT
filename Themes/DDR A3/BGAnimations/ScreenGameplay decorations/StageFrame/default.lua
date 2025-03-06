@@ -22,7 +22,7 @@ return Def.ActorFrame {
     };
     Def.ActorFrame {
         -- Main Number Actor
-        LoadFont("_impact 32px") .. {
+        LoadFont("_helvetica-compressed 32px") .. {
             Name="MainNumber";
             InitCommand=cmd(playcommand,"Set");
             CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
@@ -49,10 +49,40 @@ return Def.ActorFrame {
                         self:settext("HOW TO PLAY")
                         suffix = ""
                         self:GetParent():GetChild("Suffix"):settext("")
-                    elseif GAMESTATE:IsEventMode() or GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() then
+                    elseif GAMESTATE:IsDemonstration() and not GAMESTATE:IsCourseMode() then
                         self:settext("1")
 						suffix = "st"
                         self:GetParent():GetChild("Suffix"):settext("st")
+                    elseif GAMESTATE:IsEventMode() then
+                        local songsPlayed
+                        if songsPlayedThisGame ~= nil then
+                            songsPlayed = songsPlayedThisGame
+                        else
+                            songsPlayed = 1
+                        end
+
+                        if songsPlayed >= 5 then
+                            self:settext("FINAL")
+                        else
+                            self:settext(songsPlayed)
+                        end
+                        
+                        if songsPlayed % 10 == 1 and songsPlayed % 100 ~= 11 then
+                            suffix = "st"
+                        elseif songsPlayed % 10 == 2 and songsPlayed % 100 ~= 12 then
+                            suffix = "nd"
+                        elseif songsPlayed % 10 == 3 and songsPlayed % 100 ~= 13 then
+                            suffix = "rd"
+                        elseif songsPlayedThisGame >= 5 then
+                            suffix = ""
+                        else
+                            suffix = "th"
+                        end
+                        if songsPlayed < 5 then
+                            self:GetParent():GetChild("Suffix"):settext(suffix)
+                        else
+                            self:GetParent():GetChild("Suffix"):settext("")
+                        end
                     else
                         local thed_stage = thified_curstage_index(false)
                         
@@ -89,7 +119,7 @@ return Def.ActorFrame {
             end;
         };
         -- Suffix Actor
-        LoadFont("_impact 32px") .. {
+        LoadFont("_helvetica-compressed 32px") .. {
             Name="Suffix";
             InitCommand=cmd(playcommand,"Set");
             CurrentSongChangedMessageCommand=cmd(playcommand,"Set");

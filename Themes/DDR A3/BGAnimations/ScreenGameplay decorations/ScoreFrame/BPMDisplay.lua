@@ -8,7 +8,7 @@ return Def.ActorFrame{
 	InitCommand=function(s) s:SetUpdateFunction(UpdateSingleBPM) end,
 	Def.BitmapText{
 		Name="BPMDisplay";
-		Font="_impact 32px",
+		Font="_helvetica-compressed 32px",
 		InitCommand=function(s) s:draworder(101):zoomx(0.9):zoomy(0.68):shadowlength(1) end,
 	};
 };

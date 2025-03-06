@@ -6,7 +6,7 @@ local gauge = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current')
 local gaugeP1 = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptions('ModsLevel_Current'):DrainSetting()
 local gaugeP2 = GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptions('ModsLevel_Current'):DrainSetting()
 
-local flareData = {
+flareData = {
     [PLAYER_1] = {
         isFlare = false,
         currentFlare = 9,
@@ -31,7 +31,7 @@ function GaugeTextureDanger(g)
 	if string.find(g, "Flare") then
 		return "FlareDanger"
 	else
-		return "danger_base"
+		return "danger"
 	end
 end
 
@@ -134,7 +134,7 @@ end
 
 function GaugeSpeedNormal(g)
 	if string.find(g, "Flare") then
-		return pn==PLAYER_2 and 0.8 or -0.8
+		return pn==PLAYER_2 and 1.5 or -1.5
 	elseif string.find(g, "Class") then
 		return pn==PLAYER_2 and 0.6 or -0.6
 	else
@@ -158,11 +158,12 @@ return Def.ActorFrame{
     end,
     Name="LifeFrame",
 	Def.Sprite{
-        Texture=THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base"),
+        Texture=THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/normal"),
 		InitCommand=function(s) s:x(pn==PLAYER_1 and -7 or 9):zoomto(296,20):diffusealpha(Risky and 0 or 1) end,
 	};
+
 	Def.Sprite{
-        Texture=THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..GaugeTexture(gauge)),
+        Texture=THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/"..GaugeTexture(gauge)),
 		InitCommand=function(s) s:x(pn==PLAYER_1 and -8 or 10) end,
         OnCommand=function(s) s:scaletoclipped(296,20)
             :MaskDest():ztestmode("ZTestMode_WriteOnFail"):customtexturerect(0,0,1,1)
@@ -175,12 +176,12 @@ return Def.ActorFrame{
 				-- Decrement FLOATING FLARE one FLARE GAUGE
 				if param.LifeMeter:GetLife() > flareData[pn].previousFlareLife and param.Player == pn then
 					flareData[pn].currentFlare = flareData[pn].currentFlare - 1
-					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..FloatingGaugeTexture(flareData[pn].currentFlare)))
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/"..FloatingGaugeTexture(flareData[pn].currentFlare)))
 					self:diffuse(color("#ffffff"))
 					flareData[pn].previousFlareLife = param.LifeMeter:GetLife()
 				-- Handle DANGER state
 				elseif param.LifeMeter:GetLife() < 0.3 and param.Player == pn then
-					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/".."FlareDanger"))
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/".."FlareDanger"))
 					flareData[pn].previousFlareLife = param.LifeMeter:GetLife()
 				end
 			end
@@ -190,7 +191,46 @@ return Def.ActorFrame{
 			if flareData[pn].isFlare then return end
 			if param.PlayerNumber == pn then
 				if param.HealthState == "HealthState_Danger" or param.HealthState == "HealthState_Danger_NoComment" then
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/"..GaugeTextureDanger(gauge)))
+					self:texcoordvelocity(0,0)
+				elseif param.HealthState == "HealthState_Hot" then
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/"..GaugeTextureHot(gauge)))
+					self:texcoordvelocity(0,0)
+		  		else
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/base/"..GaugeTexture(gauge)))
+					self:texcoordvelocity(0,0)
+		  		end;
+			end;
+		end;
+    };
+
+	Def.Sprite{
+        Texture=THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..GaugeTexture(gauge)),
+		InitCommand=function(s) s:x(pn==PLAYER_1 and -8 or 10) end,
+        OnCommand=function(s) s:scaletoclipped(296,20)
+            :MaskDest():ztestmode("ZTestMode_WriteOnFail"):customtexturerect(0,0,1,1)
+            :texcoordvelocity(GaugeSpeedNormal(gauge),0)
+        end,
+		-- FLOATING FLARE
+		LifeChangedMessageCommand=function(self, param)
+			if not flareData[pn].isFlare then return end
+			if gauge == "DrainType_FloatingFlare" then
+				-- Decrement FLOATING FLARE one FLARE GAUGE
+				if param.LifeMeter:GetLife() >= 0.3 and param.Player == pn then
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..FloatingGaugeTexture(flareData[pn].currentFlare)))
+				-- Handle DANGER state
+				elseif param.LifeMeter:GetLife() < 0.3 and param.Player == pn then
+					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/".."FlareDanger"))
+				end
+			end
+		end,
+		-- NORMAL, CLASS, FLARE I through FLARE EX
+        HealthStateChangedMessageCommand=function(self, param)
+			if flareData[pn].isFlare then return end
+			if param.PlayerNumber == pn then
+				if param.HealthState == "HealthState_Danger" or param.HealthState == "HealthState_Danger_NoComment" then
 					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..GaugeTextureDanger(gauge)))
+					self:diffusealpha(0.5)
 					self:texcoordvelocity(GaugeSpeedDanger(gauge),0)
 				elseif param.HealthState == "HealthState_Hot" then
 					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..GaugeTextureHot(gauge)))
@@ -198,6 +238,7 @@ return Def.ActorFrame{
 		  		else
 					self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/"..GaugeTexture(gauge)))
 					self:texcoordvelocity(GaugeSpeedNormal(gauge),0)
+					self:diffusealpha(1)
 		  		end;
 			end;
 		end;
@@ -224,7 +265,7 @@ return Def.ActorFrame{
         OnCommand=function(s) s:scaletoclipped(296,20)
             :MaskDest():ztestmode("ZTestMode_WriteOnFail"):customtexturerect(0,0,1,1)
             :texcoordvelocity(GaugeSpeedNormal(gauge),0)
-			:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/".."danger_flash"))
+			:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/".."danger"))
 			:blend('BlendMode_Add')
 			:diffusealpha(0.6)
 			:texcoordvelocity(4,0)

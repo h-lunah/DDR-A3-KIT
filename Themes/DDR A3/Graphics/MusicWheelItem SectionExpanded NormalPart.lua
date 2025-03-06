@@ -1,5 +1,8 @@
 return Def.ActorFrame {
-	SetMessageCommand=function(self,params) self:zoom(params.HasFocus and 2.2 or 1.8); end,
+	InitCommand=function(s)
+		--s:addy(200)
+	end,
+	SetMessageCommand=function(self,params) self:zoom(params.HasFocus and 2.2 or 1.8) end,
 	Def.Sprite{
 		Texture=THEME:GetPathG("","MusicWheelItem/"..Model().."selected"),
 		InitCommand=function(s) s:y(2):zoom(0.91) end,

@@ -1,9 +1,13 @@
 local Door
-if (STATSMAN:GetCurStageStats():AllFailed()) then
+-- normal operation
+if STATSMAN:GetCurStageStats():AllFailed()
+-- event mode, where failing is delayed
+or EveryoneFailed then
 	Door = THEME:GetPathB("ScreenEvaluation","in/Failed")
 else
 	Door = THEME:GetPathB("ScreenEvaluation","in/Cleared")
 end
+
 local st = STATSMAN:GetCurStageStats()
 local pss_p1 = st:GetPlayerStageStats(PLAYER_1)
 local pss_p2 = st:GetPlayerStageStats(PLAYER_2)

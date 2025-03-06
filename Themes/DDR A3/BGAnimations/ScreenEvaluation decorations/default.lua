@@ -17,6 +17,14 @@ if not ((StageIndex == FinalStage+1) or (StageIndex == FinalStage+2)) then
 	};
 end
 
+if GAMESTATE:IsSideJoined(PLAYER_1) then
+	t[#t+1] = LoadActor("flare/P1");
+end
+
+if GAMESTATE:IsSideJoined(PLAYER_2) then
+	t[#t+1] = LoadActor("flare/P2");
+end
+
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)

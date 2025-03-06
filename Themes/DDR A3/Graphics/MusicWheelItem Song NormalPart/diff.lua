@@ -89,7 +89,7 @@ return Def.ActorFrame{
 		InitCommand=cmd(x,-1;zoom,0.4;draworder,2);
 		Def.BitmapText{
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000");zoom,2);
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Meter";
 			SetCommand=function(self,param)
 				self.ParamSong = param.Song
@@ -105,7 +105,7 @@ return Def.ActorFrame{
 		InitCommand=cmd(x,-1;zoom,0.4;draworder,2);
 		Def.BitmapText{
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000"));
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Difficulty_Beginner";
 			SetCommand=function(self,param)
 				self.ParamSong = param.Song
@@ -116,7 +116,7 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) setDiff(self) end;
 		};
 		Def.BitmapText{
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Difficulty_Easy";
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000"));
 			SetCommand=function(self,param)
@@ -128,7 +128,7 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) setDiff(self) end;
 		};
 		Def.BitmapText{
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Difficulty_Medium";
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000"));
 			SetCommand=function(self,param)
@@ -140,7 +140,7 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) setDiff(self) end;
 		};
 		Def.BitmapText{
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Difficulty_Hard";
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000"));
 			SetCommand=function(self,param)
@@ -152,7 +152,7 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) setDiff(self) end;
 		};
 		Def.BitmapText{
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Difficulty_Challenge";
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000"));
 			SetCommand=function(self,param)
@@ -164,7 +164,7 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=function(self) setDiff(self) end;
 		};
 		Def.BitmapText{
-			Font="_impact 32px";
+			Font="_helvetica-compressed 32px";
 			Name = "Difficulty_Edit";
 			InitCommand=cmd(diffuse,color("#FFFFFF");strokecolor,color("#000000"));
 			SetCommand=function(self,param)

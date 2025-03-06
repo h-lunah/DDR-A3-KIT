@@ -1,4 +1,12 @@
 local t = LoadFallbackB()
+local playersFailed = {[PLAYER_1] = false, [PLAYER_2] = false}
+local failedCount = 0
+
+EveryoneFailed = false
+
+if songsPlayedThisGame ~= nil then
+	songsPlayedThisGame = songsPlayedThisGame + 1
+end
 
 t[#t+1] = StatsEngine()
 
@@ -15,9 +23,26 @@ t[#t+1] = Def.Actor{
 t[#t+1] = Def.Actor {
 	LifeChangedMessageCommand=function(s, p)
 		-- Note: This will jump to the next song if you are currently playing a non-Dan course.
+		if GAMESTATE:IsCourseMode() then return end
+
 		local chartP1 = GAMESTATE:GetCurrentSteps(PLAYER_1) or GAMESTATE:GetCurrentTrail(PLAYER_1)
 		local chartP2 = GAMESTATE:GetCurrentSteps(PLAYER_2) or GAMESTATE:GetCurrentTrail(PLAYER_2)
 
+		for pn, v in pairs(playersFailed) do
+			if pn == p.Player and p.LifeMeter:GetLife() == 0 and not v then
+				playersFailed[pn] = true
+				failedCount = failedCount + 1
+			end
+
+			if GAMESTATE:GetNumPlayersEnabled() == 1 and failedCount == 1 then
+				EveryoneFailed = true
+			elseif GAMESTATE:GetNumPlayersEnabled() == 2 and failedCount == 2 then
+				EveryoneFailed = true
+			else
+				EveryoneFailed = false
+			end
+		end
+				
 		if p.Player == PLAYER_1 and GAMESTATE:IsSideJoined(PLAYER_1) and not GAMESTATE:IsSideJoined(PLAYER_2) and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetCurrentMissCombo() >= 5 * chartP1:GetMeter() + 25 and p.LifeMeter:GetLife() == 0 then
 			SCREENMAN:GetTopScreen():PostScreenMessage("SM_NotesEnded", 0)
 		elseif p.Player == PLAYER_2 and GAMESTATE:IsSideJoined(PLAYER_2) and not GAMESTATE:IsSideJoined(PLAYER_1) and STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetCurrentMissCombo() >= 5 * chartP2:GetMeter() + 25 and p.LifeMeter:GetLife() == 0 then
@@ -25,7 +50,9 @@ t[#t+1] = Def.Actor {
 		else
 			if STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetCurrentMissCombo() >= 5 * chartP1:GetMeter() + 25 and
 			   STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetCurrentMissCombo() >= 5 * chartP2:GetMeter() + 25 and
-			    p.LifeMeter:GetLife() == 0 then SCREENMAN:GetTopScreen():PostScreenMessage("SM_NotesEnded", 0) end
+			    p.LifeMeter:GetLife() == 0 then
+					SCREENMAN:GetTopScreen():PostScreenMessage("SM_NotesEnded", 0) 
+			end
 		end
 	end
 }

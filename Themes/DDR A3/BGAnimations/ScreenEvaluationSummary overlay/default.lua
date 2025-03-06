@@ -102,7 +102,7 @@ for i = 1, mStages do
 					Def.Sprite{
 						InitCommand=function(s) s:xy(pn==PLAYER_1 and -248 or 300,18):spin():effectmagnitude(0,0,170) end,
 						BeginCommand=function(s)
-							local grade = pStats:GetGrade();
+							local grade = GetGrade(pStats, nil);
 							if grade ~= "Grade_Tier08" then
 								if pStats:FullComboOfScore('TapNoteScore_W1') then
 									s:Load(THEME:GetPathG("","Grade/MarvelousFullcombo_ring"))
@@ -125,19 +125,28 @@ for i = 1, mStages do
 				Def.Sprite {
 					InitCommand=function(s) s:zoom(0.45):y(10) end,
 					BeginCommand=function(s) s:addx(pn == PLAYER_1 and -278 or 270)
-						local Grade = pStats:GetGrade();
-						s:LoadBackground(THEME:GetPathG("","Grade/Grade_"..ToEnumShortString(Grade)));
+						local grade = GetGrade(pStats, nil)
+						s:LoadBackground(THEME:GetPathG("","Grade/Grade_"..grade:sub(7)));
 						
 					end;
 					OnCommand=function(s) s:zoomy(0):sleep(0.45+(i-mStages)*-0.1):linear(0.4):zoomy(0.45) end,
 				};
 			
 				-- stage
-				LoadFont("_impact 32px")..{
+				LoadFont("_helvetica-compressed 32px")..{
 					InitCommand=cmd(zoom,0.72;diffuse,color("#ffffff");strokecolor,color("#333333");maxwidth,160);
 					BeginCommand=function(s)
-						local pStage = sStats:GetStage();
-						local stageText = StageToLocalizedString(pStage).." STAGE";
+						local stageText
+						if not GAMESTATE:IsEventMode() then
+							local pStage = sStats:GetStage();
+							stageText = StageToLocalizedString(pStage).." STAGE";
+						else
+							local pStage = songsPlayedThisGame-i;
+							if pStage >= 4 then
+								pStage = "Stage_Final"
+							end
+							stageText = StageToLocalizedString(pStage).." STAGE";
+						end
 						if pn == PLAYER_1 then
 							s:addx(-203-160);
 							s:horizalign(left);
@@ -178,7 +187,7 @@ for i = 1, mStages do
 						local steps = song:GetOneSteps( st, diff );
 						local radar = steps:GetRadarValues(pn);
 						local maxsteps = math.max(radar:GetValue('RadarCategory_TapsAndHolds')+radar:GetValue('RadarCategory_Holds')+radar:GetValue('RadarCategory_Rolls'),1);
-						s:targetnumber(GetEvaScore(maxsteps,pss,pn));
+						s:targetnumber(pss:GetScore());
 						if pn == PLAYER_1 then
 							s:horizalign(right);
 							s:x(-204-20);

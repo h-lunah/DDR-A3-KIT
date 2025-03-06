@@ -107,7 +107,7 @@ for i, difficulty in ipairs(difficulties) do
         InitCommand=function(s) s:setsize(26,25):diffuse(CustomDifficultyToColor(difficulty)) end,
       };
       Def.BitmapText{
-        Font="_impact 32px",
+        Font="_helvetica-compressed 32px",
         Name="Meter";
         InitCommand=function(s) s:draworder(99):strokecolor(Color.Black):zoom(0.75) end,
         SetCommand=function(self)

@@ -11,10 +11,11 @@ t[#t+1] = Def.Actor {
     OnCommand=function(s)
         s:sleep(8)
          :queuecommand("StartAttract")
-    end;
+    end,
+    
     StartAttractCommand=function(s)
         SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-    end;
+    end
 }
 
 t[#t+1] = Def.BitmapText {
@@ -24,7 +25,7 @@ t[#t+1] = Def.BitmapText {
          :settext(GetBuild())
          :xy(100, 30)
          :zoom(0.7)
-    end;
+    end
 }
 
 t[#t+1] = Def.BitmapText {
@@ -34,7 +35,7 @@ t[#t+1] = Def.BitmapText {
          :settext("CHECKING")
          :xy(SCREEN_CENTER_X, 50)
          :zoom(0.7)
-    end;
+    end
 }
 
 local checks = {
@@ -52,7 +53,7 @@ for i, check in ipairs(checks) do
     t[#t+1] = Def.ActorFrame {
         InitCommand=function(s)
             s:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y)
-        end;
+        end,
 
         Def.BitmapText {
             Font="_service";
@@ -62,8 +63,8 @@ for i, check in ipairs(checks) do
                  :settext(check.label)
                  :xy(-100, check.y)
                  :zoom(0.5)
-            end;
-        };
+            end
+        },
 
         Def.BitmapText {
             Font="_service";
@@ -75,7 +76,7 @@ for i, check in ipairs(checks) do
                  :xy(100, check.y)
                  :zoom(0.5)
                  :queuecommand("Update")
-            end;
+            end,
 
             UpdateCommand=function(self)
                 -- Increment dot count and cycle every 0.5 seconds
@@ -92,8 +93,8 @@ for i, check in ipairs(checks) do
                 self:settext(string.rep(".", self.dotCount % 4))
 
                 self:sleep(0.2):queuecommand("Update")
-            end;
-        };
+            end
+        }
     }
 end
 
@@ -103,39 +104,39 @@ t[#t+1] = Def.Actor {
             s:sleep(0.2)
              :queuecommand("DoneChecking"..i)
         end
-    end;
+    end,
 
     DoneChecking1Command=function(s)
         checks[1].done = true
-    end;
+    end,
 
     DoneChecking2Command=function(s)
         checks[2].done = true
-    end;
+    end,
 
     DoneChecking3Command=function(s)
         checks[3].done = true
-    end;
+    end,
 
     DoneChecking4Command=function(s)
         checks[4].done = true
-    end;
+    end,
 
     DoneChecking5Command=function(s)
         checks[5].done = true
-    end;
+    end,
 
     DoneChecking6Command=function(s)
         checks[6].done = true
-    end;
+    end,
 
     DoneChecking7Command=function(s)
         checks[7].done = true
-    end;
+    end,
 
     DoneChecking8Command=function(s)
         checks[8].done = true
-    end;
+    end
 }
 
 t[#t+1] = Def.BitmapText {
@@ -150,11 +151,11 @@ t[#t+1] = Def.BitmapText {
          :diffusealpha(0)
          :sleep(1.8)
          :queuecommand("Show")
-    end;
+    end,
 
     ShowCommand=function(s)
         s:diffusealpha(1)
-    end;
+    end
 }
 
 t[#t+1] = Def.ActorFrame {
@@ -165,28 +166,35 @@ t[#t+1] = Def.ActorFrame {
              :diffusealpha(0)
              :sleep(3)
              :queuecommand("Show")
-        end;
+        end,
 
         ShowCommand=function(s)
             s:diffusealpha(1)
-        end;
+        end
     };
 
     Def.BitmapText {
         Font="_service";
         InitCommand=function(s)
-            s:settext("please wait...")
+            s:settext("please wait")
              :diffusealpha(0)
              :xy(30, 10)
              :zoom(0.5)
              :sleep(4)
              :queuecommand("Show")
-        end;
+        end,
 
         ShowCommand=function(s)
-            s:diffusealpha(1)
-        end;
+        	s:linear(0.25)
+             :diffusealpha(1)
+             :sleep(1)
+             :settext("please wait.")
+             :sleep(1)
+             :settext("please wait..")
+             :sleep(1)
+             :settext("please wait...")
+        end
     }
 }
 
-return t;
+return t

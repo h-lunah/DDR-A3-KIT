@@ -4,6 +4,10 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	local Award = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetStageAward()
 	local Grade = GetGrade(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn), nil)
 
+	if EveryoneFailed then
+		Grade = "Grade_Failed"
+	end
+
 	t[#t+1] = LoadActor("AnnouncerEngineEvaluation.lua")
 
 	t[#t+1] = Def.Sprite{

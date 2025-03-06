@@ -88,22 +88,15 @@ function AddExtraStageStars(rank, pn)
     end
 
     -- You cannot add more than 3 stars per stage.
-    if starsToAdd > 3 then
-        starsToAdd = 3
-    end
+   	starsToAdd = math.min(starsToAdd, 3)
 
     -- This value is saved so we know how many stars we got for this stage.
     StarsAddedRecently = starsToAdd
 
     -- Ensure we don't exceed 9 stars if the adding would result in >=10 stars.
-    local maxStarsAllowed = 9 - ExtraStageStars
-    if starsToAdd > maxStarsAllowed then
-        starsToAdd = maxStarsAllowed
-    end
+    starsToAdd = math.min(starsToAdd, 9 - ExtraStageStars)
 
-    if ExtraStageStars < 9 then
-        ExtraStageStars = ExtraStageStars + starsToAdd
-    end
+    ExtraStageStars = math.min(ExtraStageStars + starsToAdd, 9)
 
     StarsActuallyAdded = starsToAdd
 

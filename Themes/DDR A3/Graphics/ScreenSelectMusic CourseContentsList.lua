@@ -62,7 +62,7 @@ return Def.CourseContentsList {
 						self:diffuse( CustomDifficultyToColor(params.Difficulty) );
 					end,
 				};
-				LoadFont("_impact 32px") .. {
+				LoadFont("_helvetica-compressed 32px") .. {
 					SetSongCommand=function(self, params)
 						if params.PlayerNumber ~= GAMESTATE:GetMasterPlayerNumber() then return end
 						self:settext( params.Meter ):strokecolor(Color.Black):zoom(0.7)

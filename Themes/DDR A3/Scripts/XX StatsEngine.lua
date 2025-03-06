@@ -223,10 +223,14 @@ function StatsEngine()
 								event_flag_string = event_flag_string .. " " .. flag
 							end
 						end
-						lua.ReportScriptError("error in StatsEngine module "..module.name
-						.." for player "..ToEnumShortString(player_number)
-						.." (event flags:" .. event_flag_string .. "), unloading: "
-						..tostring(results))
+						if tostring(results) == "cannot resume dead coroutine" then
+							-- lua.ReportScriptError("Attempted to score players while the stage was already over!")
+                        else
+							lua.ReportScriptError("error in StatsEngine module "..module.name
+							.." for player "..ToEnumShortString(player_number)
+							.." (event flags:" .. event_flag_string .. "), unloading: "
+							..tostring(results))
+						end
 						table.remove(modules_to_process, idx)
 					else
 						if results then

@@ -49,7 +49,7 @@ Branch = {
 		if _VERSION ~= "Lua 5.3" and tonumber(VersionDate()) < 20241009 then
 			return "ScreenOldSM"
 		else
-			return "ScreenSelftest"
+			return "ScreenWarning"
 		end
 	end,
 	TitleMenu = function()
@@ -248,7 +248,9 @@ Branch = {
 	AfterEvaluation = function()
 		--extra attack
 		--normal
-		if GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1 then
+		if GAMESTATE:IsEventMode() and songsPlayedThisGame >= 5 then
+			return "ScreenEvaluationSummary"
+		elseif GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1 then
 			return "ScreenProfileSave"
 		elseif GAMESTATE:GetCurrentStage() == "Stage_Extra1" or GAMESTATE:GetCurrentStage() == "Stage_Extra2" then
 			return "ScreenProfileSave"

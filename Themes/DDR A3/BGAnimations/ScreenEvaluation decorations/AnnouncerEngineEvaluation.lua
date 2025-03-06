@@ -76,8 +76,10 @@ t = Def.ActorFrame {
             }
 
             local soundToPlay = gradeSounds[highestGrade]
-            if soundToPlay then
+            if not EveryoneFailed and soundToPlay then
                 PlaySound(soundToPlay)
+            else
+                PlaySound("evaluation failed ac")
             end
         end
     end;

@@ -5,7 +5,7 @@ local top
 
 local function GetExpandedSectionIndex()
 	local mWheel
-	if SCREENMAN:GetTopScreen():GetChild("MusicWheel")  ~= nil then
+	if SCREENMAN:GetTopScreen():GetChild("MusicWheel") ~= nil then
 		mWheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 		local curSections = mWheel:GetCurrentSections()
 	
@@ -15,6 +15,7 @@ local function GetExpandedSectionIndex()
 			end
 		end
 	end
+    return nil
 end
 
 local function IndexStage(param)
@@ -77,16 +78,15 @@ end;
 
 return Def.ActorFrame{
 	OnCommand = function(self)
-		top = SCREENMAN:GetTopScreen()
-	end;
+		top = SCREENMAN:GetTopScreen()	end;
 	SetMessageCommand=function(self,params)
 		local index = params.Index
-			
-		if index ~= nil then
-			SetXYPosition(self, params)
-			self:zoom(params.HasFocus and 2 or 1.7);
-			self:name(tostring(params.Index))
-		end
+		
+        if index ~= nil then
+            SetXYPosition(self, params)
+            self:zoom(params.HasFocus and 2 or 1.7);
+            self:name(tostring(params.Index))
+        end
 	end;
 
 	Def.Sprite{

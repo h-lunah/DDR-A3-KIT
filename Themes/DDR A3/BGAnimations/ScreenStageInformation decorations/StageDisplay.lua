@@ -8,12 +8,19 @@ local tRemap = {
 	Stage_6th		= 6,
 	Stage_None		= 0,
 };
+
+local numToStage = {"Stage_1st", "Stage_2nd", "Stage_3rd", "Stage_4th", "Stage_Final"}
+
 local previousCourse = nil
 
 if tRemap[sStage] == PREFSMAN:GetPreference("SongsPerPlay") then
 	sStage = "Stage_Final";
 elseif GAMESTATE:IsEventMode() and not GAMESTATE:IsCourseMode() then
-	sStage = "Stage_1st";
+	if songsPlayedThisGame >= 4 then
+		sStage = "Stage_Final"
+	else
+		sStage = numToStage[songsPlayedThisGame+1]
+	end
 elseif GAMESTATE:IsCourseMode() then
 	local currentCourse = GAMESTATE:GetCurrentCourse()
 	

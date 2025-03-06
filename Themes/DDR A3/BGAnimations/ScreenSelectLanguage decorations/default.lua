@@ -1,10 +1,12 @@
 local t = Def.ActorFrame{
 	LoadActor(THEME:GetPathB("","ModDate.lua"));
 };
+
 local xspacing = 40
 local curIndex = 2;
 
 local LangItems = nil
+songsPlayedThisGame = 0
 
 if Language() == "jp_" then
     LangItems = {"en", "jp", "kor"}

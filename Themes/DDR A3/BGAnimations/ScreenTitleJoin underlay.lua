@@ -4,7 +4,8 @@ return Def.ActorFrame {
         s.delay = 10
         s:SetUpdateFunction(function(self, delta)
             self.timer = self.timer + delta
-            if self.timer >= self.delay then
+            if self.timer >= self.delay and not PressedStart then
+                PressedStart = false
                 self:queuecommand("GoBackToAttract")
                 self.timer = -math.huge
             end
