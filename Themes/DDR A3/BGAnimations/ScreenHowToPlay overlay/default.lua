@@ -47,11 +47,16 @@ t[#t+1] = Def.Quad{
     OnCommand=function(s) s:sleep(39.8):linear(1.2):diffusealpha(1) end,
 };
 
-if GAMESTATE:GetCoinMode() == 'CoinMode_Free' or not netConnected then
+if GAMESTATE:GetCoinMode() == 'CoinMode_Free' then
 	t[#t+1] = Def.ActorFrame {
 		Def.Sprite{
 			Texture=THEME:GetPathG("","ArcadeDecorations/"..Language().."paseli_unavailable.png"),
-			InitCommand=function(s) s:zoom(0.667):xy(_screen.cx+355,IsTitleMenu() and _screen.cy+135 or _screen.cy+201) end,
+			InitCommand=function(s) 
+				s:zoom(0.667):xy(_screen.cx+355,IsTitleMenu() and _screen.cy+135 or _screen.cy+201)
+				if not netConnected then
+					s:diffusealpha(0)
+				end
+			end,
 		};
 		LoadActor(THEME:GetPathG("","ArcadeDecorations/"..Model().."base"))..{
 			InitCommand=function(s) s:diffusealpha(IsTitleMenu() and 0 or 1):xy(_screen.cx,_screen.cy+200):setsize(392,66) end,

@@ -5,11 +5,14 @@ and was recoded by FlameyBoy and Inorizushi
 
 local pn = {PLAYER_1, PLAYER_2}
 local regionFont = "region 20px"
+local position = 0
 
 if Language() == "jp_" then
 	regionFont = "_ibm plex sans semibold/jp/20px"
+	position = -5
 elseif Language() == "kor_" then
 	regionFont = "_ibm plex sans semibold/kr/20px"
+	position = -5
 end
 
 local ProfileInfoCache = {}
@@ -123,7 +126,7 @@ local function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 				Font=regionFont,
 				InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.95)
 					s:x(pn == PLAYER_1 and 128 or 128);
-					s:y(-82):strokecolor(Color("Outline")):maxwidth(120) end,
+					s:y(-82):addy(position):strokecolor(Color("Outline")):maxwidth(120) end,
 				OnCommand=function(self)
 					self:sleep(0.2):linear(0.05);
 					self:x(pn == PLAYER_1 and 128 or 128);

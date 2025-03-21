@@ -296,4 +296,11 @@ Branch = {
 			return "ScreenDataSaveSummaryEnd"
 		end
 	end,
+	HowToPlay = function()
+		if PROFILEMAN:GetProfile(GAMESTATE:GetMasterPlayerNumber()):GetTotalNumSongsPlayed() == 0 then
+			return "ScreenTutorial"
+		else
+			return "ScreenSelectMusic"
+		end
+	end,
 }

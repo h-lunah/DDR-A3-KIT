@@ -161,10 +161,10 @@ t[#t+1] = Def.BitmapText {
 	GetOnlineCommand=function(s)
 		if IsNetConnected() then
 			s:settext('ONLINE')
-			s:diffuse(color("0,1,0,1"))
+			s:diffuse(color("#00ff00"))
 		else
 			s:settext('LOCAL MODE')
-			s:diffuse(color("0,0,0,0.5"))
+			s:diffuse(color("#888888"))
 		end
 
 		s:queuecommand("Update")

@@ -788,7 +788,7 @@ function dofile_safer(path, env)
 end
 
 function CourseModeName()
-	if GAMESTATE:GetCurrentStage() > "Stage_1st" then
+	if GAMESTATE:GetCurrentStage() > "Stage_1st" and not GAMESTATE:IsEventMode() then
 		return ""
 	elseif GAMESTATE:IsEventMode() and songsPlayedThisGame > 1 then
 		return ""
@@ -798,7 +798,7 @@ function CourseModeName()
 end
 
 function CourseModeCommand()
-	if GAMESTATE:GetCurrentStage() > "Stage_1st" then
+	if GAMESTATE:GetCurrentStage() > "Stage_1st" and not GAMESTATE:IsEventMode() then
 		return ""
 	elseif GAMESTATE:IsEventMode() and songsPlayedThisGame > 1 then
 		return ""

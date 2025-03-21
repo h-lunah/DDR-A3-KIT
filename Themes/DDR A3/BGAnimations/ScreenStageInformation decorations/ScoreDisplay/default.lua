@@ -4,10 +4,14 @@ local cx = 640
 local ox = 450
 
 local regionFont = "region 20px"
+local position = 0
+
 if Language() == "jp_" then
 	regionFont = "_ibm plex sans semibold/jp/20px"
+	position = -5
 elseif Language() == "kor_" then
 	regionFont = "_ibm plex sans semibold/kr/20px"
+	position = -5
 end
 
 function StageTopRecord(pn) --�^�ǳ̰��������Ӭ���
@@ -335,13 +339,13 @@ t[#t+1]=Def.ActorFrame{
 	LoadFont(regionFont) .. {
 		InitCommand=function(s) s:maxwidth(180):zoomy(0.6):zoom(0.95)
 			s:x(pn == PLAYER_1 and cx-307-ox or cx+562+ox)
-			s:y(SCREEN_BOTTOM+110):strokecolor(Color("Outline")):maxwidth(120) end,
+			s:y(SCREEN_BOTTOM+110):addy(position):strokecolor(Color("Outline")):maxwidth(120) end,
 		OnCommand=function(self)
 			self:sleep(SleepOffset+0.2):linear(0.05);
 			self:x(pn == PLAYER_1 and cx-307 or cx+562);
 			self:skewx(-0.1);
 
-			local index
+			local index = 2
 
 			if Language() == "en_" then
 				index = 1
@@ -349,8 +353,6 @@ t[#t+1]=Def.ActorFrame{
 				index = 2
 			elseif Language() == "kor_" then
 				index = 3
-			else
-				index = 2
 			end
 
 			self:settext(regions[GetUserPref("OptionRowRegion"..ToEnumShortString(pn))][index])

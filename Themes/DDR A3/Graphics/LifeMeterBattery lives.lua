@@ -2,13 +2,13 @@ local player = Var "Player"
 
 return Def.ActorFrame{
 	-- RISKY 
-	LoadActor(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/danger_base"))..{
+	LoadActor(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/life4_danger_base"))..{
 		InitCommand=function(self)
 			self:zoomto(296,20)
 		end;
 	};
 
-	LoadActor(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/danger_flash"))..{
+	LoadActor(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/life4_danger_flash"))..{
 		InitCommand=function(self)
 			self:zoomto(296,20)			
 			self:blend('BlendMode_Add')
@@ -98,7 +98,7 @@ return Def.ActorFrame{
 
 	};
 	-- LifeMetterBar under
-	LoadActor(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/base"))..{
+	LoadActor(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/life4_base"))..{
 		InitCommand=cmd(horizalign,right;x,149);
 		BeginCommand=function(self,params)
 			local screen = SCREENMAN:GetTopScreen();
