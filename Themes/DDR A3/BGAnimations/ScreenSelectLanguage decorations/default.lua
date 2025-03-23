@@ -7,6 +7,7 @@ local curIndex = 2;
 
 local LangItems = nil
 songsPlayedThisGame = 0
+songResults = {[PLAYER_1]={}, [PLAYER_2]={}}
 
 if Language() == "jp_" then
     LangItems = {"en", "jp", "kor"}
@@ -149,6 +150,14 @@ t[#t+1] = Def.ActorFrame{
             end
         };
     };
+}
+
+t[#t+1] = Def.Actor {
+    InitCommand=function(s) s:sleep(20):queuecommand("Timeout") end,
+    TimeoutCommand=function(s)
+        SOUND:PlayOnce(THEME:GetPathS("", "Common start"))
+        SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+    end,
 }
 
 return t;

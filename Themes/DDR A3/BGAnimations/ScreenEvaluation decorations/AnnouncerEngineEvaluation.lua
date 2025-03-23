@@ -41,6 +41,7 @@ t = Def.ActorFrame {
             end
 
             local grade = Grades[pn]
+            table.insert(songResults[pn], grade)
             if grade then
                 for _, gradeTier in ipairs(gradeOrder) do
                     if grade == gradeTier then

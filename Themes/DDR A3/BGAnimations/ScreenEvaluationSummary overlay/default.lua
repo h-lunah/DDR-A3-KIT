@@ -102,7 +102,7 @@ for i = 1, mStages do
 					Def.Sprite{
 						InitCommand=function(s) s:xy(pn==PLAYER_1 and -248 or 300,18):spin():effectmagnitude(0,0,170) end,
 						BeginCommand=function(s)
-							local grade = GetGrade(pStats, nil);
+							local grade = songResults[pn][i]
 							if grade ~= "Grade_Tier08" then
 								if pStats:FullComboOfScore('TapNoteScore_W1') then
 									s:Load(THEME:GetPathG("","Grade/MarvelousFullcombo_ring"))

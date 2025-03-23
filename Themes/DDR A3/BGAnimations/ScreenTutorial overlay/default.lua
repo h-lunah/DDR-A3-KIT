@@ -31,6 +31,7 @@ t[#t+1] = Def.ActorFrame{
     },
 }
 
+-- Skip Tutorial
 t[#t+1] = Def.ActorFrame {
     BeginCommand=function(self)
         SCREENMAN:GetTopScreen():AddInputCallback(function(event)
@@ -110,4 +111,4 @@ t[#t+1] = Def.ActorFrame {
     }
 }
 
-return t
+return t;

@@ -255,7 +255,7 @@ local function UpdateInternal3(self, Player)
 			joinframe:visible(false);
 			bigframe:visible(false);
 			ProfileText:visible(true);
-      ProfileUID:visible(true);
+      		ProfileUID:visible(true);
 
 			local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player);
 			if ind > 0 then

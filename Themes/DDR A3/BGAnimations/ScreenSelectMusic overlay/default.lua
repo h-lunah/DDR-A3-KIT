@@ -3,7 +3,6 @@ local Radar = Def.ActorFrame{};
 local Target = Def.ActorFrame{};
 local Shock = Def.ActorFrame{};
 
-
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	diff[#diff+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/Difficulty"))(pn)..{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+94 or SCREEN_RIGHT-94,_screen.cy-97):zoom(0.667) end,

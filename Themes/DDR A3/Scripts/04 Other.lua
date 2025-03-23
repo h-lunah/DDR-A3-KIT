@@ -821,3 +821,43 @@ function IsDanCourse()
 		return false
 	end
 end
+
+function TimerShift1()
+	if GAMESTATE:IsEventMode() then
+		return 0
+	else
+		return 20
+	end
+end
+
+function TimerShift2()
+	if GAMESTATE:IsEventMode() then
+		return 0
+	else
+		return -11
+	end
+end
+
+function TimerPos1()
+	if GAMESTATE:IsEventMode() then
+		return 20
+	else
+		return 0
+	end
+end
+
+function TimerPos2()
+	if GAMESTATE:IsEventMode() then
+		return -10
+	else
+		return 0
+	end
+end
+
+function LoginTimerPos()
+	if GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 then
+		return 0
+	else
+		return 430
+	end
+end

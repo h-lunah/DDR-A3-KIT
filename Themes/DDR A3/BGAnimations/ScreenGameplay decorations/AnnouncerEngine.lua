@@ -216,7 +216,7 @@ t[#t+1] = Def.ActorFrame{
             playerMissCombos[pn] = playerMissCombos[pn] + 1
         elseif params.TapNoteScore == "TapNoteScore_AvoidMine" then
             playerJudgedMines[pn] = playerJudgedMines[pn] + 1
-            if playerJudgedMines[pn] >= 4 then
+            if playerJudgedMines[pn] == 4 then
                 playerJudgedMines[pn] = 0
                 playerCombos[pn] = playerCombos[pn] + 1
             end
