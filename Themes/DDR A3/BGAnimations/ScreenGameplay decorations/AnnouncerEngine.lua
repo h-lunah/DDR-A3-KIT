@@ -199,9 +199,6 @@ t[#t+1] = Def.ActorFrame {
         s:queuecommand("PlayReady")
     end;
     PlayReadyCommand=function(s)
-        -- Announcer does not speak during "LET'S CHECK YOUR LEVEL!"
-        if GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "LET'S CHECK YOUR LEVEL!" or 
-           GAMESTATE:GetCurrentSong():GetDisplayFullTitle() == "Steps to the Star" then return end
         SOUND:PlayAnnouncer("gameplay ready ac")
     end
 }
