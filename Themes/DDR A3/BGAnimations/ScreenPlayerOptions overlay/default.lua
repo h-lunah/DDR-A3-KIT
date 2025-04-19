@@ -1,9 +1,10 @@
 local t = Def.ActorFrame{
-	Def.Quad{
-		InitCommand=function(s) s:diffuse(color("0,0,0,0.5")):FullScreen() end,
-		OnCommand=function(s) s:diffusealpha(0):sleep(0.1):linear(0.2):diffusealpha(0.5) end,
-		OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
-	};
+	OffCommand=function(s)
+		if mwState ~= nil then
+			mwState.tweened = false
+			mwState.inMusicSelect = true
+		end
+	end
 };
 
 

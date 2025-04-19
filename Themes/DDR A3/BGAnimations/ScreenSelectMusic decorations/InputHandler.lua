@@ -1,6 +1,19 @@
+mwState = {
+  tweened = false,
+  inMusicSelect = false
+}
+
 local function WheelMove(mov)
   local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel");
   mw:Move(mov)
+end
+
+local function UpdateMusicWheel()
+  local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+  if mw and not mwState.tweened and mwState.inMusicSelect then
+    mw:linear(0.2):diffusealpha(1):effectcolor2(color("#ffffff"))
+    mwState.tweened = true
+  end
 end
 
 local function InputHandler(event)
@@ -13,6 +26,11 @@ local function InputHandler(event)
     end
     if event.GameButton == "MenuRight" and GAMESTATE:IsPlayerEnabled(player) then
       SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
+    end
+    if event.GameButton == "Select" and GAMESTATE:IsPlayerEnabled(player) then
+      MusicWheel:diffuseramp():effectcolor1(color("#ffffff")):effectcolor2(color("#000000")):effectperiod(0.1):sleep(0.1):diffusealpha(0)
+      mwState.inMusicSelect = false
+      mwState.tweened = false
     end
     if event.GameButton == "MenuDown" and GAMESTATE:IsPlayerEnabled(player) and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
       if MusicWheel:GetSelectedType() == 'WheelItemDataType_Song' then
@@ -60,7 +78,10 @@ local function InputHandler(event)
 end
 
 return Def.ActorFrame{
-  OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end;
+  OnCommand=function(self) 
+      SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
+      self:SetUpdateFunction(UpdateMusicWheel)
+    end;
   OffCommand=function(self) SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler) end,
   SongChosenMessageCommand=function(self) self:playcommand("Off") end;
   SongUnchosenMessageCommand=function(self)
