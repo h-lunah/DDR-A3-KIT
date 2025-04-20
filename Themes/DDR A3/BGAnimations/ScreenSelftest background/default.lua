@@ -9,6 +9,8 @@ t[#t+1] = Def.Quad {
 
 t[#t+1] = Def.Actor {
     OnCommand=function(s)
+        WritePrefToFile("OptionRowLanguage", 'default')
+        GAMESTATE:InsertCoin(-GAMESTATE:GetCoins())
         s:sleep(8)
          :queuecommand("StartAttract")
     end,

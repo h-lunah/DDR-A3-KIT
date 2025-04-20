@@ -1,9 +1,6 @@
 local t = Def.ActorFrame{
 	OffCommand=function(s)
-		if mwState ~= nil then
-			mwState.tweened = false
-			mwState.inMusicSelect = true
-		end
+		mwState.inMusicSelect = true
 	end
 };
 

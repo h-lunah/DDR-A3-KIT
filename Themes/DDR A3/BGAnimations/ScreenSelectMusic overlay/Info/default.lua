@@ -1,4 +1,5 @@
 local AnimPlayed = true
+local cycle = 0
 
 return Def.ActorFrame{
 	InitCommand=cmd(xy,_screen.cx,_screen.cy-274);
@@ -61,27 +62,46 @@ return Def.ActorFrame{
 				Texture="_meter 2x2.png";
 				InitCommand=cmd(xy,64,16;effectclock,'beatnooffset';SetAllStateDelays,1;zoomx,1.5;skewx,-0.25);
 			};
-			LoadFont("Bpm")..{
-			InitCommand=cmd(zoom,1.4;xy,103,1);
+			LoadFont("_dfghsgothic-w9 20px")..{
+			InitCommand=cmd(zoomy,0.9;zoomx,0.8;xy,105,0);
 			SetCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong();
-				if song then
+				if song and not song:IsDisplayBpmRandom() then
 					local bpmtext;
+					local spaces;
 					bpmtext = song:GetDisplayBpms();
-						if bpmtext[1] == bpmtext[2] then
-							bpmtext = round(bpmtext[1],0);
-							self:x(115);
-						else
-							bpmtext = string.format("  %d\nx%3d",round(bpmtext[1],0),round(bpmtext[2],0));
-							self:x(101);
-						end
+					if #tostring(bpmtext[1]) == 2 then
+						spaces = "   "
+						self:x(112);
+					else
+						spaces = "  "
+						self:x(109);
+					end
+
+					if bpmtext[1] == bpmtext[2] then
+						bpmtext = round(bpmtext[1]);
+						self:x(120);
+					else
+						bpmtext = string.format(spaces.."%d\n~%3d",round(bpmtext[1]),round(bpmtext[2]));
+					end
 					self:horizalign(left);
 					self:vertalign(top);
 					self:settext(bpmtext);
 					self:visible(true);
+				elseif song and song:IsDisplayBpmRandom() then
+					self:settextf("%d%d%d", cycle, cycle, cycle)
+					self:horizalign(left);
+					self:vertalign(top);
+					self:x(120);
+					self:sleep(1/60)
+					self:queuecommand("HiddenSong")
 				else
 					self:visible(false);
 				end
+			end;
+			HiddenSongCommand=function(self)
+				cycle = ( cycle + 1 ) % 10
+				self:queuecommand("Set")
 			end;
 		};
 	};

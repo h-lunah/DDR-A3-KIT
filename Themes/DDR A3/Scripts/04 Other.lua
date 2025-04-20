@@ -82,16 +82,164 @@ end
 
 function GetSongName(item)
 	local name = Basename(item:GetSongDir())
-	if name == "OurMemories" then
+	--DDR 5thMIX
+	if name == "MATSURI JAPAN" then
+		return "祭 JAPAN"
+	--DDRMAX
+	elseif name == "Healing Vision~Angelic mix~"
+		or name == "Healing Vision (Angelic mix)" then
+		return "Healing Vision ～Angelic mix～"
+	elseif name == "ORION.78(civilization mix)" then
+		return "ORION.78～civilization mix～"
+	--DDRMAX2
+	elseif name == "MATSURI JAPAN (FROM NONSTOP MEGAMIX)" then
+		return "祭 JAPAN (FROM NONSTOP MEGAMIX)"
+	elseif name == "MATSURI JAPAN (K.O.G REMIX)" then
+		return "祭 JAPAN (K.O.G REMIX)"
+	elseif name == "BREAK DOWN!" then
+		return "BRE∀K DOWN！"
+	elseif name == "BURNING HEAT! (3 Option MIX)" then
+		return "BURNING HEAT！（3 Option MIX）"
+	--DDR EXTREME
+	elseif name == "AM-3P (303 BASS MIX)" then
+		return "AM-3P -303 BASS MIX-"
+	elseif name == "Colors (for EXTREME)" then
+		return "Colors ～for EXTREME～"
+	elseif name == "Frozen Ray(for EXTREME)" then
+		return "Frozen Ray ～for EXTREME～"
+	elseif name == "SENORITA(Speedy Mix)" then
+		return "SENORITA(Speedy Mix)"
+	--DDR SuperNOVA
+	elseif name == "MATSURI (J-SUMMER MIX)" then
+		return "祭 (J-SUMMER MIX)"
+	elseif name == "Fascination -eternal love mix-" then
+		return "Fascination ～eternal love mix～"
+	--DDR SuperNOVA2
+	elseif name == "PARANOiA (HADES)" then
+		return "PARANOiA ～HADES～"
+	--DDR X
+	elseif name == "Beautiful Inside (Cube Hard Mix)" then
+		return "Beautiful Inside (Cube∷Hard Mix)"
+	elseif name == "SABER WING (AKIRA ISHIHARA Headshot mix)" then
+		return "SABER WING (Akira Ishihara Headshot mix)"
+	--DDR X2
+	elseif name == "IF YOU WERE HERE (L.E.D.-G STYLE REMIX)" then
+		return "IF YOU WERE HERE(L.E.D.-G STYLE REMIX)"
+	elseif name == "Poseidon (kors k mix)" then
+		return "Poseidon(kors k mix)"
+	elseif name == "roppongi EVOLVED ver. A" then
+		return "roppongi EVOLVED ver.A"
+	elseif name == "roppongi EVOLVED ver. B" then
+		return "roppongi EVOLVED ver.B"
+	elseif name == "roppongi EVOLVED ver. C" then
+		return "roppongi EVOLVED ver.C"
+	elseif name == "roppongi EVOLVED ver. D" then
+		return "roppongi EVOLVED ver.D"
+	--DDR X3 VS 2ndMIX
+	elseif name == "London EVOLVED Ver.A" then
+		return "London EVOLVED ver.A"
+	elseif name == "London EVOLVED Ver.B" then
+		return "London EVOLVED ver.B"
+	elseif name == "London EVOLVED Ver.C" then
+		return "London EVOLVED ver.C"
+	--DDR A
+	elseif name == "OurMemories" then
 		return "#OurMemories"
+	--DDR A3
+	elseif name == "DIABLOSIS Naga" then
+		return "DIABLOSIS∷Nāga"
+	elseif name == "memory DATAMOSHER" then
+		return "ｍｅｍｏｒｙ／／ＤＡＴＡＭＯＳＨＥＲ"
+	--DDR XX -STARLiGHT-
+	elseif name == "digicerata ~mushisareru koto no utsukushisa~" then
+		return "digicerata ～無視されることの美しさ～"
+	elseif name == "Mermaid girl -Akiba Koubou MIX-" then
+		return "Mermaid girl-秋葉工房 MIX-"
+	elseif name == "Poseidon (kors k mix)(XX-Special)" then
+		return "Poseidon(kors k mix)(XX-Special)"
+	--beatmania IIDX
+	elseif name == "CMFLG" then
+		return "#CMFLG"
+	elseif name == "MAGiCVLGiRL_TRVP_B3VTZ" then
+		return "#MAGiCVLGiRL_TRVP_B3VTZ"
+	elseif name == "Misogi"
+		and item:GetDisplayArtist() == "Nhato" then
+		return "禊"
+	elseif name == "The_Relentless" then
+		return "#The_Relentless"
+	--SOUND VOLTEX
+	elseif name == "apollioth" then
+		return "apo:llioth"
+	elseif name == "archive zip" then
+		return "archive∷zip"
+	elseif name == "EmoCloche" then
+		return "#EmoCloche"
+	elseif name == "Endroll"
+		and item:GetDisplayArtist() == "uno & D.watt (IOSYS TRAX)" then
+		return "#Endroll"
+	elseif name == "Fairy_dancing_in_lake" then
+		return "#Fairy_dancing_in_lake"
+	elseif name == "FairyJoke #SDVX_Edit"
+		or name == "FairyJoke SDVX_Edit" then
+		return "#FairyJoke #SDVX_Edit"
+	elseif name == "Namescapes" then
+		return "#Namescapes"
+	elseif name == "SpeedyCats"
+		and item:GetDisplayArtist() == "RoughSketch a.k.a. uno(IOSYS)" then
+		return "#SpeedyCats"
+	--maimai
+	elseif name == "Kurutta minzoku 2 PRAVARGYAZOOQA" then
+		return "#狂った民族２ PRAVARGYAZOOQA"
+	elseif name == "REINCARNATED DRAGNER" then
+		return "RE:INCARNATED DRAGNER"
+	--CHUNITHM
+	elseif name == "FairyJoke" then
+		return "#FairyJoke"
+	elseif name == "SUP3RORBITAL" then
+		return "#SUP3RORBITAL"
 	else
 		return item:GetDisplayMainTitle()
 	end
 end
 
 function GetArtistName(item)
-	if item:GetDisplayArtist() == "Unknown artist" then 
+	if item:GetDisplayArtist() == "Unknown artist"
+		or item:GetDisplayArtist() == "♪♪♪♪"
+		or item:GetDisplayArtist() == "Various artists" then
 		return ""
+	elseif item:GetDisplayFullTitle() == "VIVID DEBUT!"
+		or item:GetDisplayFullTitle() == "EmoCloche"
+		or item:GetDisplayFullTitle() == "#EmoCloche"
+		or item:GetDisplayFullTitle() == "＃EmoCloche"
+		or item:GetDisplayFullTitle() == "Going My Future!"
+		or item:GetDisplayFullTitle() == "MiRÀi"
+		or item:GetDisplayFullTitle() == "Never Ending Future"
+		or item:GetDisplayArtist() == "＃EmoCosine" then
+		return "#EmoCosine"
+	elseif item:GetDisplayArtist() == "Namescapes"
+		or item:GetDisplayArtist() == "＃Namescapes" then
+		return "#Namescapes"
+	elseif item:GetDisplayArtist() == "NuLogic"
+		or item:GetDisplayArtist() == "Nu：Logic" then
+		return "Nu:Logic"
+	elseif item:GetDisplayArtist() == "工藤吉三 (ベイシスケイプ)" then
+		return "工藤吉三（ベイシスケイプ）"
+	--DDR EXTREME + DDR X
+	elseif item:GetDisplayFullTitle() == "The legend of MAX"
+		or item:GetDisplayFullTitle() == "The legend of MAX(X-Special)"
+		or item:GetDisplayFullTitle() == "The legend of MAX (X-Special)" then				--Added variant with a space before the subtitle
+		return "ZZ"
+	--DDR SuperNOVA
+	elseif item:GetDisplayFullTitle() == "Under the Sky" then
+		return "南さやか（BeForU）with platoniX"
+	elseif item:GetDisplayFullTitle() == "You gotta move it (feat. Julie Rugaard)" then
+		return "Yuzo Koshiro"
+	--DDR A
+	elseif item:GetDisplayFullTitle() == "IN BETWEEN" then
+		return "BEMANI Sound Team \"L.E.D.-G\" feat. Mayumi Morinaga"
+	--DDR WORLD
+	elseif item:GetDisplayFullTitle() == "Couleur=Blanche" then
+		return "#FFFFFF"
 	else
 		return item:GetDisplayArtist()
 	end
@@ -478,9 +626,14 @@ end
 function ClearedToLoad()
 	if GAMESTATE:GetCurrentSong() == nil then return "CLEARED" end
 	local GetSong = GAMESTATE:GetCurrentSong():GetDisplayFullTitle()
-	if GetSong == "Tohoku EVOLVED" or GetSong == "COVID" or GetSong == "Outbreak" then 
+	if GetSong == "Tohoku EVOLVED"
+	or GetSong == "COVID"
+	or GetSong == "Outbreak"
+	and GAMESTATE:GetCurrentSong():GetDisplayArtist() == "RG+Ice" then 
 		return "PRAY"
-	elseif GetSong == "Lesson by DJ" or GetSong == "LET'S CHECK YOUR LEVEL!" then
+	elseif GetSong == "Lesson by DJ"
+	or GetSong == "LET'S CHECK YOUR LEVEL!"
+	or GetSong == "Steps to the Star" then
 		return "ENJOY"
 	else
 		return "CLEARED"
@@ -598,7 +751,7 @@ end
 
 
 GoldenLeagueSong = {
-	--A20
+	--DDR A20
 	["Avenger"] = "league"; 								--1st 
 	["New Era"] = "league";									--2nd
 	["Give Me"] = "league";									--3rd
@@ -610,7 +763,7 @@ GoldenLeagueSong = {
 	["Glitch Angel"] = "league";							--9th
 	["Golden Arrow"] = "league";							--10th
 	["CyberConnect"] = "league";							--11th
-	--A20 PLUS
+	--DDR A20 PLUS
 	["DIGITALIZER"] = "league";								--1st
 	["Draw the Savage"] = "league";							--2nd
 	["MUTEKI BUFFALO"] = "league";							--3rd
@@ -625,7 +778,7 @@ GoldenLeagueSong = {
 	["Better Than Me"] = "league";							--12th
 	["DDR TAGMIX -LAST DanceR-"] = "league";				--13th
 	["THIS IS MY LAST RESORT"] = "league";					--14th
-	--A3
+	--DDR A3
 	["STAY GOLD"] = "league";								--1st
 	["Teleportation"] = "league";							--2nd
 	["Environ [De-SYNC] (feat. lythe)"] = "league";			--3rd
@@ -640,6 +793,17 @@ GoldenLeagueSong = {
 	["Jungle Dance"] = "league";							--12th
 	["Rave in the Shell"] = "league";						--13th
 	["Not Alone"] = "league";								--14th
+	["GROOVE 04"] = "league";								--15th
+	["Euphoric Fragmentation"] = "league";					--16th
+	["Continue to the real world?"] = "league";				--17th
+	["9th Outburst"] = "league";							--18th
+	["My Drama"] = "league";								--19th
+	--DDR WORLD
+	["Time to HYPERDRIVE"] = "league";						--1st
+	["Is this dance a Hakken?"] = "league";					--2nd
+	["access super [hyper] focus"] = "league";				--3rd
+	["STOMP!!"] = "league";									--4th
+	["まにぃまにあ××"] = "league";								--5th
 };
 
 NewSong = {

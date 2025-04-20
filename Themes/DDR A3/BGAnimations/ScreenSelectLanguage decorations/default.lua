@@ -155,6 +155,7 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.Actor {
     InitCommand=function(s) s:sleep(20):queuecommand("Timeout") end,
     TimeoutCommand=function(s)
+        if GAMESTATE:IsEventMode() then return end
         SOUND:PlayOnce(THEME:GetPathS("", "Common start"))
         SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
     end,

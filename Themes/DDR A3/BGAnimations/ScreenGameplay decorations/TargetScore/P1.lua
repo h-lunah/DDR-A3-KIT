@@ -164,10 +164,10 @@ if not GAMESTATE:IsDemonstration() and ReadPrefFromFile("OptionRowTargetScore"..
 				local snapTo = nil
 
 				if data_source == "EXScore" then
-					last = math.round((ret-ts));
+					last = round((ret-ts));
 					snapTo = 1
 				else
-					last = math.round((ret-ts)*0.1);
+					last = round((ret-ts)*0.1);
 					snapTo = 10
 				end
 

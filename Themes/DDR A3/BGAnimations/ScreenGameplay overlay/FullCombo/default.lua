@@ -144,6 +144,8 @@ local t = Def.ActorFrame{
 		if not effectTriggered[pn] and IsFullCombo() then
 			effectTriggered[pn] = true
 
+			lua.ReportScriptError(triggeredAt[PLAYER_1] - triggeredAt[PLAYER_2])
+
 			if triggeredAt[PLAYER_1] - triggeredAt[PLAYER_2] > 1 / 60 then
 				self:queuecommand("TriggerFullComboEffect")
 			end

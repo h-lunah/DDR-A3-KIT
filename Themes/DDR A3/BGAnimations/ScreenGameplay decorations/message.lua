@@ -1,14 +1,22 @@
+local measures
+if GAMESTATE:GetCurrentSong() then
+	measures = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1] < 240 and 1 or 4
+else
+	measures = 1
+end
+
+
 return Def.ActorFrame {
 	Condition=not GAMESTATE:IsDemonstration(),
 	Def.ActorFrame{
 		InitCommand=function(s) s:Center() end,
 		CurrentSongChangedMessageCommand=function(s) s:finishtweening():diffusealpha(0):sleep(BeginReadyDelay()):diffusealpha(1):queuecommand('Ready') end,
-		ReadyCommand=function(s) s:sleep(SongMeasureSec()):queuecommand('GoIn') end,
-		GoInCommand=function(s) s:sleep(SongMeasureSec()):queuecommand('GoOut') end,
+		ReadyCommand=function(s) s:sleep(SongMeasureSec()*measures):queuecommand('GoIn') end,
+		GoInCommand=function(s) s:sleep(SongMeasureSec()*measures):queuecommand('GoOut') end,
 	
 		Def.ActorFrame {
 			CurrentSongChangedMessageCommand=function(s) s:SetUpdateRate(1) end,
-			ReadyCommand=function(s) s:SetUpdateRate(2/SongMeasureSec()) end,
+			ReadyCommand=function(s) s:SetUpdateRate(2/SongMeasureSec()*measures) end,
 			--Ready
 			Def.ActorFrame {
 				GoInCommand=function(s) s:linear(0.1):diffusealpha(0):zoomy(0) end,
@@ -79,4 +87,4 @@ return Def.ActorFrame {
 			},
 		},
 	};
-};	
+};

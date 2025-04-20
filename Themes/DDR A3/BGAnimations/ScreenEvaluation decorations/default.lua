@@ -218,7 +218,7 @@ t[#t+1] = Def.ActorFrame{
 				s:setsize(144,144)
 			elseif GAMESTATE:IsCourseMode() then
 				s:Load(GAMESTATE:GetCurrentCourse():GetBannerPath() or THEME:GetPathG("","Common fallback banner"))
-				s:scaletoclipped(266,50)
+				s:scaletoclipped(550/2,103/2)
 				s:addy(20)
 			end;
 

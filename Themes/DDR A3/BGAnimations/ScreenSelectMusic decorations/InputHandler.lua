@@ -11,8 +11,8 @@ end
 local function UpdateMusicWheel()
   local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
   if mw and not mwState.tweened and mwState.inMusicSelect then
-    mw:linear(0.2):diffusealpha(1):effectcolor2(color("#ffffff"))
-    mwState.tweened = true
+      mw:linear(0.2):diffusealpha(1):effectcolor2(color("#ffffff"))
+      mwState.tweened = true
   end
 end
 

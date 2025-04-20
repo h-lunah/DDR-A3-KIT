@@ -1,6 +1,6 @@
 -- Original Author:Jose_Varela
--- Editor:Enciso0720
--- Last Update:20230813
+-- Editors:Enciso0720, Fred-104
+-- Last Update:20250419
 
 function HasAnyCharacters(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default"
@@ -220,17 +220,11 @@ end;
 
 function SpecialChar()
 	local song = Basename(GAMESTATE:GetCurrentSong():GetSongDir())
-		if song == "Anti-Matter"			then return "(X2) Rinon Blue",		true
-	elseif song == "New Decade"				then return "(X2) Rinon Orange",	true
-	elseif song == "Pierce The Sky"			then return "(X2) Rinon Cyan",		true
-	elseif song == "POSSESSION"				then return "(X2) Rinon Purple",	true
-	elseif song == "Sakura Sunrise"			then return "(X2) Rinon Green",		true
-	elseif song == "Shiny World"			then return "(X2) Rinon Yellow",	true
-	elseif song == "Valkyrie dimension"	
-		or song == "MAX.(period)" 			then return "(X2) Rinon Dark",		true
-	elseif song == "EGOISM 440" 
-		or song == "Over The Period"	  	then return "(X2) Rinon",			true
-	elseif song == "DDR MEGAMIX" 			then return "(1st) Afro",			true
+	--[[ Update (2025/04/19): Removed Replicant songs and DDR MEGAMIX
+	as they always allow any character in official AC DDR anyway ]]
+		if song == "HOW TO PLAY"
+		or song == "HOW TO PLAY (English)" 	then return "(X) Disco",			true
+	elseif song == "Lesson by DJ" 			then return "(A) Rage",				true
 	elseif song == "Yuni's Nocturnal Days" 	then return "(X2) Yuni",			true
 	else 										 return 						false
 	end
@@ -740,6 +734,7 @@ function VideoStage()
 	or 		string.match(DanceStageLoader(), "REPLICANT") 
 	or 		string.match(DanceStageLoader(), "CAPTURE ME") 
 	or 		string.match(DanceStageLoader(), "Tales of FESTIVEL") 
+	or 		string.match(DanceStageLoader(), "Tales of FESTIVAL") 
 	or 		string.match(DanceStageLoader(), "COSMISPHERE") 
 	or 		string.match(DanceStageLoader(), "WIRED") 
 	or 		string.match(DanceStageLoader(), "Success Colors") 

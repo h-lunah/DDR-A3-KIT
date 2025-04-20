@@ -31,7 +31,7 @@ function GaugeTextureDanger(g)
 	if string.find(g, "Flare") then
 		return "FlareDanger"
 	else
-		return "danger"
+		return "danger_base"
 	end
 end
 
@@ -265,7 +265,7 @@ return Def.ActorFrame{
         OnCommand=function(s) s:scaletoclipped(296,20)
             :MaskDest():ztestmode("ZTestMode_WriteOnFail"):customtexturerect(0,0,1,1)
             :texcoordvelocity(GaugeSpeedNormal(gauge),0)
-			:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/".."danger"))
+			:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/".."danger_flash"))
 			:blend('BlendMode_Add')
 			:diffusealpha(0.6)
 			:texcoordvelocity(4,0)
