@@ -102,7 +102,7 @@ local t = Def.ActorFrame{
 	JudgmentMessageCommand=function(self, params)
 		-- Add a small delay to ensure the combo and Full Combo state are updated
 		local pn = params.Player
-		self:sleep(0.01) -- 10ms delay (adjust as needed)\
+		self:sleep(0.01) -- 10ms delay (adjust as needed)
 
 		if params.TapNoteScore ~= 'TapNoteScore_Miss' and params.HoldNoteScore ~= 'HoldNoteScore_MissedHold' and params.HoldNoteScore ~= 'HoldNoteScore_LetGo' then
 			if params.TapNoteScore == "TapNoteScore_AvoidMine" then
@@ -144,7 +144,7 @@ local t = Def.ActorFrame{
 		if not effectTriggered[pn] and IsFullCombo() then
 			effectTriggered[pn] = true
 
-			if triggeredAt[PLAYER_1] - triggeredAt[PLAYER_2] > 1 / 60 then
+			if triggeredAt[PLAYER_1] - triggeredAt[PLAYER_2] > 0.1 then
 				self:queuecommand("TriggerFullComboEffect")
 			end
 		end

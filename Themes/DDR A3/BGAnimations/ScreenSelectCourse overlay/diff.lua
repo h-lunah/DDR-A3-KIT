@@ -66,9 +66,9 @@ for _, diff in ipairs(difficulties) do
             end
         end,
         Def.BitmapText{
-            Font="_dispatrox 32px",
+            Font="_itc machine std 20px",
             InitCommand=function(self)
-                self:halign(pn=='pnNumber_P2' and 1 or 0):draworder(99):diffuse(Color.White):zoomx(0.5):zoomy(0.6):maxwidth(150)
+                self:halign(pn=='pnNumber_P2' and 1 or 0):draworder(99):diffuse(Color.White):maxwidth(150)
                 self:x(-119)
                 self:settext(THEME:GetString("CustomDifficulty", ToEnumShortString(diff)))
             end

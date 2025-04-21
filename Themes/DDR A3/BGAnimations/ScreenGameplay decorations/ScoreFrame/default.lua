@@ -50,11 +50,12 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 					InitCommand=function(s) s:rotationx(IsReverse(pn) and 180 or 0):x(-85) end,
 				};
 				Def.BitmapText{
-					Font="_dispatrox 32px",
+					Font="_itc machine std 20px",
 					InitCommand=function(s) s:zoom(0.72):maxwidth(180):y(IsReverse(pn) and -1 or 3):diffuse(color("#feec0a"))
-						s:settext(ShowBPMDisplay() and "BPM" or (string.upper(PROFILEMAN:GetPlayerName(pn))))
+						s:settext(ShowBPMDisplay() and "BPM" or (string.upper(PROFILEMAN:GetPlayerName(pn):sub(1, 8))))
 						s:x(ShowBPMDisplay() and 40 or 80)
-						s:zoomx(ShowBPMDisplay() and 0.72 or 1)
+						s:zoomx(ShowBPMDisplay() and 1.5 or 1.9)
+						s:zoomy(1.2)
 						s:maxwidth(130)
 					end,
 				};
@@ -97,7 +98,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
                 };
 				--Number
                 Def.BitmapText{
-                    Font="_impact 32px",
+                    Font="_helvetica-compressed 32px",
                     InitCommand=function(s) s:halign(0):zoomx(1):zoomx(0.9):zoomy(0.68) end,
                     SetCommand=function(s)
                         local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter();

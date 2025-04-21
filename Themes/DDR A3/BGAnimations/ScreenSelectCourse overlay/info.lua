@@ -21,8 +21,8 @@ return Def.ActorFrame{
 			InitCommand=cmd(xy,64,16;effectclock,'beatnooffset';SetAllStateDelays,1;zoomx,1.5;skewx,-0.25);
 		};
 		Def.BitmapText{
-			Font="Bpm";
-			InitCommand=cmd(zoom,1.4;xy,103,1);
+			Font="_dfghsgothic-w9 20px";
+			InitCommand=cmd(zoomy,0.9;zoomx,0.8;xy,105,0);
 			SetCommand = function(self)
 				local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber());
 			
@@ -30,6 +30,8 @@ return Def.ActorFrame{
 					local lowestBPM, highestBPM;
 					lowestBPM = math.huge; -- Start with a very high number for lowest BPM
 					highestBPM = 0;        -- Start with 0 for highest BPM
+					local spaces;
+					
 			
 					-- Iterate through all songs in the trail
 					for _, entry in ipairs(trail:GetTrailEntries()) do
@@ -39,6 +41,13 @@ return Def.ActorFrame{
 							if bpmtext[1] and bpmtext[2] then
 								lowestBPM = math.min(lowestBPM, bpmtext[1]);
 								highestBPM = math.max(highestBPM, bpmtext[2]);
+								if #tostring(lowestBPM) == 2 then
+									spaces = "   "
+									self:x(112);
+								else
+									spaces = "  "
+									self:x(109);
+								end
 							end
 						end
 					end
@@ -46,11 +55,11 @@ return Def.ActorFrame{
 					if lowestBPM ~= math.huge and highestBPM ~= 0 then
 						local bpmtext;
 						if lowestBPM == highestBPM then
-							bpmtext = round(lowestBPM, 0);
-							self:x(115);
+							bpmtext = round(lowestBPM);
+							self:x(120);
 						else
-							bpmtext = string.format("  %d\nx%3d", round(lowestBPM, 0), round(highestBPM, 0));
-							self:x(101);
+							bpmtext = string.format(spaces.."%d\n~%3d", round(lowestBPM, 0), round(highestBPM, 0));
+							self:x(112);
 						end
 						self:horizalign(left);
 						self:vertalign(top);

@@ -7,6 +7,8 @@ local function getXSpacing(pn)
 	return pn == PLAYER_1 and X_SPACING*-1 or X_SPACING
 end;
 
+mwState.inDiffSelect = true
+
 IsSelecting = true
 
 -- Create a curve instead of laying the objects inline
@@ -300,13 +302,19 @@ local function DiffInputHandler(event)
 	elseif (button == "Start") and GAMESTATE:IsPlayerEnabled(pn) then
 		keyset[pn] = 1
 		MESSAGEMAN:Broadcast("OK"..pn)
-	else
 	end;
 end;
 
 local t = Def.ActorFrame{
 	InitCommand=function(s)
 		s:sleep(0.5):queuecommand("Add")
+		s:SetUpdateFunction(function() 
+			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenSelectMusic" then
+				s:diffusealpha(0)
+			else
+				s:diffusealpha(1)
+			end
+		end)
 	end,
 	AddCommand=function(s)
 		SCREENMAN:GetTopScreen():AddInputCallback(DiffInputHandler)
@@ -316,8 +324,10 @@ local t = Def.ActorFrame{
 		s:sleep(0.1):linear(0.2):diffusealpha(0) 
 	end,
 	OffCommand=function(s)
+		s:SetUpdateFunction(nil)
 		SCREENMAN:GetTopScreen():RemoveInputCallback(DiffInputHandler)
 		s:sleep(outdelay):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.5):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.25):sleep(0.05):linear(0.05):diffusealpha(0)
+		mwState.inDiffSelect = false
 	end,
 	genScrollerFrame(PLAYER_1)..{
 		Condition=GAMESTATE:IsSideJoined(PLAYER_1);

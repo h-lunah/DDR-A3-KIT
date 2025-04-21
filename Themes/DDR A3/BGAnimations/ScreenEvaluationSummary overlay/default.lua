@@ -219,7 +219,10 @@ for i = 1, mStages do
 end;
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-t[#t+1] = Def.ActorFrame{ 
+t[#t+1] = Def.ActorFrame{
+	OnCommand=function(self)
+		self:addx(pn == PLAYER_1 and -20 or 20)
+	end,
 		Def.Sprite{
 			Texture=THEME:GetPathG("","_shared/"..Model().."player"),
 			InitCommand=function(s) 
@@ -228,7 +231,7 @@ t[#t+1] = Def.ActorFrame{
 			OffCommand=function(s) s:linear(0.25):addx(pn==PLAYER_1 and -300 or 300) end,
 		};
 		Def.BitmapText{
-			Font="_dispatrox 32px",
+			Font="_itc machine std 20px",
 			InitCommand=function(s) 
 				s:xy(pn==PLAYER_1 and SCREEN_LEFT-8 or SCREEN_RIGHT+8,_screen.cy-180)
 				s:horizalign(pn==PLAYER_1 and right or left)
@@ -237,7 +240,7 @@ t[#t+1] = Def.ActorFrame{
 					else
 						s:settext(pn==PLAYER_1 and "PLAYER 1" or "PLAYER 2")
 					end
-				s:draworder(50):maxwidth(150):diffuse(color("#feec0a")):zoomx(0.53):zoomy(0.52);
+					s:draworder(50):maxwidth(150):diffuse(color("#feec0a")):zoomx(1.3):zoomy(0.9)
 			end,
 			OnCommand=function(s) s:linear(0.25):x(pn==PLAYER_1 and SCREEN_LEFT+100 or SCREEN_RIGHT-100) end,
 			OffCommand=function(s) s:linear(0.25):addx(pn==PLAYER_1 and -300 or 300) end,
