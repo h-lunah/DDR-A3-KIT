@@ -308,11 +308,16 @@ end;
 local t = Def.ActorFrame{
 	InitCommand=function(s)
 		s:sleep(0.5):queuecommand("Add")
+		local tween = false
 		s:SetUpdateFunction(function() 
 			if SCREENMAN:GetTopScreen():GetName() ~= "ScreenSelectMusic" then
 				s:diffusealpha(0)
+				tween = false
 			else
-				s:diffusealpha(1)
+				if not tween then
+					s:linear(0.1):diffusealpha(1)
+					tween = true
+				end
 			end
 		end)
 	end,

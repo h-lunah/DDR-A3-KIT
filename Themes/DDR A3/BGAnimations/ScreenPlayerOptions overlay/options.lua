@@ -68,16 +68,6 @@ local function MakeRow(rownames, idx)
      end
 	return Def.ActorFrame{
 		Name="Row"..idx;
-		InitCommand=function(s)
-		  s:sleep(0.1):queuecommand("SetRow")
-		end,
-		SetRowCommand=function(s)
-			local screen = SCREENMAN:GetTopScreen();
-			local rowIndex = screen:GetCurrentRowIndex(pn)
-			local row = screen:GetOptionRow(rowIndex)
-  
-			s.lastChoice = row:GetChoiceInRowWithFocus(pn)
-		end,
 		OnCommand=function(self)
 			self:playcommand(hasFocus and "GainFocus" or "LoseFocus");
 		end;
@@ -322,17 +312,22 @@ local function MakeRow(rownames, idx)
 				if idx-1 ~= rowIndex then return end
 			
 				local row = screen:GetOptionRow(rowIndex)
-				local currentChoice = row:GetChoiceInRowWithFocus(pn)
-			
-				if s.lastChoice == 0 and currentChoice == 0 then
+				local cursorLeft = s:GetParent():GetChild("CursorLeft")
+
+				if cursorLeft:GetDiffuseAlpha() == 0 and s:GetTweenTimeLeft() == 0 then
 					SCREENMAN:PlayInvalidSound()
 					s:queuecommand("Invalid")
+					s:queuecommand("Set")
 					return
+				elseif cursorLeft:GetDiffuseAlpha() == 0 and s:GetTweenTimeLeft() > 0 then
+					SCREENMAN:PlayInvalidSound()
+					s:queuecommand("Invalid")
+					s:queuecommand("Set")
+					return
+				else
+					s:queuecommand("AnimLeft")
+					s:queuecommand("Set")
 				end
-			
-				s.lastChoice = currentChoice
-				s:queuecommand("AnimLeft")
-				s:queuecommand("Set")
 			end,
 			
 			[p"MenuRight%MessageCommand"]=function(s)
@@ -342,51 +337,57 @@ local function MakeRow(rownames, idx)
 				if idx-1 ~= rowIndex then return end
 			
 				local row = screen:GetOptionRow(rowIndex)
-				local currentChoice = row:GetChoiceInRowWithFocus(pn)
-				local maxChoice = row:GetNumChoices() - 1
-			
-				if s.lastChoice == maxChoice and currentChoice == maxChoice then
+				local cursorRight = s:GetParent():GetChild("CursorRight")
+
+				if cursorRight:GetDiffuseAlpha() == 0 and s:GetTweenTimeLeft() == 0 then
 					SCREENMAN:PlayInvalidSound()
 					s:queuecommand("Invalid")
+					s:queuecommand("Set")
 					return
+				elseif cursorRight:GetDiffuseAlpha() == 0 and s:GetTweenTimeLeft() > 0 then
+					SCREENMAN:PlayInvalidSound()
+					s:queuecommand("Invalid")
+					s:queuecommand("Set")
+					return
+				else
+					s:queuecommand("AnimRight")
+					s:queuecommand("Set")
 				end
-			
-				s.lastChoice = currentChoice
-				s:queuecommand("AnimRight")
-				s:queuecommand("Set")
 			end,
 		};
 		LoadActor(THEME:GetPathG("","_shared/"..Model().."cursor"))..{
-			InitCommand=cmd(zoom,0.75;x,-20;diffusealpha,1;bounce;effectmagnitude,3,0,0;effectperiod,1);
+			Name="CursorLeft",
+			InitCommand=cmd(zoom,0.75;x,-20;diffusealpha,1;bounce;effectmagnitude,3,0,0;effectperiod,1;queuecommand,"Set");
 			GainFocusCommand=cmd(visible,true);
 			LoseFocusCommand=cmd(visible,false);
 			SetCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen();
 				if screen:GetOptionRow(screen:GetCurrentRowIndex(pn)):GetChoiceInRowWithFocus(pn) == 0 and idx-1 == screen:GetCurrentRowIndex(pn) then 
-					self:diffusealpha(0)
+					self:linear(0.1):diffusealpha(0)
 				else
-					self:diffusealpha(1)
+					self:linear(0.1):diffusealpha(1)
 				end
 			end;
 			[p"MenuLeft%MessageCommand"]=function(s) s:playcommand("Set") end,
 			[p"MenuRight%MessageCommand"]=function(s) s:playcommand("Set") end,
-			ChangeRowMessageCommand=cmd(queuecommand,"Set")
+			ChangeRowMessageCommand=function(s) s:playcommand("Set") end,
 		};
 		LoadActor(THEME:GetPathG("","_shared/"..Model().."cursor"))..{
+			Name="CursorRight",
 			InitCommand=cmd(zoom,0.75;x,146;diffusealpha,1;zoomx,-0.75;bounce;effectmagnitude,-3,0,0;effectperiod,1;queuecommand,"Set");
 			GainFocusCommand=cmd(visible,true);
 			LoseFocusCommand=cmd(visible,false);
 			SetCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen();
 				if screen:GetOptionRow(screen:GetCurrentRowIndex(pn)):GetChoiceInRowWithFocus(pn) == screen:GetOptionRow(screen:GetCurrentRowIndex(pn)):GetNumChoices()-1 and idx-1 == screen:GetCurrentRowIndex(pn) then 
-					self:diffusealpha(0)
+					self:linear(0.1):diffusealpha(0)
 				else
-					self:diffusealpha(1)
+					self:linear(0.1):diffusealpha(1)
 				end
 			end;
-			[p"MenuLeft%MessageCommand"]=cmd(queuecommand,"Set"),
-			[p"MenuRight%MessageCommand"]=cmd(queuecommand,"Set"),
-			ChangeRowMessageCommand=cmd(queuecommand,"Set")
+			[p"MenuLeft%MessageCommand"]=function(s) s:playcommand("Set") end,
+			[p"MenuRight%MessageCommand"]=function(s) s:playcommand("Set") end,
+			ChangeRowMessageCommand=function(s) s:playcommand("Set") end,
 		};
 	};
 end;
