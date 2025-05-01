@@ -268,7 +268,7 @@ function ShockArrows()
 end
 
 function GuideLinesP1()
-	if getenv("OptionRowGuideLines"..ToEnumShortString(PLAYER_1)) == 'false' then
+	if getenv("OptionRowGuideLines"..ToEnumShortString(PLAYER_1)) == 'false' or getenv("OptionRowGuideLinesType"..ToEnumShortString(PLAYER_1)) == "OFF" then
 		return false
 	else
 		return true
@@ -276,10 +276,26 @@ function GuideLinesP1()
 end
 
 function GuideLinesP2()
-	if getenv("OptionRowGuideLines"..ToEnumShortString(PLAYER_2)) == 'false' then
+	if getenv("OptionRowGuideLines"..ToEnumShortString(PLAYER_2)) == 'false' or getenv("OptionRowGuideLinesType"..ToEnumShortString(PLAYER_1)) == "OFF" then
 		return false
 	else
 		return true
+	end
+end
+
+function GuideLinesPosP1()
+	if getenv("OptionRowGuideLinesType"..ToEnumShortString(PLAYER_1)) == "BORDER" then
+		return -30 * ( DISPLAY:GetDisplayHeight() / 720 )
+	else
+		return 0
+	end
+end
+
+function GuideLinesPosP2()
+	if getenv("OptionRowGuideLinesType"..ToEnumShortString(PLAYER_2)) == "BORDER" then
+		return -30 * ( DISPLAY:GetDisplayHeight() / 720 )
+	else
+		return 0
 	end
 end
 
@@ -554,21 +570,21 @@ end
 function OptionNumber()
 	if GetUserPref("OptionRowGameplayBackground")=='DanceStages' then
 		if GetUserPref("NTOption")=='On' then
-			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,ArrowType,SelectStage,TargetScore,Risky"
+			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,ArrowType,SelectStage,TargetScore,GuideLines,Risky"
 		else
-			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,SelectStage,TargetScore,Risky"
+			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,SelectStage,TargetScore,GuideLines,Risky"
 		end
 	elseif GetUserPref("OptionRowGameplayBackground")=='SNCharacters' then
 		if GetUserPref("NTOption")=='On' then
-			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,ArrowType,Characters,TargetScore,Risky"
+			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,ArrowType,Characters,TargetScore,GuideLines,Risky"
 		else
-			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,Characters,TargetScore,Risky"
+			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,Characters,TargetScore,GuideLines,Risky"
 		end
 	else
 		if GetUserPref("NTOption")=='On' then
-			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,ArrowType,TargetScore,Risky"
+			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,ArrowType,TargetScore,GuideLines,Risky"
 		else
-			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,TargetScore,Risky"
+			return "Speed,Accel,Appearance,Turn,Hide,Scroll,NoteSkins,Cut,Freeze,Jump,TargetScore,GuideLines,Risky"
 		end
 	end
 end

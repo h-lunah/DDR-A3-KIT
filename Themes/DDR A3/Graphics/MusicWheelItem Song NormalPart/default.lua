@@ -1,6 +1,7 @@
 local grade = Def.ActorFrame{}
 local cursor = Def.ActorFrame{};
 local diff = Def.ActorFrame{};
+local shock = Def.ActorFrame{};
 local top
 
 local function GetExpandedSectionIndex()
@@ -72,7 +73,9 @@ for i,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	diff[#diff+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/diff.lua"))(pn)..{
 		InitCommand=function(s) s:xy(pn == PLAYER_1 and -74 or 74,-36) end,
 	};
-	--diff[#diff+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/ShockArrows/default.lua"))(pn);
+	shock[#shock+1] = loadfile(THEME:GetPathG("MusicWheelItem", "Song NormalPart/shock.lua"))(pn)..{
+		InitCommand=function(s) s:xy(pn == PLAYER_1 and -74 or 74,-36):addy(30) end,
+	}
 end;
 
 
@@ -186,6 +189,7 @@ return Def.ActorFrame{
 		grade;
 	};
 	diff;
+	shock;
 	cursor;
 	Def.Sprite{
 		Texture=THEME:GetPathG("","_shared/"..Model().."long"),

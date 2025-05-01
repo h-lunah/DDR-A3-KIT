@@ -19,25 +19,25 @@ local screen = SCREENMAN:GetTopScreen();
 
 local rownames;
 if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
-	rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore"  }
+	rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines" }
 else
 	if GetUserPref("OptionRowGameplayBackground")=='DanceStages' then
 		if GetUserPref("NTOption")=='On' then
-			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "Gauge", "DanceStage", "Arrow" }
+			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines", "Gauge", "DanceStage", "Arrow" }
 		else
-			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "Gauge", "DanceStage" }
+			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines", "Gauge", "DanceStage" }
 		end
 	elseif GetUserPref("OptionRowGameplayBackground")=='SNCharacters' then
 		if GetUserPref("NTOption")=='On' then
-			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "Gauge", "Characters", "Arrow" }
+			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines", "Gauge", "Characters", "Arrow" }
 		else
-			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "Gauge", "Characters" }
+			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines", "Gauge", "Characters" }
 		end
 	else
 		if GetUserPref("NTOption")=='On' then
-			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "Gauge", "Arrow" }
+			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines", "Gauge", "Arrow" }
 		else
-			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "Gauge", }
+			rownames = { "Speed", "Accel", "Appearance", "Turn", "Hide", "Scroll", "NoteSkins", "Remove", "Freeze", "Jump", "TargetScore", "GuideLines", "Gauge" }
 		end
 	end
 end
@@ -190,7 +190,9 @@ local function MakeRow(rownames, idx)
 		--DANCESTAGES CARD
 		Def.ActorFrame{
 			Condition=GetUserPref("OptionRowGameplayBackground")=='DanceStages';
-			OnCommand=function(s) s:queuecommand("Set") end,
+			OnCommand=function(self)
+				self:playcommand(hasFocus and "GainFocus" or "LoseFocus"):queuecommand("Set");
+			end;
 			SetCommand=function(self)
 				if not IsExitRow() then
 					local screen = SCREENMAN:GetTopScreen();
@@ -237,7 +239,9 @@ local function MakeRow(rownames, idx)
 		
 		LoadFont("_avenirnext lt pro bold Bold 20px")..{
 			InitCommand=cmd(x,64;uppercase,true;zoom,0.8;maxwidth,150);
-			OnCommand=cmd(queuecommand,"Set");
+			OnCommand=function(self)
+				self:playcommand(hasFocus and "GainFocus" or "LoseFocus"):queuecommand("Set");
+			end;
 			SetCommand=function(self)
 				local screen = SCREENMAN:GetTopScreen();
 				if screen then

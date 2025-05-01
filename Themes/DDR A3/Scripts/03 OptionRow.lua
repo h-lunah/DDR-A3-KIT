@@ -204,6 +204,46 @@ function OptionRowComboUnderField()
 	return t;
 end
 
+function OptionRowGuideLinesType()
+	local t = {
+		Name = "GuideLinesType";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = false;
+		ExportOnChange = true;
+		Choices = {"OFF", "CENTER", "BORDER"};
+		LoadSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
+			if ReadPrefFromFile("OptionRowGuideLinesType"..pName) ~= nil then
+				if GetUserPref("OptionRowGuideLinesType"..pName)=='BORDER' then
+					list[3] = true
+				elseif GetUserPref("OptionRowGuideLinesType"..pName)=='CENTER' then
+					list[2] = true
+				else
+					list[1] = true
+				end
+			else
+				WritePrefToFile("OptionRowGuideLinesType"..pName,"OFF");
+				list[1] = true;
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			local pName = ToEnumShortString(pn)
+			if list[3] then
+				WritePrefToFile("OptionRowGuideLinesType"..pName,"BORDER");
+			elseif list[2] then
+				WritePrefToFile("OptionRowGuideLinesType"..pName,"CENTER");
+			else
+				WritePrefToFile("OptionRowGuideLinesType"..pName,"OFF");
+			end
+			THEME:ReloadMetrics();
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end
+
+
 function OptionRowGuideLines()
 	local t = {
 		Name = "GuideLines";
