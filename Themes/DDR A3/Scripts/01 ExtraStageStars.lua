@@ -73,7 +73,7 @@ function AddExtraStageStars(rank, pn)
     elseif rank == "Grade_Tier03" or rank == "Grade_Tier04" or rank == "Grade_Tier05" then
         starsToAdd = 2
     -- A
-    elseif rank == "Grade_Tier06" or rank == "Grade_Tier07" or rank == "Grade_Tier08" then
+    elseif rank >= "Grade_Tier06" then
         starsToAdd = 1
     end
 
