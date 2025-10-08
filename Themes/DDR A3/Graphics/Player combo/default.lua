@@ -93,7 +93,11 @@ local t = Def.ActorFrame {
 	InitCommand = function(self)
 		c = self:GetChildren();
 		cf = c.ComboFrame:GetChildren();
-		-- Inclu
+		
+		for name, a in pairs(cf) do
+			a.baseX = a:GetX()
+		end
+
 		cfShowOnly(nil);
 	end;
 	ComboCommand=function(self, param)
@@ -115,20 +119,26 @@ local t = Def.ActorFrame {
 		local Label = xxState.Label
 
 		local NumberZoom;
+		local shiftX;
 		local LabelZoom = 0.67
 		
-		 if iCombo < 10 then NumberZoom = 0.38 end
-		  if iCombo > 9 then NumberZoom = 0.39 end
-		 if iCombo > 19 then NumberZoom = 0.4 end
-		 if iCombo > 29 then NumberZoom = 0.41 end
-		 if iCombo > 39 then NumberZoom = 0.425 end
-		 if iCombo > 49 then NumberZoom = 0.435 end
-		 if iCombo > 59 then NumberZoom = 0.45 end
-		 if iCombo > 69 then NumberZoom = 0.46 end
-		 if iCombo > 79 then NumberZoom = 0.48 end
-		 if iCombo > 89 then NumberZoom = 0.5 end
-		 if iCombo > 99 then NumberZoom = 0.55 end
+		if iCombo < 10 then NumberZoom = 0.38 end
+		if iCombo > 9 then NumberZoom = 0.39 end
+		if iCombo > 19 then NumberZoom = 0.4 end
+		if iCombo > 29 then NumberZoom = 0.41 end
+		if iCombo > 39 then NumberZoom = 0.425 end
+		if iCombo > 49 then NumberZoom = 0.435 end
+		if iCombo > 59 then NumberZoom = 0.45 end
+		if iCombo > 69 then NumberZoom = 0.46 end
+		if iCombo > 79 then NumberZoom = 0.48 end
+		if iCombo > 89 then NumberZoom = 0.5 end
+		if iCombo > 99 then NumberZoom = 0.55 end
 		if iCombo > 999 then NumberZoom = 0.478 end
+
+		if iCombo < 10 then shiftX = 0 end
+		if iCombo >= 10 then shiftX = 10 end
+		if iCombo > 100 then shiftX = 30 end
+	    if iCombo > 999 then shiftX = 30 end
 		
 		--Number
 		param.Zoom = scale( iCombo, 0, 4, NumberZoom, NumberZoom );
@@ -145,6 +155,8 @@ local t = Def.ActorFrame {
 		PulseLabel( cf[Label], param)
 		
 		local cstr = tostring(iCombo);
+		cf[Number]:x(cf[Number].baseX + shiftX)
+		cf[Label]:x(cf[Label].baseX + shiftX)
 		cf[Number]:settext( cstr );
 		
 	end;
