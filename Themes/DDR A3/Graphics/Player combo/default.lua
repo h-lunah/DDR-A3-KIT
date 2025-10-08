@@ -137,7 +137,7 @@ local t = Def.ActorFrame {
 
 		if iCombo < 10 then shiftX = 0 end
 		if iCombo >= 10 then shiftX = 10 end
-		if iCombo > 100 then shiftX = 30 end
+		if iCombo > 99 then shiftX = 30 end
 	    if iCombo > 999 then shiftX = 30 end
 		
 		--Number
