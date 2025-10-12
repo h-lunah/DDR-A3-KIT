@@ -42,7 +42,15 @@ if screenName == "ScreenSelectProfile" then
 elseif screenName == "ScreenSelectStyle" then
 	headerTextImage = "STYLE.png"
 elseif screenName == "ScreenEvaluationNormal" then
-	headerTextImage = disp_stage
+	if not GAMESTATE:IsCourseMode() then
+		headerTextImage = disp_stage
+	else
+		if IsDanCourse() then
+			headerTextImage = "DAN"
+		else
+			headerTextImage = "COURSE"
+		end
+	end
 elseif screenName == "ScreenEvaluationSummary" then
 	headerTextImage = "TOTAL"
 elseif screenName == "ScreenDataSaveSummary" then
@@ -61,7 +69,7 @@ if headerTextImage then
 	t[#t+1] = LoadActor(Model()..headerTextImage)..{
 		InitCommand=function(self)
 			self:y(-11)
-			if disp_stage == "ENCORE" then
+			if disp_stage == "ENCORE" or headerTextImage == "COURSE" or headerTextImage == "DAN" then
 				self:setsize(270,27)
 			else
 				self:setsize(340,27)
