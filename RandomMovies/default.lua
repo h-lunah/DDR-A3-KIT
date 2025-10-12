@@ -1,13 +1,10 @@
-local t = Def.ActorFrame{
-	InitCommand=cmd();
-}
+-- This file potentially may be unused. RandomMovies are not an actor on the background layer.
+local t = Def.ActorFrame{}
 
-local rmax = 9;
 local num = math.random(11,33);
 
-t[#t+1] = LoadActor( "Char"..num )..{
-InitCommand=cmd(draworder,1;Center;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,1;decelerate,100;diffusealpha,1);
+t[#t+1] = LoadActor("Char"..num)..{
+  InitCommand=function(self) self:FullScreen():play() end,
 };
 	
 return t;
-	

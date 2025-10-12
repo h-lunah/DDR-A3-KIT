@@ -5,6 +5,12 @@ local FinalStage = PREFSMAN:GetPreference("SongsPerPlay")
 
 IsTransitioning = false
 
+if GAMESTATE:IsCourseMode() and IsDanCourse() then
+	t[#t+1] = LoadActor(THEME:GetPathB("", "ScreenEvaluation decorations/DanResult"))..{
+		InitCommand=function(s) s:draworder(999) end,
+	}
+end
+
 t[#t+1] = Def.ActorFrame{
     StandardDecorationFromFile("Header","Header");
     StandardDecorationFromFileOptional("Footer","Footer");
