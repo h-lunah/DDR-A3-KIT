@@ -15,6 +15,11 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		OnCommand=function(s) s:linear(0.2):zoom(1):spin():effectmagnitude(0,0,170) end,
 		SetCommand=function(s)
 			if STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetFailed() then return end
+
+			if GAMESTATE:GetPlayerState(pn):GetPlayerController() == "PlayerController_Autoplay" then
+				s:Load(THEME:GetPathG("","Grade/MarvelousFullCombo_ring"))
+			return end
+
 			if (Award == "StageAward_FullComboW1") then
 				s:Load(THEME:GetPathG("","Grade/MarvelousFullcombo_ring"))
 			elseif ((Award == "StageAward_SingleDigitW2") or (Award == "StageAward_OneW2") or (Award == "StageAward_FullComboW2")) then
